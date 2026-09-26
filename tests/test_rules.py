@@ -82,9 +82,12 @@ def test_river_adjustments_change_the_ranking():
 
 def test_home_river_presets():
     cat = catalog.load()
-    assert {"caney_fork", "elk"} <= set(cat.rivers)
+    expected = {"caney_fork": ("south", "tailwater"), "elk": ("south", "tailwater"),
+                "magalloway": ("east", "tailwater"), "androscoggin": ("east", "freestone")}
+    assert set(expected) <= set(cat.rivers)
+    for rid, (region, water_type) in expected.items():
+        assert (cat.rivers[rid]["region"], cat.rivers[rid]["water_type"]) == (region, water_type)
     for river in cat.rivers.values():
-        assert river["region"] == "south" and river["water_type"] == "tailwater"
         # Learned adjustments are optional, and always come with a record of what they were fit on.
         assert ("adjust" in river) == ("trained_on" in river)
 
