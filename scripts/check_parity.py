@@ -35,6 +35,13 @@ def cases(cat):
     ):
         yield dict(region=region, water_type=water, month=month, fly_type=fly_type,
                    sky=sky, windy=windy, flow=flow, water_temp_f=temp)
+    # Home rivers, with their learned adjustments.
+    for river, month, fly_type, sky, flow in itertools.product(
+        cat.rivers.values(), range(1, 13), ["any", "dry", "nymph", "streamer"],
+        ["partly", "overcast", "rain"], ["low", "normal", "high"],
+    ):
+        yield dict(region=river["region"], water_type=river["water_type"], month=month, fly_type=fly_type,
+                   sky=sky, windy=False, flow=flow, water_temp_f=None, adjust=river.get("adjust"))
 
 
 def main() -> int:

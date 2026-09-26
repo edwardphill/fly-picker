@@ -83,6 +83,9 @@ ol.flies{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 
   <div class="layout">
     <form id="f" autocomplete="off">
+      <label>River
+        <select id="river" name="river"></select>
+      </label>
       <label>Region
         <select id="region" name="region"></select>
       </label>
@@ -160,6 +163,7 @@ const SERVER = /*__SERVER__*/false;
   }
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
+  fillSelect($("river"), { "": "Other water", ...Object.fromEntries(Object.entries(DATA.rivers).map(([k, v]) => [k, v.label])) });
   fillSelect($("region"), DATA.regions);
   fillSelect($("water_type"), Object.fromEntries(Object.entries(DATA.water_types).map(([k, v]) => [k, v.name])));
   fillSeg($("fly_type"), "fly_type", DATA.fly_types, "any");
@@ -175,6 +179,7 @@ const SERVER = /*__SERVER__*/false;
     const f = new FormData($("f"));
     const num = k => { const v = f.get(k); return v === null || v === "" ? null : Number(v); };
     return {
+      river: f.get("river") || null,
       region: f.get("region"), water_type: f.get("water_type"), date: f.get("date"),
       fly_type: f.get("fly_type") || "any", water_temp_f: num("water_temp_f"),
       sky: f.get("sky"), flow: f.get("flow"), windy: $("windy").checked,
@@ -205,6 +210,7 @@ const SERVER = /*__SERVER__*/false;
     $("engine").textContent = res.engine === "jev" ? "Ranked by Jev" : SERVER ? "Hatch-chart rules" : "Demo · hatch-chart rules";
     const gauge = c.gauge ? ` (${esc(c.gauge.name)}, ${c.gauge.miles} mi)` : "";
     $("summary").innerHTML = [
+      c.river ? `<span><b>${esc(c.river.name)}</b> · tuned on ${c.river.reports} fishing reports</span>` : "",
       `<span><b>${esc(c.water_type)}</b> · ${esc(c.fish)}</span>`,
       `<span><b>${c.water_temp_f}°F</b> ${TEMP_WORDS[c.temp_source]}${gauge}</span>`,
       `<span><b>${SKY_WORDS[c.sky]}</b>${c.windy ? ", windy" : ""}</span>`,
@@ -258,7 +264,16 @@ const SERVER = /*__SERVER__*/false;
   });
 
   $("f").addEventListener("submit", e => { e.preventDefault(); run(); });
-  $("f").addEventListener("change", e => { if (e.target.name !== "lat" && e.target.name !== "lon" && e.target.name !== "place") run(); });
+  $("f").addEventListener("change", e => {
+    // A river sets its own region and water; picking another region or water leaves the river.
+    if (e.target.id === "river" && e.target.value) {
+      $("region").value = DATA.rivers[e.target.value].region;
+      $("water_type").value = DATA.rivers[e.target.value].water_type;
+    } else if (e.target.id === "region" || e.target.id === "water_type") {
+      $("river").value = "";
+    }
+    if (e.target.name !== "lat" && e.target.name !== "lon" && e.target.name !== "place") run();
+  });
   run();
 })();
 </script>

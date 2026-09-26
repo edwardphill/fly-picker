@@ -12,7 +12,8 @@ This is step 1 of the plan: it works on day one with no training data.
 4. **Scoring.**
    - **Jev** (when `TYPESAFE_API_KEY` is set): the best 40 candidates from the rules go to Jev in one parallel call. A `Choice` asks what the fish are eating, and a `Noul` per fly asks whether that fly would catch fish today. Rank = 60% the fly's Noul probability plus 40% how likely its food is.
    - **Hatch-chart rules** (no key, or if Jev fails): how active each food is × how well the fly imitates it × a small "proven pattern" prior.
-5. **Catch log.** Every search and every "Caught fish" / "No luck" tap goes into SQLite (`flypicker.db`). That becomes the training data for a later ranker, including the misses that reports never record.
+5. **Home rivers** (`flypicker/data/rivers.json`). Picking the Caney Fork or the Elk River (Tennessee tailwaters) sets the region, water type and gauge location, and applies multipliers learned from that river's fishing reports: which foods and flies its reports favor more or less than the hatch chart does. See "Test on real fishing reports" below.
+6. **Catch log.** Every search and every "Caught fish" / "No luck" tap goes into SQLite (`flypicker.db`). That becomes the training data for a later ranker, including the misses that reports never record.
 
 ## Run it
 
@@ -22,17 +23,28 @@ export TYPESAFE_API_KEY=...        # optional; without it the app uses the rules
 uvicorn app:app --reload           # open http://localhost:8000
 ```
 
-API: `POST /api/recommend` with `{"region": "west", "water_type": "freestone", "date": "2026-06-24", "fly_type": "dry", "lat": 45.35, "lon": -111.73}`, then `POST /api/catch` with `{"search_id": 1, "fly_id": "stimulator", "outcome": "caught"}`.
+API: `POST /api/recommend` with `{"region": "west", "water_type": "freestone", "date": "2026-06-24", "fly_type": "dry", "lat": 45.35, "lon": -111.73}` (or `{"river": "caney_fork", "date": "2026-06-24"}` for a home river), then `POST /api/catch` with `{"search_id": 1, "fly_id": "stimulator", "outcome": "caught"}`.
 
-## Test Jev before trusting it
+## Test on real fishing reports
 
-Put real fishing reports in a CSV shaped like `eval/reports_template.csv` (its rows are made-up examples), then:
+`eval/reports_tn.csv` holds 93 dated reports from the Caney Fork and the Elk River: shop and guide reports and trip write-ups from 2007 to 2026, each with the flies it says worked, the conditions it gives and a link to the source. `eval/aliases.json` maps report phrases ("chartreuse woolly", "nymphs", "shad pattern") to catalog flies, foods or fly types, and lists local patterns the catalog doesn't have.
 
 ```bash
-python -m eval.backtest eval/reports.csv --jev
+python -m eval.backtest eval/reports_tn.csv         # hit rate by river and report kind
+python -m eval.train eval/reports_tn.csv            # learn river adjustments on older reports, test on the newest
+python -m eval.train eval/reports_tn.csv --write    # then refit on all reports and update rivers.json
+TYPESAFE_API_KEY=... python -m eval.backtest eval/reports_tn.csv --jev   # compare Jev once there's a key
 ```
 
-It prints how often a fly the report named lands in the top 5, for the rules and for Jev.
+A hit means at least one fly the report says worked is in the top 5. On the newest third of each river's reports, which training never saw:
+
+| Top 5 from | Caney Fork (18 reports) | Elk River (14 reports) |
+|---|---|---|
+| Hatch-chart rules | 72% | 64% |
+| Rules + learned river adjustments | 83% | 86% |
+| The same 5 flies every time: the ones the older reports name most | 100% | 100% |
+
+Read these with care. The samples are small, and dates are often post dates. Most rows are weekly shop or guide reports that name fly types ("midges", "streamers on high water", "nymphs") rather than patterns, so a fixed list with one midge, a few streamers and a nymph or two covers nearly all of them, while the rules' top 5 is often five flies for the same food. The Elk's staple flies, the Kenny and Trout Candy from the Lynchburg fly shop, aren't in the catalog. Other reports can go in a CSV shaped like `eval/reports_template.csv`.
 
 ## Other scripts
 

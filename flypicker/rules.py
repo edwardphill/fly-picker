@@ -31,6 +31,9 @@ class Conditions:
     windy: bool = False
     flow: str = "normal"
     place: str | None = None
+    # Learned per-river multipliers (see eval/train.py and data/rivers.json):
+    # {"name": "Elk River", "foods": {food_id: x}, "flies": {fly_id: x}}
+    adjust: dict | None = None
 
     def resolved_temp(self, cat: Catalog) -> float:
         if self.water_temp_f is not None:
@@ -97,7 +100,8 @@ def food_activity(food: dict, cond: Conditions, temp: float) -> tuple[float, lis
     if flow > 1.0 and cond.flow == "high":
         notes.append("high water helps")
 
-    return level * water * tf * sky * flow, notes
+    boost = (cond.adjust or {}).get("foods", {}).get(food["id"], 1.0)
+    return level * water * tf * sky * flow * boost, notes
 
 
 def active_foods(cat: Catalog, cond: Conditions) -> dict[str, tuple[float, list[str]]]:
@@ -150,6 +154,12 @@ def score_flies(cat: Catalog, cond: Conditions, foods: dict | None = None) -> li
         if not overlap:
             score *= 0.8  # the fly doesn't come in the size the food runs
         score *= 0.75 + 0.25 * fly["proven"]
+        reason = f"Imitates {food['name'].lower()}: " + "; ".join(foods[best_food][1])
+        adjust = cond.adjust or {}
+        boost = adjust.get("flies", {}).get(fly["id"], 1.0)
+        score *= boost
+        if boost * adjust.get("foods", {}).get(best_food, 1.0) >= 1.25:
+            reason += f"; favored in {adjust.get('name', 'local')} reports"
         results.append({
             "_raw": score,
             "id": fly["id"],
@@ -160,7 +170,7 @@ def score_flies(cat: Catalog, cond: Conditions, foods: dict | None = None) -> li
             "sizes": size_range_label(sizes),
             "food": best_food,
             "food_name": food["name"],
-            "reason": f"Imitates {food['name'].lower()}: " + "; ".join(foods[best_food][1]),
+            "reason": reason,
         })
     # Sort on the unrounded score so the order matches web/engine.js exactly.
     results.sort(key=lambda r: (-r["_raw"], r["name"]))

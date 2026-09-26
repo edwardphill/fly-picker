@@ -30,3 +30,14 @@ def test_search_then_log_a_catch(client):
 
 def test_bad_search_is_400(client):
     assert client.post("/api/recommend", json={"region": "mars", "water_type": "freestone"}).status_code == 400
+
+
+def test_search_a_home_river(client):
+    from flypicker import catalog
+    r = client.post("/api/recommend", json={"river": "elk", "date": "2026-01-10"})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["conditions"]["river"]["name"] == "Elk River"
+    assert body["conditions"]["region"] == catalog.load().regions["south"]
+    assert body["notes"] == [] and body["flies"][0]["id"] == "woolly_bugger"
+    assert client.post("/api/recommend", json={"river": "nile"}).status_code == 400
