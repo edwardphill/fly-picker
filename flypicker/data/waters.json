@@ -1,8 +1,9 @@
 {
-  "_about": "Regions, water types, and typical water temperatures (F) by month, Jan-Dec. Typical temps are rough starting values used when no gauge reading is available.",
+  "_about": "Regions, water types, and typical water temperatures (F) by month, Jan-Dec. Typical temps are rough starting values used when no gauge reading is available. The Northeast river temps follow the water temps in Rangeley-area and North Country fishing reports from 2018-2026 (eval/reports_me.csv); its tailwater row is a lake-outlet river like the Magalloway, near 40F at ice-out in late April and in the 60s by late summer.",
   "regions": {
     "west": "US West (Rockies, Pacific NW, California)",
-    "east": "US East and Midwest (Northeast, Mid-Atlantic, Great Lakes)",
+    "northeast": "US Northeast (Maine, New Hampshire, Vermont, northern New York)",
+    "east": "US East and Midwest (southern New England, Mid-Atlantic, Great Lakes)",
     "south": "US Southeast and Gulf (southern Appalachia, Florida, Gulf Coast)"
   },
   "water_types": {
@@ -25,6 +26,14 @@
       "trout_lake":   [35, 36, 40, 46, 53, 60, 65, 65, 59, 51, 43, 37],
       "warm":         [40, 42, 48, 56, 64, 72, 78, 78, 70, 60, 50, 43],
       "salt":         [52, 52, 53, 54, 56, 58, 60, 61, 61, 59, 56, 53]
+    },
+    "northeast": {
+      "freestone":    [33, 33, 35, 40, 50, 59, 65, 62, 57, 48, 40, 34],
+      "tailwater":    [34, 34, 35, 39, 46, 55, 61, 63, 60, 51, 42, 36],
+      "spring_creek": [44, 44, 45, 47, 50, 53, 55, 55, 53, 50, 47, 45],
+      "trout_lake":   [33, 33, 34, 40, 52, 62, 69, 70, 62, 52, 42, 35],
+      "warm":         [34, 34, 38, 48, 60, 70, 76, 76, 68, 57, 45, 37],
+      "salt":         [40, 38, 38, 43, 48, 56, 61, 63, 60, 55, 49, 44]
     },
     "east": {
       "freestone":    [35, 36, 40, 47, 55, 62, 66, 66, 60, 52, 44, 38],

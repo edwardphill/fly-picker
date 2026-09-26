@@ -47,5 +47,5 @@ def test_search_a_river_with_no_reports(client):
     from flypicker import catalog
     body = client.post("/api/recommend", json={"river": "magalloway", "date": "2026-06-10"}).json()
     assert body["conditions"]["river"] == {"name": "Magalloway River", "reports": 0}
-    assert body["conditions"]["region"] == catalog.load().regions["east"]
+    assert body["conditions"]["region"] == catalog.load().regions["northeast"]
     assert body["notes"] == [] and len(body["flies"]) == 10

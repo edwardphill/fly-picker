@@ -20,6 +20,7 @@ const FP = (() => {
       const shift = ms => (ms || []).map(m => ((m - 2 + 12) % 12) + 1);
       return { peak: shift(s.east.peak), on: shift(s.east.on) };
     }
+    if (region === "northeast" && s.east) return s.east;
     return s.all || null;
   }
 

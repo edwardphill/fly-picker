@@ -84,7 +84,7 @@
     "magalloway": {
       "name": "Magalloway River",
       "label": "Magalloway River (ME)",
-      "region": "east",
+      "region": "northeast",
       "water_type": "tailwater",
       "place": "Magalloway River (Aziscohos Dam tailwater), ME",
       "lat": 44.949,
@@ -93,7 +93,7 @@
     "androscoggin": {
       "name": "Androscoggin River",
       "label": "Androscoggin River (ME)",
-      "region": "east",
+      "region": "northeast",
       "water_type": "freestone",
       "place": "Androscoggin River (Gilead to Bethel), ME",
       "lat": 44.403,

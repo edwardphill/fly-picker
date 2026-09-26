@@ -71,6 +71,19 @@ def test_south_borrows_east_months_one_earlier():
     assert level == rules.PEAK
 
 
+def test_northeast_hatches_run_later_and_borrow_the_east_chart():
+    cat = catalog.load()
+    hendrickson = cat.foods["hendrickson"]
+    assert rules.season_level(hendrickson, "east", 4)[0] == rules.PEAK
+    assert rules.season_level(hendrickson, "northeast", 4)[0] == rules.OFF
+    assert rules.season_level(hendrickson, "northeast", 6)[0] == rules.PEAK
+    # Foods with no northern entry use the East's months.
+    assert rules.season_level(cat.foods["squid"], "northeast", 5) == rules.season_level(cat.foods["squid"], "east", 5)
+    # Maine water is near 40F at ice-out, so April on the Magalloway is midges and streamers, not mayfly dries.
+    april = top(Conditions("northeast", "tailwater", 4))
+    assert "zebra_midge" in april and not {"hendrickson_dry", "bwo_parachute"} & set(april)
+
+
 def test_river_adjustments_change_the_ranking():
     cat = catalog.load()
     assert "woolly_bugger" not in top(Conditions("south", "tailwater", 9))
@@ -83,7 +96,7 @@ def test_river_adjustments_change_the_ranking():
 def test_home_river_presets():
     cat = catalog.load()
     expected = {"caney_fork": ("south", "tailwater"), "elk": ("south", "tailwater"),
-                "magalloway": ("east", "tailwater"), "androscoggin": ("east", "freestone")}
+                "magalloway": ("northeast", "tailwater"), "androscoggin": ("northeast", "freestone")}
     assert set(expected) <= set(cat.rivers)
     for rid, (region, water_type) in expected.items():
         assert (cat.rivers[rid]["region"], cat.rivers[rid]["water_type"]) == (region, water_type)
