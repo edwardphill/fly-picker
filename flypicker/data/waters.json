@@ -1,0 +1,46 @@
+{
+  "_about": "Regions, water types, and typical water temperatures (F) by month, Jan-Dec. Typical temps are rough starting values used when no gauge reading is available.",
+  "regions": {
+    "west": "US West (Rockies, Pacific NW, California)",
+    "east": "US East and Midwest (Northeast, Mid-Atlantic, Great Lakes)",
+    "south": "US Southeast and Gulf (southern Appalachia, Florida, Gulf Coast)"
+  },
+  "water_types": {
+    "freestone":    {"name": "Freestone river", "group": "RIVER", "fish": "trout", "temp_profile": "freestone"},
+    "tailwater":    {"name": "Tailwater (below a dam)", "group": "RIVER", "fish": "trout", "temp_profile": "tailwater"},
+    "spring_creek": {"name": "Spring creek", "group": "RIVER", "fish": "trout", "temp_profile": "spring_creek"},
+    "small_stream": {"name": "Small mountain stream", "group": "RIVER", "fish": "trout", "temp_profile": "freestone"},
+    "trout_lake":   {"name": "Trout lake or reservoir", "group": "LAKE", "fish": "trout", "temp_profile": "trout_lake"},
+    "warm_lake":    {"name": "Bass pond or warm lake", "group": "WARM", "fish": "bass and panfish", "temp_profile": "warm"},
+    "warm_river":   {"name": "Warmwater river", "group": "WARM", "fish": "smallmouth bass", "temp_profile": "warm"},
+    "flats":        {"name": "Saltwater flats", "group": "SALT", "fish": "bonefish, redfish and permit", "temp_profile": "salt"},
+    "surf":         {"name": "Ocean surf or beach", "group": "SALT", "fish": "striped bass, bluefish and snook", "temp_profile": "salt"},
+    "estuary":      {"name": "Estuary or tidal marsh", "group": "SALT", "fish": "striped bass, redfish and sea trout", "temp_profile": "salt"}
+  },
+  "typical_temp_f": {
+    "west": {
+      "freestone":    [36, 37, 40, 45, 50, 55, 60, 60, 55, 48, 41, 37],
+      "tailwater":    [40, 40, 42, 45, 48, 50, 53, 55, 55, 52, 47, 42],
+      "spring_creek": [48, 48, 50, 52, 54, 56, 58, 58, 56, 54, 51, 49],
+      "trout_lake":   [35, 36, 40, 46, 53, 60, 65, 65, 59, 51, 43, 37],
+      "warm":         [40, 42, 48, 56, 64, 72, 78, 78, 70, 60, 50, 43],
+      "salt":         [52, 52, 53, 54, 56, 58, 60, 61, 61, 59, 56, 53]
+    },
+    "east": {
+      "freestone":    [35, 36, 40, 47, 55, 62, 66, 66, 60, 52, 44, 38],
+      "tailwater":    [42, 42, 43, 45, 48, 51, 54, 56, 56, 54, 50, 45],
+      "spring_creek": [48, 48, 50, 52, 55, 57, 59, 59, 57, 54, 51, 49],
+      "trout_lake":   [36, 36, 40, 48, 56, 64, 70, 70, 63, 54, 45, 38],
+      "warm":         [38, 38, 45, 55, 65, 74, 80, 80, 72, 62, 50, 42],
+      "salt":         [40, 38, 40, 46, 54, 63, 70, 72, 67, 58, 50, 44]
+    },
+    "south": {
+      "freestone":    [42, 44, 48, 54, 60, 65, 68, 68, 64, 57, 50, 45],
+      "tailwater":    [46, 46, 47, 49, 51, 53, 55, 57, 57, 56, 52, 48],
+      "spring_creek": [54, 54, 55, 56, 58, 60, 62, 62, 60, 58, 56, 55],
+      "trout_lake":   [44, 45, 50, 57, 64, 70, 74, 74, 70, 62, 54, 47],
+      "warm":         [52, 55, 62, 70, 77, 83, 86, 86, 82, 74, 64, 55],
+      "salt":         [66, 67, 71, 75, 80, 84, 86, 87, 85, 80, 74, 69]
+    }
+  }
+}

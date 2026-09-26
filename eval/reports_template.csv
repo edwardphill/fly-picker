@@ -1,0 +1,5 @@
+region,water_type,date,water_temp_f,sky,flow,fly_type,source,flies
+# EXAMPLE ROWS ONLY - made up to show the format. Replace with real fishing reports.,,,,,,,,
+west,tailwater,2026-02-14,41,overcast,normal,,example,Zebra Midge;RS2
+west,freestone,2026-06-20,54,partly,high,,example,Pat's Rubber Legs;Chubby Chernobyl
+east,freestone,2026-04-18,49,overcast,normal,dry,example,bwo_parachute;hendrickson_dry

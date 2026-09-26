@@ -1,0 +1,264 @@
+<title>Fly Picker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Public+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Light design only, whatever the device theme. */
+:root{
+  color-scheme:light;
+  --bg:#EEF2EF; --panel:#FFFFFF; --ink:#1B2724; --muted:#5A6A64; --line:#D3DCD7; --field:#F7F9F7;
+  --accent:#1F6670; --accent-ink:#FFFFFF; --accent-soft:#DDECEC;
+  --strong:#2F7A45; --strong-soft:#E1F0E4; --fair:#946010; --fair-soft:#F6EBD6; --weak:#6B7571; --weak-soft:#E8ECEA;
+  --display:"Literata", Georgia, serif; --body:"Public Sans", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);margin:0;padding-inline:16px;padding-block:28px 56px}
+main{max-width:980px;margin:0 auto;display:grid;gap:20px}
+h1,h2{font-family:var(--display);margin:0;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(1.8rem,4.5vw,2.4rem);font-weight:700}
+h2{font-size:1.15rem;font-weight:700}
+p{margin:0}
+.top{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:10px}
+.top p{color:var(--muted);max-width:60ch}
+.engine{font:500 .72rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:760px){.layout{grid-template-columns:minmax(0,1fr)}}
+form{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:14px}
+@media (min-width:761px){form{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}}
+label,.lab{display:grid;gap:6px;font-weight:600;font-size:.85rem}
+.lab>span,label>span{color:var(--muted);font-weight:600}
+select,input[type=date],input[type=number],input[type=text]{font:inherit;font-weight:400;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%}
+select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{display:block;font-weight:500;font-size:.82rem;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--field);cursor:pointer;color:var(--ink)}
+.seg input:checked+label{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.seg input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+details{border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600;font-size:.85rem;color:var(--accent)}
+details[open]>div{display:grid;gap:12px;margin-top:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check{display:flex;align-items:center;gap:8px;font-weight:500}
+.go{font:600 .95rem var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:11px;cursor:pointer}
+.results{display:grid;gap:16px;min-width:0}
+.summary{display:flex;flex-wrap:wrap;gap:6px 14px;font:.82rem/1.4 var(--mono);color:var(--muted)}
+.summary b{color:var(--ink);font-weight:500}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:12px}
+.eat{display:grid;gap:8px}
+.eat div{display:grid;grid-template-columns:minmax(0,11rem) 1fr 3.2rem;align-items:center;gap:10px;font-size:.88rem}
+.bar{height:8px;border-radius:4px;background:var(--weak-soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.pct{font:.8rem var(--mono);text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+ol.flies{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.fly{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:2rem 1fr;gap:4px 12px}
+.rank{font:500 1.05rem/1.3 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.fly-body{display:grid;gap:6px;min-width:0}
+.fly-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px}
+.fly-name{font-family:var(--display);font-weight:700;font-size:1.08rem}
+.size{font:.82rem var(--mono);color:var(--muted)}
+.chip{font:500 .68rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill{font:600 .72rem/1 var(--body);padding:4px 8px;border-radius:999px}
+.pill.strong{background:var(--strong-soft);color:var(--strong)}
+.pill.fair{background:var(--fair-soft);color:var(--fair)}
+.pill.long{background:var(--weak-soft);color:var(--weak)}
+.why{color:var(--muted);font-size:.88rem}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.acts button{font:500 .8rem var(--body);background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:5px 11px;cursor:pointer}
+.acts button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.note{font-size:.85rem;color:var(--fair);background:var(--fair-soft);border-radius:8px;padding:10px 12px}
+.empty{color:var(--muted)}
+.foot{font-size:.8rem;color:var(--muted);max-width:70ch}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .35s ease}}
+</style>
+
+<main>
+  <div class="top">
+    <div style="display:grid;gap:6px">
+      <h1>Fly Picker</h1>
+      <p>Tell it where and when you're fishing. It ranks the flies most likely to get eaten and shows what the fish are probably feeding on.</p>
+    </div>
+    <span class="engine" id="engine">Hatch-chart rules</span>
+  </div>
+
+  <div class="layout">
+    <form id="f" autocomplete="off">
+      <label>Region
+        <select id="region" name="region"></select>
+      </label>
+      <label>Water
+        <select id="water_type" name="water_type"></select>
+      </label>
+      <label>Date
+        <input type="date" id="date" name="date">
+      </label>
+      <div class="lab"><span>Fly type</span>
+        <div class="seg" id="fly_type"></div>
+      </div>
+      <details id="more">
+        <summary>Conditions on the water</summary>
+        <div>
+          <label>Water temp (°F), blank for typical
+            <input type="number" id="water_temp_f" name="water_temp_f" min="32" max="95" step="1" placeholder="e.g. 54">
+          </label>
+          <div class="lab"><span>Sky</span><div class="seg" id="sky"></div></div>
+          <div class="lab"><span>Flow</span><div class="seg" id="flow"></div></div>
+          <label class="check"><input type="checkbox" id="windy" name="windy"> Windy</label>
+          <div id="live" hidden style="display:grid;gap:12px">
+            <label>Spot name (optional)
+              <input type="text" id="place" name="place" placeholder="e.g. Madison River near Ennis">
+            </label>
+            <div class="lab"><span>Coordinates for live gauge and weather (today only)</span>
+              <div class="row2">
+                <input type="number" id="lat" name="lat" step="any" placeholder="Latitude" aria-label="Latitude">
+                <input type="number" id="lon" name="lon" step="any" placeholder="Longitude" aria-label="Longitude">
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+      <button class="go" type="submit">Pick flies</button>
+    </form>
+
+    <section class="results" aria-live="polite">
+      <div class="summary" id="summary"></div>
+      <div id="notes"></div>
+      <div class="card">
+        <h2>What they're probably eating</h2>
+        <div class="eat" id="eat"></div>
+      </div>
+      <ol class="flies" id="flies"></ol>
+      <p class="foot" id="foot"></p>
+    </section>
+  </div>
+</main>
+
+<script>
+const DATA = /*__DATA__*/null;
+const SERVER = /*__SERVER__*/false;
+</script>
+<script>
+/*__ENGINE__*/
+</script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const SKIES = { sunny: "Sunny", partly: "Partly cloudy", overcast: "Overcast", rain: "Rain" };
+  const FLOWS = { low: "Low", normal: "Normal", high: "High / off-color" };
+  const SKY_WORDS = { sunny: "sunny", partly: "partly cloudy", overcast: "overcast", rain: "rain" };
+  const FLOW_WORDS = { low: "low flow", normal: "normal flow", high: "high water" };
+  const TEMP_WORDS = { typical: "typical for the month", gauge: "USGS gauge", angler: "your reading" };
+  let lastSearchId = null;
+
+  function fillSelect(el, map) {
+    el.innerHTML = Object.entries(map).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
+  }
+  function fillSeg(el, name, map, checked) {
+    el.innerHTML = Object.entries(map).map(([k, v]) =>
+      `<input type="radio" name="${name}" id="${name}-${k}" value="${k}"${k === checked ? " checked" : ""}><label for="${name}-${k}">${v}</label>`
+    ).join("");
+  }
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  fillSelect($("region"), DATA.regions);
+  fillSelect($("water_type"), Object.fromEntries(Object.entries(DATA.water_types).map(([k, v]) => [k, v.name])));
+  fillSeg($("fly_type"), "fly_type", DATA.fly_types, "any");
+  fillSeg($("sky"), "sky", SKIES, "partly");
+  fillSeg($("flow"), "flow", FLOWS, "normal");
+  const today = new Date();
+  $("date").value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  $("region").value = "west";
+  $("water_type").value = "freestone";
+  if (SERVER) $("live").hidden = false;
+
+  function readForm() {
+    const f = new FormData($("f"));
+    const num = k => { const v = f.get(k); return v === null || v === "" ? null : Number(v); };
+    return {
+      region: f.get("region"), water_type: f.get("water_type"), date: f.get("date"),
+      fly_type: f.get("fly_type") || "any", water_temp_f: num("water_temp_f"),
+      sky: f.get("sky"), flow: f.get("flow"), windy: $("windy").checked,
+      place: f.get("place") || null, lat: num("lat"), lon: num("lon"),
+    };
+  }
+
+  async function run() {
+    const req = readForm();
+    let res;
+    if (SERVER) {
+      // Leave sky and flow unset unless the angler opened the panel, so live readings can fill them in.
+      const body = { ...req };
+      if (!$("more").open) { delete body.sky; delete body.flow; }
+      const r = await fetch("/api/recommend", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      if (!r.ok) { render({ error: (await r.json()).detail || "Search failed" }); return; }
+      res = await r.json();
+      lastSearchId = res.search_id;
+    } else {
+      res = FP.recommend(req);
+    }
+    render(res);
+  }
+
+  function render(res) {
+    if (res.error) { $("notes").innerHTML = `<p class="note">${esc(res.error)}</p>`; return; }
+    const c = res.conditions;
+    $("engine").textContent = res.engine === "jev" ? "Ranked by Jev" : SERVER ? "Hatch-chart rules" : "Demo · hatch-chart rules";
+    const gauge = c.gauge ? ` (${esc(c.gauge.name)}, ${c.gauge.miles} mi)` : "";
+    $("summary").innerHTML = [
+      `<span><b>${esc(c.water_type)}</b> · ${esc(c.fish)}</span>`,
+      `<span><b>${c.water_temp_f}°F</b> ${TEMP_WORDS[c.temp_source]}${gauge}</span>`,
+      `<span><b>${SKY_WORDS[c.sky]}</b>${c.windy ? ", windy" : ""}</span>`,
+      `<span><b>${FLOW_WORDS[c.flow]}</b></span>`,
+    ].join("");
+    $("notes").innerHTML = res.notes.map(n => `<p class="note">${esc(n)}</p>`).join("");
+
+    const topShare = Math.max(...res.eating.map(e => e.share), 0.0001);
+    $("eat").innerHTML = res.eating.length ? res.eating.map(e =>
+      `<div><span>${esc(e.name)}</span><span class="bar"><i style="width:${(e.share / topShare * 100).toFixed(0)}%"></i></span><span class="pct">${res.engine === "jev" ? Math.round(e.share * 100) + "%" : ""}</span></div>`
+    ).join("") : `<p class="empty">Nothing in the starter hatch chart for this water yet.</p>`;
+
+    $("flies").innerHTML = res.flies.length ? res.flies.map((f, i) => `
+      <li class="fly">
+        <span class="rank">${i + 1}</span>
+        <div class="fly-body">
+          <div class="fly-head">
+            <span class="fly-name">${esc(f.name)}</span>
+            <span class="size">${esc(f.sizes)}</span>
+            <span class="chip">${esc(f.family)}</span>
+            <span class="pill ${f.strength === "long shot" ? "long" : f.strength}">${esc(f.strength)}</span>
+          </div>
+          <p class="why">${esc(f.reason)}</p>
+          <div class="acts" data-fly="${esc(f.id)}">
+            <button type="button" data-outcome="caught" aria-pressed="false">Caught fish</button>
+            <button type="button" data-outcome="no_luck" aria-pressed="false">No luck</button>
+          </div>
+        </div>
+      </li>`).join("") : `<li class="empty">No flies of this type fit this water. Try "Any fly".</li>`;
+
+    $("foot").textContent = SERVER
+      ? "Tap Caught fish or No luck after you fish a fly. Every tap goes into the catch log that will train a better ranker later."
+      : "This demo runs the hatch-chart rules in your browser from a starter catalog of 90 flies. The full app adds Jev ranking, live USGS gauge and weather data, and a shared catch log. Caught / No luck taps here are kept on this device only.";
+  }
+
+  $("flies").addEventListener("click", async e => {
+    const btn = e.target.closest("button[data-outcome]");
+    if (!btn) return;
+    const group = btn.parentElement;
+    group.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+    const entry = { fly_id: group.dataset.fly, outcome: btn.dataset.outcome };
+    if (SERVER && lastSearchId !== null) {
+      await fetch("/api/catch", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ search_id: lastSearchId, ...entry }) });
+    } else {
+      try {
+        const log = JSON.parse(localStorage.getItem("flypicker-log") || "[]");
+        log.push({ ...entry, at: new Date().toISOString(), request: readForm() });
+        localStorage.setItem("flypicker-log", JSON.stringify(log));
+      } catch (_) { /* storage blocked: the pressed state still shows */ }
+    }
+  });
+
+  $("f").addEventListener("submit", e => { e.preventDefault(); run(); });
+  $("f").addEventListener("change", e => { if (e.target.name !== "lat" && e.target.name !== "lon" && e.target.name !== "place") run(); });
+  run();
+})();
+</script>
