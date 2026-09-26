@@ -53,7 +53,7 @@ That's 18 Caney Fork reports and 14 Elk River reports. Read these with care. The
 
 ### Maine and North Country reports
 
-`eval/reports_me.csv` holds 58 reports from 2006 to 2026, from within about 100 miles of the Magalloway and the Androscoggin: the Rangeley Region Sports Shop's weekly reports, Orvis reports from New Hampshire shops (Androscoggin at Errol, Saco, Upper Connecticut), North Country Angler, New Hampshire's weekly fishing reports, the Sun Journal and a Rapid River trip, plus All Points Fly Shop's Maine reports, which before 2026 cover the whole state. 33 name flies; the rest are kept for their dates and water temps.
+`eval/reports_me.csv` holds 59 reports from 2006 to 2026, from within about 100 miles of the Magalloway and the Androscoggin: the Rangeley Region Sports Shop's weekly reports, Orvis reports from New Hampshire shops (Androscoggin at Errol, Saco, Upper Connecticut), North Country Angler, New Hampshire's weekly fishing reports, the Sun Journal, a Rapid River trip and a fly shop's word that September 2026 is streamer season on the Androscoggin, plus All Points Fly Shop's Maine reports, which before 2026 cover the whole state. 34 name flies; the rest are kept for their dates and water temps.
 
 What they show, and what the Northeast region's chart now follows:
 
@@ -62,7 +62,7 @@ What they show, and what the Northeast region's chart now follows:
 - Caddis start when the water nears 60°F in mid June and carry the summer, with stoneflies, yellow sallies and drakes in late June and July.
 - Late summer water runs in the 60s and is often low. September brings the fall spawning runs, streamers and small BWOs.
 
-The Northeast chart follows that timing instead of the East's, adds northern water temps, and drops scuds and sowbugs, which none of these reports name. Foods it doesn't list keep the East's months.
+The Northeast chart follows that timing instead of the East's, with minnow streamers peaking in spring and fall. It adds northern water temps and drops scuds and sowbugs, which none of these reports name. Foods it doesn't list keep the East's months.
 
 ```bash
 python -m eval.backtest eval/reports_me.csv                # the Northeast chart
@@ -71,8 +71,8 @@ python -m eval.backtest eval/reports_me.csv --region east  # the same reports on
 
 | Chart, mixed list | Top 5 | Top 3 | A named fly first |
 |---|---|---|---|
-| East (what the Maine rivers used before) | 88% | 82% | 33% |
-| Northeast | 91% | 88% | 58% |
+| East (what the Maine rivers used before) | 88% | 82% | 32% |
+| Northeast | 91% | 88% | 65% |
 
 The Northeast months were set while reading these same reports, so this shows the chart matches them; it isn't a test on reports the chart never saw. Two big northern hatches aren't in the catalog yet: alder flies (early July, the Rapid River's biggest hatch) and Hex (late June and July). Maine smelt streamers such as the Gray Ghost and Black Ghost count as minnow imitations here.
 

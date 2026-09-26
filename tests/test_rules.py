@@ -82,6 +82,8 @@ def test_northeast_hatches_run_later_and_borrow_the_east_chart():
     # Maine water is near 40F at ice-out, so April on the Magalloway is midges and streamers, not mayfly dries.
     april = top(Conditions("northeast", "tailwater", 4))
     assert "zebra_midge" in april and not {"hendrickson_dry", "bwo_parachute"} & set(april)
+    # September's spawning runs are streamer season.
+    assert cat.flies[top(Conditions("northeast", "freestone", 9), 1)[0]]["family"] == "streamer"
 
 
 def test_river_adjustments_change_the_ranking():

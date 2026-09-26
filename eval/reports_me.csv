@@ -1,5 +1,6 @@
 river,date,kind,region,water_type,water_temp_f,sky,windy,flow,fly_type,flies,source,url,note
 "# Maine and North Country NH reports within about 100 miles of the Magalloway and Androscoggin, gathered 2026-09-26. Rows with no flies are kept for their dates and water temps, which set the Northeast region's typical temps; the backtest skips them.",,,,,,,,,,,,,
+androscoggin,2026-09-26,report,northeast,freestone,,,,,,streamers,fly shop (spoken),,a fly shop said it's streamer season on the Androscoggin; stretch not given
 androscoggin_nh,2026-07-29,report,northeast,tailwater,65,,,,,bead head woolly bugger;bead head zug bug;spotlight caddis emerger;duracell jig;wire caddis larva;mop fly;flashback hare's ear;elk wing caddis;klinkhammer duo;black caddis,Orvis (North Country Angler),https://fishingreports.orvis.com/northeast/new-hampshire/androscoggin-river,"Errol to Pontook; dries at dusk; hatches midges, black stones, caddis; recommendations not catches"
 kennebago,2021-09-10,report,northeast,tailwater,58,,,,,,rangeleyflyshop.com,https://rangeleyflyshop.com/blogs/fishing-reports-2021/rangeley-region-fishing-report-sept-10-2021,55-60F
 kennebago,2018-09-07,report,northeast,tailwater,60,,,,,,rangeleyflyshop.com,https://rangeleyflyshop.com/blogs/fishing-reports-2018-maine-fly-shop,60F

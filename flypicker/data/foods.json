@@ -84,7 +84,7 @@
      "temp": [36, 62], "flow": {"high": 1.8}, "sky": {"overcast": 1.3, "sunny": 0.8}},
     {"id": "baitfish_fw", "name": "Minnows and fry", "desc": "Small trout-water minnows, dace, and spring fry",
      "stage": "subsurface", "sizes": [2, 8], "water": {"RIVER": 1, "LAKE": 1},
-     "season": {"all": {"peak": [5, 6], "on": [1, 2, 3, 4, 7, 8, 9, 10, 11, 12]}}, "temp": [38, 66], "flow": {"high": 1.4}, "sky": {"overcast": 1.2}},
+     "season": {"all": {"peak": [5, 6], "on": [1, 2, 3, 4, 7, 8, 9, 10, 11, 12]}, "northeast": {"peak": [4, 5, 9, 10], "on": [1, 2, 3, 6, 7, 8, 11, 12]}}, "temp": [38, 66], "flow": {"high": 1.4}, "sky": {"overcast": 1.2}},
     {"id": "crayfish", "name": "Crayfish", "desc": "Crayfish scuttling over rocks in warmer months; a bass favorite",
      "stage": "bottom", "sizes": [2, 8], "water": {"RIVER": 0.7, "LAKE": 0.6, "WARM": 1.2},
      "season": {"all": {"peak": [6, 7, 8], "on": [4, 5, 9, 10]}}, "temp": [55, 82]},
