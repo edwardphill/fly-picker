@@ -39,5 +39,5 @@ def test_search_a_home_river(client):
     body = r.json()
     assert body["conditions"]["river"]["name"] == "Elk River"
     assert body["conditions"]["region"] == catalog.load().regions["south"]
-    assert body["notes"] == [] and body["flies"][0]["id"] == "woolly_bugger"
+    assert body["notes"] == [] and body["flies"][0]["id"] == "zebra_midge"
     assert client.post("/api/recommend", json={"river": "nile"}).status_code == 400

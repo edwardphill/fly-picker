@@ -12,8 +12,9 @@ This is step 1 of the plan: it works on day one with no training data.
 4. **Scoring.**
    - **Jev** (when `TYPESAFE_API_KEY` is set): the best 40 candidates from the rules go to Jev in one parallel call. A `Choice` asks what the fish are eating, and a `Noul` per fly asks whether that fly would catch fish today. Rank = 60% the fly's Noul probability plus 40% how likely its food is.
    - **Hatch-chart rules** (no key, or if Jev fails): how active each food is × how well the fly imitates it × a small "proven pattern" prior.
-5. **Home rivers** (`flypicker/data/rivers.json`). Picking the Caney Fork or the Elk River (Tennessee tailwaters) sets the region, water type and gauge location, and applies multipliers learned from that river's fishing reports: which foods and flies its reports favor more or less than the hatch chart does. See "Test on real fishing reports" below.
-6. **Catch log.** Every search and every "Caught fish" / "No luck" tap goes into SQLite (`flypicker.db`). That becomes the training data for a later ranker, including the misses that reports never record.
+5. **List order.** The top 10 is spread across foods and fly types, so one hatch can't fill it. Each place goes to the best remaining fly after a cut for the flies already listed: 30% of its score for each one with the same food, 80% for each one of the same type. The scores shown don't change. Fishing reports mostly name fly types ("midges", "streamers", "nymphs"), and a mixed list covers far more of them.
+6. **Home rivers** (`flypicker/data/rivers.json`). Picking the Caney Fork or the Elk River (Tennessee tailwaters) sets the region, water type and gauge location. A river can also carry multipliers learned from its fishing reports, for foods and flies its reports favor more or less than the hatch chart does. See "Test on real fishing reports" below.
+7. **Catch log.** Every search and every "Caught fish" / "No luck" tap goes into SQLite (`flypicker.db`). That becomes the training data for a later ranker, including the misses that reports never record.
 
 ## Run it
 
@@ -33,18 +34,22 @@ API: `POST /api/recommend` with `{"region": "west", "water_type": "freestone", "
 python -m eval.backtest eval/reports_tn.csv         # hit rate by river and report kind
 python -m eval.train eval/reports_tn.csv            # learn river adjustments on older reports, test on the newest
 python -m eval.train eval/reports_tn.csv --write    # then refit on all reports and update rivers.json
+python -m eval.train eval/reports_tn.csv --mixing   # how the list-order cuts in rules.py were picked
 TYPESAFE_API_KEY=... python -m eval.backtest eval/reports_tn.csv --jev   # compare Jev once there's a key
 ```
 
-A hit means at least one fly the report says worked is in the top 5. On the newest third of each river's reports, which training never saw:
+A hit means at least one fly the report says worked is in the top 5 (or top 3). The list-order cuts and the river adjustments were picked on the older two thirds of each river's reports. On the newest third, which none of that saw:
 
-| Top 5 from | Caney Fork (18 reports) | Elk River (14 reports) |
-|---|---|---|
-| Hatch-chart rules | 72% | 64% |
-| Rules + learned river adjustments | 83% | 86% |
-| The same 5 flies every time: the ones the older reports name most | 100% | 100% |
+| List | Caney Fork, top 5 | Caney Fork, top 3 | Elk River, top 5 | Elk River, top 3 |
+|---|---|---|---|---|
+| Hatch-chart rules in score order | 72% | 61% | 64% | 57% |
+| Hatch-chart rules, mixed list (the app) | 100% | 89% | 100% | 86% |
+| Mixed list + that river's adjustments | 100% | 83% | 100% | 64% |
+| The same 5 flies every time, the ones older reports name most | 100% | 100% | 100% | 36% |
 
-Read these with care. The samples are small, and dates are often post dates. Most rows are weekly shop or guide reports that name fly types ("midges", "streamers on high water", "nymphs") rather than patterns, so a fixed list with one midge, a few streamers and a nymph or two covers nearly all of them, while the rules' top 5 is often five flies for the same food. The Elk's staple flies, the Kenny and Trout Candy from the Lynchburg fly shop, aren't in the catalog. Other reports can go in a CSV shaped like `eval/reports_template.csv`.
+That's 18 Caney Fork reports and 14 Elk River reports. Read these with care. The samples are small, and dates are often post dates. Most rows are weekly shop or guide reports that name fly types ("midges", "streamers on high water", "nymphs") rather than patterns, which is why the mixed list catches them. It also means these reports can no longer tell a good list from a better one; the catch log, which records specific flies, is the test from here.
+
+`--write` keeps a river's adjustments only when they beat the mixed list on that river's newest reports: more top-5 hits, or as many with the flies that worked placed higher on average. The Elk River's didn't. They put woolly buggers first every month, as the 2009 trip reports do, while newer reports mostly name nymphs and midges. So the Elk has none. The Caney Fork's passed narrowly and are mild (sculpins and minnows up about 14%). The Elk's staple flies, the Kenny and Trout Candy from the Lynchburg fly shop, aren't in the catalog. Other reports can go in a CSV shaped like `eval/reports_template.csv`.
 
 ## Other scripts
 

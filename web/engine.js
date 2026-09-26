@@ -3,6 +3,7 @@
 // with water groups already expanded.
 const FP = (() => {
   const PEAK = 1.0, ON = 0.55, OFF = 0.04, TEMP_FALLOFF_F = 12.0, TEMP_FLOOR = 0.08;
+  const FOOD_REPEAT = 0.3, TYPE_REPEAT = 0.8, MIXED_PLACES = 10;
   const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December"];
 
@@ -128,8 +129,26 @@ const FP = (() => {
       });
     }
     results.sort((a, b) => b._raw - a._raw || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-    for (const r of results) delete r._raw;
-    return results;
+    const mixed = mix(results, MIXED_PLACES, r => r._raw);
+    for (const r of mixed) delete r._raw;
+    return mixed;
+  }
+
+  // Spreads the top places across foods and fly types, as rules.mix does.
+  function mix(ranked, places, score) {
+    const left = ranked.slice(), out = [], foodCut = {}, typeCut = {};
+    while (left.length && out.length < places) {
+      let bestI = 0, bestV = -1.0;
+      left.forEach((r, i) => {
+        const v = score(r) * (foodCut[r.food] !== undefined ? foodCut[r.food] : 1.0) * (typeCut[r.family] !== undefined ? typeCut[r.family] : 1.0);
+        if (v > bestV) { bestI = i; bestV = v; }
+      });
+      const [r] = left.splice(bestI, 1);
+      out.push(r);
+      foodCut[r.food] = (foodCut[r.food] !== undefined ? foodCut[r.food] : 1.0) * FOOD_REPEAT;
+      typeCut[r.family] = (typeCut[r.family] !== undefined ? typeCut[r.family] : 1.0) * TYPE_REPEAT;
+    }
+    return out.concat(left);
   }
 
   function foodShares(foods, top = 5) {

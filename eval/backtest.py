@@ -93,10 +93,10 @@ def conditions(row: dict, cat, adjust: dict | None = None) -> rules.Conditions:
     return cond
 
 
-def top_ids(row: dict, cat, adjust: dict | None = None, mode: str = "rules", k: int = K) -> list[str]:
+def top_ids(row: dict, cat, adjust: dict | None = None, mode: str = "rules", k: int = K, mixed: bool = True) -> list[str]:
     if mode == "jev":
         return [f["id"] for f in recommend(request(row), mode="jev")["flies"][:k]]
-    return [f["id"] for f in rules.score_flies(cat, conditions(row, cat, adjust))[:k]]
+    return [f["id"] for f in rules.score_flies(cat, conditions(row, cat, adjust), mixed=mixed)[:k]]
 
 
 def scorable(rows, cat, aliases) -> list[tuple[dict, set[str]]]:
@@ -111,8 +111,17 @@ def scorable(rows, cat, aliases) -> list[tuple[dict, set[str]]]:
     return out
 
 
-def hits(pairs, cat, adjust_for=lambda row: None, mode: str = "rules") -> list[bool]:
-    return [bool(ids & set(top_ids(row, cat, adjust_for(row), mode))) for row, ids in pairs]
+def places(pairs, cat, adjust_for=lambda row: None, mode: str = "rules", mixed: bool = True) -> list[int | None]:
+    """For each report, the list place (1 = first) of the first fly it says worked, or None if not in the top 10."""
+    out = []
+    for row, ids in pairs:
+        top = top_ids(row, cat, adjust_for(row), mode, k=10, mixed=mixed)
+        out.append(next((i + 1 for i, fid in enumerate(top) if fid in ids), None))
+    return out
+
+
+def hits(pairs, cat, adjust_for=lambda row: None, mode: str = "rules", mixed: bool = True) -> list[bool]:
+    return [p is not None and p <= K for p in places(pairs, cat, adjust_for, mode, mixed)]
 
 
 def rate(flags) -> str:
@@ -150,9 +159,10 @@ def main() -> None:
     print(f"{len(rows)} reports, {len(pairs)} name at least one fly the catalog covers.")
     if gaps:
         print("Flies the catalog doesn't have (reports naming them):", ", ".join(f"{g} ({n})" for g, n in gaps.most_common()))
-    report(pairs, hits(pairs, cat), "Hatch-chart rules")
+    report(pairs, hits(pairs, cat, mixed=False), "Hatch-chart rules in score order")
+    report(pairs, hits(pairs, cat), "Hatch-chart rules, mixed list (as the app shows it)")
     if args.rivers:
-        report(pairs, hits(pairs, cat, rivers_adjust), "Rules + river adjustments")
+        report(pairs, hits(pairs, cat, rivers_adjust), "Mixed list + river adjustments")
         sources = {r.get("trained_on", {}).get("source") for r in cat.rivers.values()}
         if any(src and (ROOT / src).resolve() == Path(args.csv).resolve() for src in sources):
             print("  (The river adjustments were trained on this file, so that line is not a fair test. "
