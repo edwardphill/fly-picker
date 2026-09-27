@@ -59,16 +59,14 @@
     "y2k": ["food:egg"],
     "glo bug": ["glo_bug"],
     "bhpt": ["pheasant_tail"],
-    "hare's ear": ["hares_ear"]
+    "hare's ear": ["hares_ear"],
+    "black kenny": ["kenny"],
+    "gold kenny": ["kenny"],
+    "trout candy": ["trout_candy"],
+    "soft candy wet fly": ["trout_candy"]
   },
   "uncataloged": {
-    "kenny": "Elk River shop pattern (Tim's Flies and Lies), fished under an indicator; also called Wet Candy",
-    "black kenny": "color of the Kenny",
-    "gold kenny": "color of the Kenny",
-    "trout candy": "Elk River shop pattern (Tim's Flies and Lies)",
-    "soft candy wet fly": "Elk River shop pattern (Tim's Flies and Lies)",
     "green eyed demon": "local pattern",
-    "zug bug": "peacock nymph, not in the catalog",
     "dan-o-magic": "guide's own pattern",
     "green bug": "unnamed local pattern",
     "haystack": "Smoky Mountain dry fly",
