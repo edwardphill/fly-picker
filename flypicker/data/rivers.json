@@ -1,5 +1,5 @@
 {
-  "_about": "Home-river presets. Picking a river fills in its region, water type and location. A river can also carry 'adjust': multipliers on food activity and fly scores that eval/train.py learns from its fishing reports (python -m eval.train eval/reports_tn.csv --write), with 'trained_on' recording what they were fit on. --write only keeps them for a river when they beat the plain mixed list on that river's newest reports.",
+  "_about": "Home-river presets. Picking a river fills in its region, water type and location. A river can also carry 'adjust': multipliers on food activity and fly scores that eval/train.py learns from its fishing reports (python -m eval.train eval/reports_tn.csv --write), with 'trained_on' recording what they were fit on. --write only keeps them for a river when they beat the plain mixed list on that river's newest reports. 'hatch_notes' are local events from the river's fishing reports (eval/reports_*.csv), each with the months it applies to and its source, shown in the Hatching now section.",
   "rivers": {
     "caney_fork": {
       "name": "Caney Fork",
@@ -8,7 +8,60 @@
       "water_type": "tailwater",
       "place": "Caney Fork (Center Hill Dam tailwater), TN",
       "lat": 36.098,
-      "lon": -85.827
+      "lon": -85.827,
+      "hatch_notes": [
+        {
+          "months": [
+            12,
+            1,
+            2
+          ],
+          "text": "Winter shad kills: cold snaps pull stunned threadfin shad through Center Hill Dam, and white streamers such as zonkers and shad patterns are the flies to fish.",
+          "source": "cfoutdoors.com",
+          "date": "2026-01-12",
+          "url": "https://cfoutdoors.com/blogs/news-feed/caney-fork-river-fishing-report-mid-winter-shad-kills-lure-guide"
+        },
+        {
+          "months": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "text": "Generation sets the day: light-colored streamers when the water is high, nymphs as it falls, and nymphs and midges on low water.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2015-02-01",
+          "url": "https://southeasternfly.blogspot.com/2015/02/high-and-low-water-fishing.html"
+        },
+        {
+          "months": [
+            7,
+            8
+          ],
+          "text": "Summer on low water: a terrestrial such as a beetle or ant with a nymph or midge dropper under it.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2016-07-13",
+          "url": "https://southeasternfly.blogspot.com/2016/07/fly-fishing-near-chattanooga.html"
+        },
+        {
+          "months": [
+            7,
+            8
+          ],
+          "text": "Big browns feed after dark in summer; night anglers fish mice and streamers.",
+          "source": "thetroutzone.com",
+          "date": "2017-07-27",
+          "url": "https://www.thetroutzone.com/2017/07/under-cover-of-darkness-hunting-big-nocturnal-brown-trout.html"
+        }
+      ]
     },
     "elk": {
       "name": "Elk River",
@@ -208,7 +261,51 @@
         "lambda": 0.01,
         "tau": 3.0,
         "source": "eval/reports_tn.csv"
-      }
+      },
+      "hatch_notes": [
+        {
+          "months": [
+            1,
+            2
+          ],
+          "text": "Winter: small white streamers and nymphs. In one January report nymphs beat midges 3 to 1.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2020-01-05",
+          "url": "https://southeasternfly.blogspot.com/2020/01/fishing-report.html"
+        },
+        {
+          "months": [
+            3
+          ],
+          "text": "Midge and caddis hatches come off on sunny March days.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2015-03-11",
+          "url": "https://southeasternfly.blogspot.com/2015/03/fly-fishing-middle-tennessee-tailwaters.html"
+        },
+        {
+          "months": [
+            6,
+            7,
+            8
+          ],
+          "text": "Summer: midges, nymphs and small dries at low flows around 240 cfs.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2014-07-31",
+          "url": "https://southeasternfly.blogspot.com/2014/07/elk-river-fishing-report.html"
+        },
+        {
+          "months": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "text": "Fall into early winter: a guide's 2009 logs counted the most fish on Kenny and Trout Candy soft hackles and chartreuse Woolly Buggers, with San Juan Worms close behind.",
+          "source": "flyfishingtheelk.blogspot.com",
+          "date": "2009-11-12",
+          "url": "https://flyfishingtheelk.blogspot.com/2009/11/fly-fishing-on-elk-river-around-bend.html"
+        }
+      ]
     },
     "magalloway": {
       "name": "Magalloway River",
@@ -217,7 +314,58 @@
       "water_type": "tailwater",
       "place": "Magalloway River (Aziscohos Dam tailwater), ME",
       "lat": 44.949,
-      "lon": -70.996
+      "lon": -70.996,
+      "hatch_notes": [
+        {
+          "months": [
+            4,
+            5
+          ],
+          "text": "Smelt run after ice-out: landlocked salmon chase spawning smelt, so Black and Grey Ghost streamers fish well into May.",
+          "source": "rangeleyflyshop.com",
+          "date": "2021-04-22",
+          "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2021/rangeley-region-fishing-report-april-22-2021"
+        },
+        {
+          "months": [
+            5
+          ],
+          "text": "May water is still cold: fish nymphs slow and deep, such as Pat's Rubber Legs, pink worms and Pheasant Tails.",
+          "source": "Orvis (Rangeley Region Sports Shop)",
+          "date": "2022-05-19",
+          "url": "https://fishingreports.orvis.com/northeast/maine/magalloway-river"
+        },
+        {
+          "months": [
+            5,
+            6
+          ],
+          "text": "Suckers spawn in May, and the fishing slows for a while after the spawn ends.",
+          "source": "rangeleyflyshop.com",
+          "date": "2022-06-02",
+          "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2022/rangeley-region-fishing-report-june-2-2022"
+        },
+        {
+          "months": [
+            6,
+            7
+          ],
+          "text": "Late June hatches in the Rangeley region: caddis, golden stones, sulfurs, Baetis, yellow sallies, brown and green drakes, and Hex.",
+          "source": "allpointsflyfishing.com",
+          "date": "2026-06-30",
+          "url": "https://allpointsflyfishing.com/pages/fishing-report"
+        },
+        {
+          "months": [
+            9,
+            10
+          ],
+          "text": "Fall run: salmon and brook trout move up from the lake as the water cools in September, and the salmon come well to nymphs.",
+          "source": "rangeleyflyshop.com",
+          "date": "2019-09-12",
+          "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2019-rangeley-maine-fly-shop/fishing-report-september-12-2019"
+        }
+      ]
     },
     "androscoggin": {
       "name": "Androscoggin River",
@@ -226,7 +374,39 @@
       "water_type": "freestone",
       "place": "Androscoggin River (Gilead to Bethel), ME",
       "lat": 44.403,
-      "lon": -70.897
+      "lon": -70.897,
+      "hatch_notes": [
+        {
+          "months": [
+            5,
+            6
+          ],
+          "text": "Western Maine's spring mayflies: March browns, Hendricksons and green drakes, with small BWOs.",
+          "source": "allpointsflyfishing.com",
+          "date": "2024-05-24",
+          "url": "https://allpointsflyfishing.com/pages/fishing-report"
+        },
+        {
+          "months": [
+            7,
+            8
+          ],
+          "text": "Upriver in New Hampshire (Errol to Pontook), summer brings midges, black stoneflies and caddis, with dry flies at dusk.",
+          "source": "Orvis (North Country Angler)",
+          "date": "2026-07-29",
+          "url": "https://fishingreports.orvis.com/northeast/new-hampshire/androscoggin-river"
+        },
+        {
+          "months": [
+            9,
+            10
+          ],
+          "text": "Streamer season has started on the Androscoggin.",
+          "source": "a local fly shop, in person",
+          "date": "2026-09-26",
+          "url": null
+        }
+      ]
     }
   }
 }
