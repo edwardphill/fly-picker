@@ -56,18 +56,20 @@ python -m eval.train eval/reports_tn.csv --mixing   # how the list-order cuts in
 TYPESAFE_API_KEY=... python -m eval.backtest eval/reports_tn.csv --jev   # compare Jev once there's a key
 ```
 
-A hit means at least one fly the report says worked is in the top 5 (or top 3). The list-order cuts and the river adjustments were picked on the older two thirds of each river's reports. On the newest third, which none of that saw:
+A hit means at least one fly the report says worked is in the top 5 (or top 3). The river adjustments were fit on the older two thirds of each river's reports. On the newest third, which the fit never saw:
 
 | List | Caney Fork, top 5 | Caney Fork, top 3 | Elk River, top 5 | Elk River, top 3 |
 |---|---|---|---|---|
-| Hatch-chart rules in score order | 72% | 61% | 64% | 57% |
-| Hatch-chart rules, mixed list (the app) | 100% | 89% | 100% | 86% |
-| Mixed list + that river's adjustments | 100% | 83% | 100% | 64% |
-| The same 5 flies every time, the ones older reports name most | 100% | 100% | 100% | 36% |
+| Hatch-chart rules in score order | 67% | 61% | 57% | 50% |
+| Hatch-chart rules, mixed list (the app) | 100% | 89% | 100% | 64% |
+| Mixed list + that river's adjustments | 100% | 89% | 100% | 64% |
+| The same 5 flies every time, the ones older reports name most | 56% | 56% | 50% | 36% |
 
 That's 18 Caney Fork reports and 14 Elk River reports. Read these with care. The samples are small, and dates are often post dates. Most rows are weekly shop or guide reports that name fly types ("midges", "streamers on high water", "nymphs") rather than patterns, which is why the mixed list catches them. It also means these reports can no longer tell a good list from a better one; the catch log, which records specific flies, is the test from here.
 
-`--write` keeps a river's adjustments only when they beat the mixed list on that river's newest reports: more top-5 hits, or as many with the flies that worked placed higher on average. The Elk River's didn't. They put woolly buggers first every month, as the 2009 trip reports do, while newer reports mostly name nymphs and midges. So the Elk has none. The Caney Fork's passed narrowly and are mild (sculpins and minnows up about 14%). The Elk's staple flies, the Kenny and Trout Candy from the Lynchburg fly shop, aren't in the catalog. Other reports can go in a CSV shaped like `eval/reports_template.csv`.
+`--write` keeps a river's adjustments only when they beat the mixed list on that river's newest reports: more top-5 hits, or as many with the flies that worked placed higher on average. The Elk River's didn't. They put woolly buggers first every month, as the 2007 to 2011 trip reports do, while newer reports mostly name nymphs and midges. So the Elk has none. The Caney Fork's passed on the tiebreak alone (one report's fly moved from second to first) and are mild: minnows up 3%, sculpins and midges up about 2%. Other reports can go in a CSV shaped like `eval/reports_template.csv`.
+
+The list-order cuts (x0.3 for a repeated food, x0.8 for a repeated fly type) were picked by `--mixing` on the older reports when the catalog had 90 flies: the gentlest setting within one standard error of the most hits. With 149 flies, the same run favors a stronger cut, x0 for a repeated food, which allows only one fly per food in the top 10. That setting does worse on the newest Elk River reports (11 of 14 in the top 5, against 14 of 14) and ties on the Caney Fork, so the app keeps x0.3 and x0.8. Since that choice looked at the newest reports, the mixed-list row above is not a fully blind test.
 
 ### Maine and North Country reports
 
@@ -80,7 +82,7 @@ What they show, and what the Northeast region's chart now follows:
 - Caddis start when the water nears 60°F in mid June and carry the summer, with stoneflies, yellow sallies and drakes in late June and July.
 - Late summer water runs in the 60s and is often low. September brings the fall spawning runs, streamers and small BWOs.
 
-The Northeast chart follows that timing instead of the East's, with minnow streamers peaking in spring and fall. It adds northern water temps and drops scuds and sowbugs, which none of these reports name. Foods it doesn't list keep the East's months.
+The Northeast chart follows that timing instead of the East's, with minnow and smelt streamers peaking in spring and fall and Isonychia in July. It adds northern water temps and drops scuds and sowbugs, which none of these reports name. Foods it doesn't list keep the East's months.
 
 ```bash
 python -m eval.backtest eval/reports_me.csv                # the Northeast chart
@@ -89,10 +91,10 @@ python -m eval.backtest eval/reports_me.csv --region east  # the same reports on
 
 | Chart, mixed list | Top 5 | Top 3 | A named fly first |
 |---|---|---|---|
-| East (what the Maine rivers used before) | 88% | 82% | 32% |
-| Northeast | 91% | 88% | 65% |
+| East (what the Maine rivers used before) | 85% | 74% | 32% |
+| Northeast | 85% | 76% | 50% |
 
-The Northeast months were set while reading these same reports, so this shows the chart matches them; it isn't a test on reports the chart never saw. Two big northern hatches aren't in the catalog yet: alder flies (early July, the Rapid River's biggest hatch) and Hex (late June and July). Maine smelt streamers such as the Gray Ghost and Black Ghost count as minnow imitations here.
+The Northeast months were set while reading these same reports, so this shows the chart matches them; it isn't a test on reports the chart never saw. Two big northern hatches aren't in the catalog yet: alder flies (early July, the Rapid River's biggest hatch) and Hex (late June and July). A report that names smelt patterns counts only when a smelt imitation such as the Grey Ghost or Joe's Smelt makes the list, and a named streamer such as the Black Ghost counts only itself. Smelt score lower in freestone water than in lakes and tailwaters, so on the statewide reports, which are entered as freestone, a Zonker or another minnow fly usually takes the spring streamer place and the smelt flies rank around 11th.
 
 ## Other scripts
 
