@@ -69,3 +69,8 @@ def test_south_borrows_east_months_one_earlier():
     cat = catalog.load()
     level, _ = rules.season_level(cat.foods["hendrickson"], "south", 3)
     assert level == rules.PEAK
+
+
+def test_no_smelt_in_the_south():
+    for month in (4, 9):
+        assert not any("smelt" in f for f in top(Conditions("south", "tailwater", month), 10))
