@@ -15,6 +15,14 @@ ON = 0.55
 OFF = 0.04
 TEMP_FALLOFF_F = 12.0  # activity fades to its floor this many degrees outside a food's range
 TEMP_FLOOR = 0.08
+# List order (see mix): each fly already listed for the same food cuts a fly's score to this share,
+# and each fly already listed of the same type (dry, nymph, streamer...) to this share. Picked on the
+# older Caney Fork and Elk River reports: the gentlest setting within noise of the best one there
+# (see eval/train.py --mixing). One fly per food scored a little higher on those reports, but it fills
+# a dries-only list in February with out-of-season hatches.
+FOOD_REPEAT = 0.3
+TYPE_REPEAT = 0.8
+MIXED_PLACES = 10  # places filled this way; the rest stay in score order
 MONTHS = ("January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December")
 
@@ -135,7 +143,8 @@ def strength_label(score: float) -> str:
     return "long shot"
 
 
-def score_flies(cat: Catalog, cond: Conditions, foods: dict | None = None) -> list[dict]:
+def score_flies(cat: Catalog, cond: Conditions, foods: dict | None = None, mixed: bool = True) -> list[dict]:
+    """Best first. mixed=True is the order the app lists: spread across foods and fly types (see mix)."""
     foods = active_foods(cat, cond) if foods is None else foods
     results = []
     for fly in cat.flies.values():
@@ -174,9 +183,34 @@ def score_flies(cat: Catalog, cond: Conditions, foods: dict | None = None) -> li
         })
     # Sort on the unrounded score so the order matches web/engine.js exactly.
     results.sort(key=lambda r: (-r["_raw"], r["name"]))
+    if mixed:
+        results = mix(results, score=lambda r: r["_raw"])
     for r in results:
         del r["_raw"]
     return results
+
+
+def mix(ranked: list[dict], places: int = MIXED_PLACES, score=lambda r: r["score"],
+        food_repeat: float = FOOD_REPEAT, type_repeat: float = TYPE_REPEAT) -> list[dict]:
+    """Reorders a best-first list so one food or fly type can't fill the top places.
+
+    Fishing reports mostly name a kind of fly (midges, streamers, nymphs), so five flies for one hatch
+    is a weaker box than the best fly for each of several foods. Each place goes to the fly with the
+    best score after the food_repeat and type_repeat cuts for the flies already listed. The scores
+    shown don't change, and ties keep the incoming order.
+    """
+    left, out, food_cut, type_cut = list(ranked), [], {}, {}
+    while left and len(out) < places:
+        best_i, best_v = 0, -1.0
+        for i, r in enumerate(left):
+            v = score(r) * food_cut.get(r["food"], 1.0) * type_cut.get(r["family"], 1.0)
+            if v > best_v:
+                best_i, best_v = i, v
+        r = left.pop(best_i)
+        out.append(r)
+        food_cut[r["food"]] = food_cut.get(r["food"], 1.0) * food_repeat
+        type_cut[r["family"]] = type_cut.get(r["family"], 1.0) * type_repeat
+    return out + left
 
 
 def food_shares(foods: dict, cat: Catalog, top: int = 5) -> list[dict]:

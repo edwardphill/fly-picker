@@ -33,11 +33,14 @@ def test_bad_search_is_400(client):
 
 
 def test_search_a_home_river(client):
-    from flypicker import catalog
+    from flypicker import catalog, rules
     r = client.post("/api/recommend", json={"river": "elk", "date": "2026-01-10"})
     assert r.status_code == 200
     body = r.json()
+    cat = catalog.load()
     assert body["conditions"]["river"]["name"] == "Elk River"
-    assert body["conditions"]["region"] == catalog.load().regions["south"]
-    assert body["notes"] == [] and body["flies"][0]["id"] == "woolly_bugger"
+    assert body["conditions"]["region"] == cat.regions["south"]
+    # The preset's region, water and any trained adjustments, whatever the latest refit kept.
+    same = rules.Conditions("south", "tailwater", 1, adjust=cat.rivers["elk"].get("adjust"))
+    assert body["notes"] == [] and body["flies"][0]["id"] == rules.score_flies(cat, same)[0]["id"]
     assert client.post("/api/recommend", json={"river": "nile"}).status_code == 400

@@ -69,6 +69,7 @@ ol.flies{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .note{font-size:.85rem;color:var(--fair);background:var(--fair-soft);border-radius:8px;padding:10px 12px}
 .empty{color:var(--muted)}
 .foot{font-size:.8rem;color:var(--muted);max-width:70ch}
+.order{font-size:.8rem;color:var(--muted);margin:0}
 @media (prefers-reduced-motion:no-preference){.bar i{transition:width .35s ease}}
 </style>
 
@@ -130,6 +131,7 @@ ol.flies{list-style:none;margin:0;padding:0;display:grid;gap:10px}
         <h2>What they're probably eating</h2>
         <div class="eat" id="eat"></div>
       </div>
+      <p class="order" id="order">Spread across foods and fly types, so one hatch can't fill the list.</p>
       <ol class="flies" id="flies"></ol>
       <p class="foot" id="foot"></p>
     </section>
@@ -210,7 +212,7 @@ const SERVER = /*__SERVER__*/false;
     $("engine").textContent = res.engine === "jev" ? "Ranked by Jev" : SERVER ? "Hatch-chart rules" : "Demo · hatch-chart rules";
     const gauge = c.gauge ? ` (${esc(c.gauge.name)}, ${c.gauge.miles} mi)` : "";
     $("summary").innerHTML = [
-      c.river ? `<span><b>${esc(c.river.name)}</b> · tuned on ${c.river.reports} fishing reports</span>` : "",
+      c.river ? `<span><b>${esc(c.river.name)}</b>${c.river.reports ? ` · tuned on ${c.river.reports} fishing reports` : ""}</span>` : "",
       `<span><b>${esc(c.water_type)}</b> · ${esc(c.fish)}</span>`,
       `<span><b>${c.water_temp_f}°F</b> ${TEMP_WORDS[c.temp_source]}${gauge}</span>`,
       `<span><b>${SKY_WORDS[c.sky]}</b>${c.windy ? ", windy" : ""}</span>`,
@@ -223,6 +225,7 @@ const SERVER = /*__SERVER__*/false;
       `<div><span>${esc(e.name)}</span><span class="bar"><i style="width:${(e.share / topShare * 100).toFixed(0)}%"></i></span><span class="pct">${res.engine === "jev" ? Math.round(e.share * 100) + "%" : ""}</span></div>`
     ).join("") : `<p class="empty">Nothing in the starter hatch chart for this water yet.</p>`;
 
+    $("order").hidden = !res.flies.length;
     $("flies").innerHTML = res.flies.length ? res.flies.map((f, i) => `
       <li class="fly">
         <span class="rank">${i + 1}</span>

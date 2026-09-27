@@ -2,16 +2,19 @@
 
     python -m eval.train eval/reports_tn.csv            # fit on older reports, test on the newest
     python -m eval.train eval/reports_tn.csv --write    # then refit on all reports, same settings, and save flypicker/data/rivers.json
+    python -m eval.train eval/reports_tn.csv --mixing   # how the list-mixing strength in rules.py was picked
 
 The rules themselves don't change. Training learns two kinds of multipliers per river: how much
 more or less each food matters there than the hatch chart says, and a nudge for individual flies
 the reports name. For each river it holds out the newest third of the reports, fits on the older
 ones, and scores the held-out reports with the real scorer, so the "after" numbers are on reports
 the fit never saw. Settings (regularization and softmax temperature) are picked the same way on
-the training reports alone, and --write refits on every report with those same settings.
+the training reports alone, and --write refits on every report with those same settings. A river
+only gets its adjustments written when they beat the plain mixed list on its newest reports.
 
 The loss is listwise: a softmax over each report's candidate flies, pushing up the share that goes
-to flies the report says worked. Pure Python, no numpy; a few seconds per river.
+to flies the report says worked. Hit counts use the app's mixed list order (rules.mix), since that
+is what an angler sees. Pure Python, no numpy; under a minute for both rivers.
 """
 
 import argparse
@@ -25,11 +28,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from eval.backtest import K, conditions, hits, load_aliases, load_rows, rate, scorable  # noqa: E402
+from eval.backtest import K, conditions, load_aliases, load_rows, places, rate, scorable  # noqa: E402
 from flypicker import catalog, rules  # noqa: E402
 
 RIVERS_PATH = ROOT / "flypicker" / "data" / "rivers.json"
 GRID = [(lam, tau) for lam in (0.01, 0.03, 0.1, 0.3, 1.0) for tau in (1.0, 3.0)]
+MIX_GRID = [(food, kind) for food in (1.0, 0.7, 0.5, 0.3, 0.0) for kind in (1.0, 0.8, 0.6, 0.4)]
+MIXED = (rules.FOOD_REPEAT, rules.TYPE_REPEAT)
 STEPS, LR, LIMIT = 250, 0.05, 3.0  # Adam steps, step size, and a cap on |log multiplier|
 
 
@@ -37,6 +42,7 @@ STEPS, LR, LIMIT = 250, 0.05, 3.0  # Adam steps, step size, and a cap on |log mu
 class Cand:
     fly: str
     name: str
+    family: str
     parts: list  # (fly weight x food activity, food id) for the foods active in this report
     overlap: dict  # food id -> whether the fly comes in that food's sizes
     static: float  # proven-pattern factor
@@ -60,7 +66,7 @@ def examples(pairs, cat) -> list[Example]:
                 continue
             parts = [(w * foods[fid][0], fid) for fid, w in fly["imitates"] if fid in foods]
             if parts:
-                cands.append(Cand(fly["id"], fly["name"], parts,
+                cands.append(Cand(fly["id"], fly["name"], fly["family"], parts,
                                   {fid: rules.recommended_sizes(fly, cat.foods[fid])[1] for _, fid in parts},
                                   0.75 + 0.25 * fly["proven"]))
         out.append(Example(row, cands, {i for i, c in enumerate(cands) if c.fly in ids}))
@@ -76,9 +82,16 @@ def score(c: Cand, beta: dict, gamma: dict) -> tuple[float, list]:
     return s * c.static * math.exp(gamma.get(c.fly, 0.0)), top
 
 
-def ranked(ex: Example, beta: dict, gamma: dict) -> list[str]:
-    scored = [(score(c, beta, gamma)[0], c.name, c.fly) for c in ex.cands]
-    return [fly for _, _, fly in sorted(scored, key=lambda t: (-t[0], t[1]))]
+def ranked(ex: Example, beta: dict, gamma: dict, steps: tuple | None = MIXED) -> list[str]:
+    """Fly ids in the app's list order: mixed with steps = (food repeat, type repeat), or score order with None."""
+    scored = []
+    for c in ex.cands:
+        s, top = score(c, beta, gamma)
+        scored.append({"raw": s, "name": c.name, "id": c.fly, "food": top[0][1], "family": c.family})
+    scored.sort(key=lambda r: (-r["raw"], r["name"]))
+    if steps:
+        scored = rules.mix(scored, score=lambda r: r["raw"], food_repeat=steps[0], type_repeat=steps[1])
+    return [r["id"] for r in scored]
 
 
 def loss_and_grad(exs, beta, gamma, lam, tau):
@@ -121,8 +134,18 @@ def fit(exs, lam, tau) -> tuple[dict, dict]:
     return beta, gamma
 
 
-def hit_count(exs, beta, gamma) -> int:
-    return sum(bool({ex.cands[i].fly for i in ex.wanted} & set(ranked(ex, beta, gamma)[:K])) for ex in exs)
+def hit_count(exs, beta, gamma, steps: tuple | None = MIXED) -> int:
+    return sum(bool({ex.cands[i].fly for i in ex.wanted} & set(ranked(ex, beta, gamma, steps)[:K])) for ex in exs)
+
+
+def quality(exs, beta, gamma) -> tuple[int, float]:
+    """Hits in the top K, then the mean of 1/place of the first fly that worked, which still tells
+    settings apart when the mixed top K catches nearly every report."""
+    inv = 0.0
+    for ex in exs:
+        want = {ex.cands[i].fly for i in ex.wanted}
+        inv += next((1 / (i + 1) for i, fly in enumerate(ranked(ex, beta, gamma)) if fly in want), 0.0)
+    return hit_count(exs, beta, gamma), inv / max(len(exs), 1)
 
 
 def time_split(items, date_of, frac=1 / 3):
@@ -136,8 +159,23 @@ def choose_and_fit(exs) -> tuple[dict, dict, tuple]:
     """Pick (lambda, tau) on a time split of these reports, then refit on all of them.
     Ties go to the stronger regularization."""
     older, newer = time_split(exs, lambda ex: ex.row["date"])
-    best = max(GRID, key=lambda cfg: (hit_count(newer, *fit(older, *cfg)), cfg[0]))
+    best = max(GRID, key=lambda cfg: (*quality(newer, *fit(older, *cfg)), cfg[0]))
     return (*fit(exs, *best), best)
+
+
+def choose_mixing(exs) -> tuple[tuple, dict]:
+    """List-mixing strength for rules.py, picked on these reports with the plain rules: the gentlest
+    setting (largest repeat shares, so closest to score order) within one standard error of the best."""
+    counts = {cfg: hit_count(exs, {}, {}, cfg) for cfg in MIX_GRID}
+    best = max(counts.values())
+    p = best / len(exs)
+    floor = best - math.sqrt(p * (1 - p) * len(exs))
+    return max((cfg for cfg, n in counts.items() if n >= floor), key=lambda cfg: (sum(cfg), cfg)), counts
+
+
+def merit(found: list) -> tuple[int, float]:
+    """Held-out comparison: hits in the top K, then the summed 1/place of the first fly that worked."""
+    return sum(p is not None and p <= K for p in found), sum(1 / p for p in found if p)
 
 
 def adjust(name: str, beta: dict, gamma: dict) -> dict:
@@ -166,6 +204,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("csv")
     ap.add_argument("--write", action="store_true", help=f"refit on all reports and write {RIVERS_PATH.relative_to(ROOT)}")
+    ap.add_argument("--mixing", action="store_true", help="show how the list-mixing strength in rules.py was picked")
     args = ap.parse_args()
     cat, aliases = catalog.load(), load_aliases()
     pairs = scorable(load_rows(args.csv), cat, aliases)
@@ -174,29 +213,40 @@ def main() -> None:
         by_river[pair[0]["river"]].append(pair)
 
     splits = {r: time_split(ps, lambda p: p[0]["date"]) for r, ps in by_river.items()}
+    if args.mixing:
+        older = examples([p for tr, _ in splits.values() for p in tr], cat)
+        pick, counts = choose_mixing(older)
+        print(f"List mixing on the {len(older)} older reports (plain rules), hits in the top {K}:")
+        for (food, kind), n in sorted(counts.items(), key=lambda kv: (-kv[1], -sum(kv[0]))):
+            print(f"  same food x{food:.1f}, same type x{kind:.1f}: {n}/{len(older)}{'  <- picked' if (food, kind) == pick else ''}")
+        print(f"rules.py uses x{rules.FOOD_REPEAT} and x{rules.TYPE_REPEAT}" + ("." if pick == MIXED else ", which differs from the pick."))
+        return
     pooled_beta, pooled_gamma, pooled_cfg = choose_and_fit(examples([p for tr, _ in splits.values() for p in tr], cat))
-    settings = {}
+    settings, keep = {}, {}
     for river, (train, test) in splits.items():
         name = cat.rivers.get(river, {}).get("name", river)
         beta, gamma, cfg = choose_and_fit(examples(train, cat))
         settings[river] = cfg
         own = adjust(name, beta, gamma)
         pooled = adjust("Middle Tennessee", pooled_beta, pooled_gamma)
-        pop = set(popularity(train, cat))
+        pop = popularity(train, cat)
         print(f"\n{name}: fit on {len(train)} reports ({train[0][0]['date']} to {train[-1][0]['date']}), "
               f"tested on the newest {len(test)} ({test[0][0]['date']} to {test[-1][0]['date']})")
-        for label, flags in (
-            ("hatch-chart rules (today)", hits(test, cat)),
-            ("most-named flies in training", [bool(ids & pop) for _, ids in test]),
-            (f"rules + {name} adjustments", hits(test, cat, lambda row: own)),
-            ("rules + both rivers pooled", hits(test, cat, lambda row: pooled)),
+        print(f"  {'':32} {'top ' + str(K):14} top 3")
+        found = {}
+        for key, label, pl in (
+            ("score", "rules in score order", places(test, cat, mixed=False)),
+            ("mixed", "rules, mixed list", places(test, cat)),
+            ("own", f"mixed + {name} adjustments", places(test, cat, lambda row: own)),
+            ("pooled", "mixed + both rivers pooled", places(test, cat, lambda row: pooled)),
+            ("pop", "most-named flies in training", [next((i + 1 for i, f in enumerate(pop) if f in ids), None) for _, ids in test]),
         ):
-            by_kind = defaultdict(list)
-            for (row, _), hit in zip(test, flags):
-                by_kind[row["kind"]].append(hit)
-            kinds = "  ".join(f"{k} {rate(v)}" for k, v in sorted(by_kind.items()))
-            print(f"  {label:32} {rate(flags)}   {kinds}")
+            found[key] = pl
+            print(f"  {label:32} {rate([p is not None and p <= K for p in pl]):14} {rate([p is not None and p <= 3 for p in pl])}")
+        keep[river] = merit(found["own"]) > merit(found["mixed"])
         print(f"  learned (lambda={cfg[0]}, tau={cfg[1]}): {changes(own, cat)}")
+        if not keep[river]:
+            print("  --write leaves these off: they don't beat the mixed list alone on the newest reports.")
     print(f"\nPooled (lambda={pooled_cfg[0]}, tau={pooled_cfg[1]}): {changes(adjust('', pooled_beta, pooled_gamma), cat)}")
 
     if args.write:
@@ -208,6 +258,11 @@ def main() -> None:
             preset = presets["rivers"].get(river)
             if preset is None:
                 print(f"\nSkipped {river}: add its region, water type and location to rivers.json first.")
+                continue
+            if not keep[river]:
+                preset.pop("adjust", None)
+                preset.pop("trained_on", None)
+                print(f"\n{preset['name']}: no adjustments, since they didn't beat the mixed list on its newest reports.")
                 continue
             ps, cfg = sorted(ps, key=lambda p: p[0]["date"]), settings[river]
             beta, gamma = fit(examples(ps, cat), *cfg)

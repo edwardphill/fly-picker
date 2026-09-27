@@ -89,6 +89,7 @@ def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
     if want_jev and ranked:
         try:
             ranked, shares = jev.score_flies(cat, cond, ranked[:JEV_CANDIDATES], foods, client=jev_client)
+            ranked = rules.mix(ranked)
             used = "jev"
         except Exception as e:  # network, auth, quota: fall back rather than fail the search
             log.warning("Jev scoring failed, using rules: %s", e)

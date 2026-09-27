@@ -87,8 +87,21 @@ def test_river_adjustments_change_the_ranking():
     assert best["id"] == "woolly_bugger" and best["reason"].endswith("; favored in Elk River reports")
 
 
-def test_home_river_presets_are_tuned():
+def test_home_river_presets():
     cat = catalog.load()
     assert {"caney_fork", "elk"} <= set(cat.rivers)
     for river in cat.rivers.values():
-        assert river["adjust"]["foods"] and river["trained_on"]["reports"] > 20
+        assert river["region"] == "south" and river["water_type"] == "tailwater"
+        # Learned adjustments are optional, and always come with a record of what they were fit on.
+        assert ("adjust" in river) == ("trained_on" in river)
+
+
+def test_mixed_list_spreads_foods_and_types():
+    cat = catalog.load()
+    cond = Conditions("south", "tailwater", 2)
+    plain, mixed = rules.score_flies(cat, cond, mixed=False), rules.score_flies(cat, cond)
+    assert [f["food"] for f in plain[:5]].count("midge") >= 3
+    assert len({f["food"] for f in mixed[:5]}) >= 4 and len({f["family"] for f in mixed[:5]}) >= 3
+    assert mixed[0] == plain[0]
+    assert sorted(mixed, key=lambda f: f["id"]) == sorted(plain, key=lambda f: f["id"])  # same flies and scores
+    assert rules.mix(plain, food_repeat=1.0, type_repeat=1.0) == plain
