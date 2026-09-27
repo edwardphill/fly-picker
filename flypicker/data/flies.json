@@ -111,11 +111,11 @@
     {"id": "meat_whistle", "name": "Meat Whistle", "family": "streamer", "sizes": [0, 4], "water": ["WARM", "RIVER"], "proven": 0.75,
      "imitates": [["crayfish", 0.7], ["leech", 0.6], ["baitfish_warm", 0.6], ["hellgrammite", 0.4], ["sculpin", 0.4]]},
     {"id": "clouser_minnow", "name": "Clouser Minnow", "family": "streamer", "sizes": [0, 8], "water": ["RIVER", "LAKE", "WARM", "SALT"], "proven": 1.0,
-     "imitates": [["baitfish_warm", 0.95], ["baitfish_salt", 0.9], ["baitfish_fw", 0.85], ["sand_eel", 0.7], ["shrimp", 0.4]]},
-    {"id": "lefty_deceiver", "name": "Lefty's Deceiver", "family": "streamer", "sizes": [-2, 4], "water": ["WARM", "SALT"], "proven": 0.95,
-     "imitates": [["baitfish_salt", 0.95], ["baitfish_warm", 0.8], ["sand_eel", 0.5], ["squid", 0.4]]},
+     "imitates": [["baitfish_warm", 0.95], ["baitfish_salt", 0.9], ["baitfish_fw", 0.85], ["shad", 0.85], ["sand_eel", 0.7], ["shrimp", 0.4]]},
+    {"id": "lefty_deceiver", "name": "Lefty's Deceiver", "family": "streamer", "sizes": [-2, 4], "water": ["WARM", "SALT", "tailwater"], "proven": 0.95,
+     "imitates": [["baitfish_salt", 0.95], ["baitfish_warm", 0.8], ["shad", 0.8], ["sand_eel", 0.5], ["squid", 0.4]]},
     {"id": "game_changer", "name": "Game Changer", "family": "streamer", "sizes": [0, 4], "water": ["RIVER", "WARM", "SALT"], "proven": 0.85,
-     "imitates": [["baitfish_warm", 0.9], ["baitfish_salt", 0.85], ["baitfish_fw", 0.7]]},
+     "imitates": [["baitfish_warm", 0.9], ["baitfish_salt", 0.85], ["baitfish_fw", 0.7], ["shad", 0.6]]},
     {"id": "surf_candy", "name": "Surf Candy", "family": "streamer", "sizes": [1, 4], "water": ["surf", "estuary"], "proven": 0.85, "imitates": [["sand_eel", 0.95], ["baitfish_salt", 0.7]]},
     {"id": "bunny_squid", "name": "Bunny Squid", "family": "streamer", "sizes": [-2, 1], "water": ["surf", "estuary"], "proven": 0.6, "imitates": [["squid", 1.0]]},
     {"id": "cinder_worm", "name": "Cinder Worm", "family": "streamer", "sizes": [2, 6], "water": ["estuary"], "proven": 0.6, "imitates": [["worm_hatch", 1.0]]},
@@ -182,8 +182,8 @@
     {"id": "cased_caddis", "name": "Cased Caddis", "family": "nymph", "sizes": [10, 16], "water": ["RIVER"], "proven": 0.6, "imitates": [["caddis", 0.6]]},
     {"id": "hares_ear_soft_hackle", "name": "Hare's Ear Soft Hackle", "family": "wet", "sizes": [12, 16], "water": ["RIVER"], "proven": 0.75, "imitates": [["caddis", 0.6], ["march_brown", 0.4], ["hendrickson", 0.4], ["sulfur", 0.4]]},
     {"id": "starling_herl", "name": "Starling and Herl", "family": "wet", "sizes": [14, 18], "water": ["RIVER"], "proven": 0.6, "imitates": [["midge", 0.5], ["caddis", 0.4]]},
-    {"id": "sparkle_minnow", "name": "Sparkle Minnow", "family": "streamer", "sizes": [2, 8], "water": ["RIVER", "LAKE", "WARM"], "proven": 0.8, "imitates": [["baitfish_fw", 0.85], ["baitfish_warm", 0.7], ["smelt", 0.5]]},
-    {"id": "kreelex", "name": "Kreelex", "family": "streamer", "sizes": [2, 6], "water": ["RIVER", "LAKE", "WARM"], "proven": 0.7, "imitates": [["baitfish_fw", 0.8], ["baitfish_warm", 0.6]]},
+    {"id": "sparkle_minnow", "name": "Sparkle Minnow", "family": "streamer", "sizes": [2, 8], "water": ["RIVER", "LAKE", "WARM"], "proven": 0.8, "imitates": [["baitfish_fw", 0.85], ["baitfish_warm", 0.7], ["shad", 0.7], ["smelt", 0.5]]},
+    {"id": "kreelex", "name": "Kreelex", "family": "streamer", "sizes": [2, 6], "water": ["RIVER", "LAKE", "WARM"], "proven": 0.7, "imitates": [["baitfish_fw", 0.8], ["shad", 0.7], ["baitfish_warm", 0.6]]},
     {"id": "near_nuff_sculpin", "name": "Near Nuff Sculpin", "family": "streamer", "sizes": [4, 8], "water": ["RIVER"], "proven": 0.75, "imitates": [["sculpin", 0.9]]},
     {"id": "bank_robber_sculpin", "name": "Bank Robber Sculpin", "family": "streamer", "sizes": [2, 6], "water": ["RIVER"], "proven": 0.7, "imitates": [["sculpin", 0.9]]},
     {"id": "bunny_leech", "name": "Bunny Leech", "family": "streamer", "sizes": [4, 10], "water": ["RIVER", "LAKE", "WARM"], "proven": 0.75, "imitates": [["leech", 0.9]]},
@@ -410,6 +410,8 @@
     {"id": "flexo_crab", "name": "Flexo Crab", "family": "flats", "sizes": [2, 6], "water": ["flats"], "proven": 0.5, "imitates": [["crab", 0.8]]},
     {"id": "ep_crab", "name": "EP Crab", "family": "flats", "sizes": [2, 6], "water": ["flats", "estuary"], "proven": 0.5, "imitates": [["crab", 0.85]]},
     {"id": "toad", "name": "Toad", "family": "streamer", "sizes": [-1, 0], "water": ["flats", "estuary"], "proven": 0.55, "imitates": [["shrimp", 0.5], ["baitfish_salt", 0.4]]},
-    {"id": "cockroach", "name": "Cockroach", "family": "streamer", "sizes": [-2, 0], "water": ["flats", "estuary"], "proven": 0.55, "imitates": [["shrimp", 0.5], ["baitfish_salt", 0.5]]}
+    {"id": "cockroach", "name": "Cockroach", "family": "streamer", "sizes": [-2, 0], "water": ["flats", "estuary"], "proven": 0.55, "imitates": [["shrimp", 0.5], ["baitfish_salt", 0.5]]},
+    {"id": "threadfin_shad", "name": "Threadfin Shad", "family": "streamer", "sizes": [2, 6], "water": ["tailwater", "WARM"], "proven": 0.7, "imitates": [["shad", 0.95], ["baitfish_warm", 0.7]]},
+    {"id": "white_woolly_bugger", "name": "White Woolly Bugger", "family": "streamer", "sizes": [4, 8], "water": ["RIVER", "LAKE", "WARM"], "proven": 0.7, "imitates": [["shad", 0.65], ["baitfish_fw", 0.5], ["leech", 0.4]]}
   ]
 }

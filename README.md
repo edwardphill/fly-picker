@@ -7,8 +7,8 @@ This is step 1 of the plan: it works on day one with no training data.
 ## How it ranks
 
 1. **Conditions.** Region, water type and month, plus water temp, sky, wind and flow. If you give coordinates for today's date, it reads the nearest USGS stream gauge (water temp and flow compared with normal for the day) and Open-Meteo weather. Without them it uses typical water temps for the month.
-2. **Hatch chart** (`flypicker/data/foods.json`). 43 food items (mayflies including Isonychia, caddis, stoneflies, midges, smelt, terrestrials, sculpins, crayfish, shrimp, crabs, sand eels and more), each with its season by region (West, Northeast, East and South), preferred water temp, and how sky and flow change it.
-3. **Catalog** (`flypicker/data/flies.json`). 366 patterns, including Tennessee tailwater staples (Kenny, Trout Candy, sowbugs, midges) and Maine smelt streamers (Grey Ghost, Joe's Smelt, Nine-Three), each tagged with the foods it imitates, its hook sizes and the waters it's fished in.
+2. **Hatch chart** (`flypicker/data/foods.json`). 44 food items (mayflies including Isonychia, caddis, stoneflies, midges, smelt, threadfin shad, terrestrials, sculpins, crayfish, shrimp, crabs, sand eels and more), each with its season by region (West, Northeast, East and South), preferred water temp, and how sky and flow change it.
+3. **Catalog** (`flypicker/data/flies.json`). 368 patterns, including Tennessee tailwater staples (Kenny, Trout Candy, sowbugs, midges) and Maine smelt streamers (Grey Ghost, Joe's Smelt, Nine-Three), each tagged with the foods it imitates, its hook sizes and the waters it's fished in.
 4. **Scoring.**
    - **Jev** (when `TYPESAFE_API_KEY` is set): the best 40 candidates from the rules go to Jev in one parallel call. A `Choice` asks what the fish are eating, and a `Noul` per fly asks whether that fly would catch fish today. Rank = 60% the fly's Noul probability plus 40% how likely its food is.
    - **Hatch-chart rules** (no key, or if Jev fails): how active each food is × how well the fly imitates it × a small "proven pattern" prior.

@@ -123,3 +123,8 @@ def test_mixed_list_spreads_foods_and_types():
     assert mixed[0] == plain[0]
     assert sorted(mixed, key=lambda f: f["id"]) == sorted(plain, key=lambda f: f["id"])  # same flies and scores
     assert rules.mix(plain, food_repeat=1.0, type_repeat=1.0) == plain
+
+
+def test_no_smelt_in_the_south():
+    for month in (4, 9):
+        assert not any("smelt" in f for f in top(Conditions("south", "tailwater", month), 10))
