@@ -15,8 +15,9 @@ app = FastAPI(title="Fly Picker")
 
 
 class SearchIn(BaseModel):
-    region: str
-    water_type: str
+    river: str | None = None  # a home-river preset from flypicker/data/rivers.json; sets region and water type
+    region: str | None = None
+    water_type: str | None = None
     date: str | None = None
     fly_type: str = "any"
     water_temp_f: float | None = None
@@ -55,6 +56,7 @@ def options() -> dict:
         "regions": cat.regions,
         "water_types": {k: v["name"] for k, v in cat.water_types.items()},
         "fly_types": catalog.FLY_TYPES,
+        "rivers": {k: v["label"] for k, v in cat.rivers.items()},
         "jev": jev.available(),
     }
 

@@ -14,6 +14,17 @@ class BadRequest(ValueError):
     pass
 
 
+def _with_river(req: dict, cat: catalog.Catalog) -> tuple[dict, dict | None]:
+    """A home-river preset fixes region and water type, and names the place if the request doesn't."""
+    if not req.get("river"):
+        return req, None
+    river = cat.rivers.get(req["river"])
+    if river is None:
+        raise BadRequest(f"Pick a river: {', '.join(cat.rivers)}")
+    return {**req, "region": river["region"], "water_type": river["water_type"],
+            "place": req.get("place") or river["place"]}, river
+
+
 def _parse(req: dict, cat: catalog.Catalog) -> tuple[rules.Conditions, date]:
     region, water = req.get("region"), req.get("water_type")
     if region not in cat.regions:
@@ -44,11 +55,17 @@ def _parse(req: dict, cat: catalog.Catalog) -> tuple[rules.Conditions, date]:
 def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
     """mode: 'auto' (Jev if a key is set), 'rules', or 'jev'."""
     cat = catalog.load()
+    req, river = _with_river(req, cat)
     cond, on = _parse(req, cat)
+    if river:
+        cond.adjust = river.get("adjust")
     notes: list[str] = []
 
     live = {}
     lat, lon = req.get("lat"), req.get("lon")
+    preset_spot = river is not None and (lat is None or lon is None)
+    if preset_spot:
+        lat, lon = river["lat"], river["lon"]
     if lat is not None and lon is not None and req.get("use_live", True):
         if abs((on - date.today()).days) <= 1:
             live = conditions.lookup(float(lat), float(lon), on)
@@ -60,7 +77,7 @@ def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
                 cond.sky, cond.windy = live["sky"], live["windy"] or cond.windy
             if not live:
                 notes.append("Couldn't reach the stream gauge or weather service, so typical conditions were used.")
-        else:
+        elif not preset_spot:
             notes.append("Live gauge and weather are only used for today's date.")
 
     foods = rules.active_foods(cat, cond)
@@ -72,6 +89,7 @@ def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
     if want_jev and ranked:
         try:
             ranked, shares = jev.score_flies(cat, cond, ranked[:JEV_CANDIDATES], foods, client=jev_client)
+            ranked = rules.mix(ranked)
             used = "jev"
         except Exception as e:  # network, auth, quota: fall back rather than fail the search
             log.warning("Jev scoring failed, using rules: %s", e)
@@ -92,6 +110,7 @@ def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
             "temp_source": cond.temp_source,
             "sky": cond.sky, "windy": cond.windy, "flow": cond.flow,
             "gauge": live.get("gauge"),
+            "river": river and {"name": river["name"], "reports": river.get("trained_on", {}).get("reports", 0)},
         },
         "eating": shares,
         "flies": ranked[:TOP_N],

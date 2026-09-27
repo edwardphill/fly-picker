@@ -1,0 +1,412 @@
+{
+  "_about": "Home-river presets. Picking a river fills in its region, water type and location. A river can also carry 'adjust': multipliers on food activity and fly scores that eval/train.py learns from its fishing reports (python -m eval.train eval/reports_tn.csv --write), with 'trained_on' recording what they were fit on. --write only keeps them for a river when they beat the plain mixed list on that river's newest reports. 'hatch_notes' are local events from the river's fishing reports (eval/reports_*.csv), each with the months it applies to and its source, shown in the Hatching now section.",
+  "rivers": {
+    "caney_fork": {
+      "name": "Caney Fork",
+      "label": "Caney Fork (TN)",
+      "region": "south",
+      "water_type": "tailwater",
+      "place": "Caney Fork (Center Hill Dam tailwater), TN",
+      "lat": 36.098,
+      "lon": -85.827,
+      "hatch_notes": [
+        {
+          "months": [
+            12,
+            1,
+            2
+          ],
+          "text": "Winter shad kills: cold snaps pull stunned threadfin shad through Center Hill Dam, and white streamers such as zonkers and shad patterns are the flies to fish.",
+          "source": "cfoutdoors.com",
+          "date": "2026-01-12",
+          "url": "https://cfoutdoors.com/blogs/news-feed/caney-fork-river-fishing-report-mid-winter-shad-kills-lure-guide"
+        },
+        {
+          "months": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "text": "Generation sets the day: light-colored streamers when the water is high, nymphs as it falls, and nymphs and midges on low water.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2015-02-01",
+          "url": "https://southeasternfly.blogspot.com/2015/02/high-and-low-water-fishing.html"
+        },
+        {
+          "months": [
+            7,
+            8
+          ],
+          "text": "Summer on low water: a terrestrial such as a beetle or ant with a nymph or midge dropper under it.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2016-07-13",
+          "url": "https://southeasternfly.blogspot.com/2016/07/fly-fishing-near-chattanooga.html"
+        },
+        {
+          "months": [
+            7,
+            8
+          ],
+          "text": "Big browns feed after dark in summer; night anglers fish mice and streamers.",
+          "source": "thetroutzone.com",
+          "date": "2017-07-27",
+          "url": "https://www.thetroutzone.com/2017/07/under-cover-of-darkness-hunting-big-nocturnal-brown-trout.html"
+        }
+      ]
+    },
+    "elk": {
+      "name": "Elk River",
+      "label": "Elk River (TN)",
+      "region": "south",
+      "water_type": "tailwater",
+      "place": "Elk River (Tims Ford Dam tailwater), TN",
+      "lat": 35.197,
+      "lon": -86.279,
+      "adjust": {
+        "name": "Elk River",
+        "foods": {
+          "ant": 0.836,
+          "baitfish_fw": 0.793,
+          "beetle": 0.871,
+          "bwo": 0.293,
+          "caddis": 0.734,
+          "crayfish": 0.743,
+          "egg": 0.73,
+          "green_drake": 0.965,
+          "hendrickson": 0.641,
+          "hopper": 1.241,
+          "isonychia": 0.893,
+          "leech": 2.171,
+          "march_brown": 1.082,
+          "midge": 0.496,
+          "scud": 2.405,
+          "sowbug": 0.963,
+          "sulfur": 3.348,
+          "trico": 1.797,
+          "worm": 1.377
+        },
+        "flies": {
+          "adams": 0.988,
+          "autumn_splendor": 0.942,
+          "bank_robber_sculpin": 0.975,
+          "barely_legal": 0.985,
+          "biot_midge": 0.978,
+          "black_beauty": 0.966,
+          "black_ghost": 0.973,
+          "black_gnat": 0.989,
+          "black_nosed_dace": 0.969,
+          "blood_dot_egg": 0.962,
+          "blood_midge": 0.982,
+          "brassie": 0.958,
+          "bunny_leech": 0.887,
+          "cdc_biot_comparadun": 0.969,
+          "cdc_pheasant_tail_emerger": 0.982,
+          "cdc_sulfur_emerger": 0.917,
+          "charlie_boy_hopper": 1.03,
+          "chubby_chernobyl": 1.031,
+          "circus_peanut": 0.978,
+          "clouser_crayfish": 0.987,
+          "clouser_minnow": 0.977,
+          "club_sandwich": 1.019,
+          "complex_twist_bugger": 0.935,
+          "crawbugger": 0.977,
+          "crayfish_fly": 0.981,
+          "cream_variant": 0.985,
+          "crowe_beetle": 0.973,
+          "daves_hopper": 1.049,
+          "deep_sparkle_pupa": 0.989,
+          "disco_midge": 0.961,
+          "double_gonga": 0.984,
+          "dun_variant": 0.989,
+          "egg_sucking_leech": 0.929,
+          "elk_hair_caddis": 0.981,
+          "fat_albert": 1.016,
+          "flashback_pheasant_tail": 0.981,
+          "flying_ant": 0.969,
+          "foam_ant": 0.955,
+          "foam_beetle": 0.952,
+          "frenchie": 0.986,
+          "fur_ant": 0.976,
+          "game_changer": 0.988,
+          "ginger_quill": 0.985,
+          "glo_bug": 0.93,
+          "golden_retriever": 0.966,
+          "gray_sowbug": 0.958,
+          "green_weenie": 0.945,
+          "grey_ghost": 0.988,
+          "griffiths_gnat": 0.949,
+          "hackle_stacker": 0.971,
+          "hares_ear": 4.978,
+          "hares_ear_soft_hackle": 0.984,
+          "heifer_groomer": 0.988,
+          "hendrickson_dry": 0.988,
+          "hendrickson_sparkle_dun": 0.99,
+          "henryville_special": 0.99,
+          "hippie_stomper": 0.952,
+          "hornberg": 0.974,
+          "hot_spot_pheasant_tail": 0.989,
+          "irresistible": 0.986,
+          "isonychia_nymph": 0.979,
+          "isonychia_parachute": 0.965,
+          "isonychia_soft_hackle": 0.989,
+          "japanese_beetle": 0.973,
+          "jassid": 0.984,
+          "jig_pheasant_tail": 0.988,
+          "joe_s_hopper": 1.022,
+          "klinkhamer": 0.969,
+          "kreelex": 0.985,
+          "krystal_bugger": 0.916,
+          "last_chance_cripple": 0.973,
+          "letort_cricket": 1.013,
+          "light_cahill": 0.969,
+          "light_cahill_wet": 0.98,
+          "lightning_bug": 0.989,
+          "little_brook_trout": 0.986,
+          "little_brown_trout": 0.986,
+          "little_rainbow_trout": 0.986,
+          "marabou_muddler": 0.986,
+          "matt_s_midge": 0.982,
+          "mcmurray_ant": 0.979,
+          "meat_whistle": 0.962,
+          "mercury_midge": 0.943,
+          "mickey_finn": 0.986,
+          "micro_chubby": 0.972,
+          "midge_emerger": 0.953,
+          "mini_dungeon": 0.975,
+          "miracle_nymph": 0.979,
+          "mop_fly": 0.985,
+          "morgan_s_midge": 0.983,
+          "morrish_hopper": 1.062,
+          "muddler_minnow": 0.941,
+          "near_nuff_sculpin": 0.974,
+          "nuke_egg": 0.944,
+          "olive_matuka": 0.989,
+          "olive_scud": 0.894,
+          "orange_scud": 0.946,
+          "otter_egg": 0.956,
+          "pale_evening_dun": 0.936,
+          "palomino_midge": 0.973,
+          "parachute_adams": 0.973,
+          "parachute_ant": 0.962,
+          "parachute_hopper": 1.051,
+          "parachute_light_cahill": 0.959,
+          "parachute_midge": 0.977,
+          "partridge_and_yellow": 0.979,
+          "partridge_orange": 0.98,
+          "peanut_envy": 0.987,
+          "perdigon": 0.987,
+          "pheasant_tail": 6.299,
+          "pink_san_juan_worm": 0.84,
+          "pink_scud": 0.867,
+          "pink_squirrel": 0.965,
+          "pt_soft_hackle": 0.969,
+          "quigley_cripple": 0.921,
+          "rainbow_warrior": 0.982,
+          "ray_charles": 0.958,
+          "rojo_midge": 0.973,
+          "rs2": 0.976,
+          "rusty_spinner": 0.933,
+          "san_juan_worm": 2.322,
+          "sculpzilla": 0.969,
+          "sex_dungeon": 0.968,
+          "slate_drake": 0.981,
+          "slump_buster": 0.927,
+          "sparkle_minnow": 0.98,
+          "sparkle_pupa": 0.983,
+          "spruce_fly": 0.979,
+          "spuddler": 0.99,
+          "squirmy_wormy": 0.767,
+          "stimulator": 0.966,
+          "sucker_spawn": 0.959,
+          "sulfur_comparadun": 0.92,
+          "sulfur_emerger": 0.936,
+          "sulfur_nymph": 0.971,
+          "sulfur_parachute": 0.893,
+          "sulfur_sparkle_dun": 0.909,
+          "sulfur_spinner": 0.945,
+          "suspender_midge": 0.986,
+          "tan_scud": 0.858,
+          "thin_mint": 0.907,
+          "thread_midge": 0.974,
+          "thunder_thighs_hopper": 1.029,
+          "top_secret_midge": 0.973,
+          "trico_parachute": 0.823,
+          "trico_spinner": 0.761,
+          "trout_candy": 0.887,
+          "tup_s_indispensable": 0.98,
+          "wd40": 0.971,
+          "whitlock_sculpin": 0.984,
+          "woolhead_sculpin": 0.981,
+          "woolly_bugger": 5.08,
+          "x_caddis": 0.988,
+          "y2k_bug": 0.963,
+          "zebra_midge": 0.939,
+          "zonker": 0.946,
+          "zoo_cougar": 0.984
+        }
+      },
+      "trained_on": {
+        "reports": 41,
+        "from": "2007-07-17",
+        "to": "2021-08-07",
+        "lambda": 0.01,
+        "tau": 3.0,
+        "source": "eval/reports_tn.csv"
+      },
+      "hatch_notes": [
+        {
+          "months": [
+            1,
+            2
+          ],
+          "text": "Winter: small white streamers and nymphs. In one January report nymphs beat midges 3 to 1.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2020-01-05",
+          "url": "https://southeasternfly.blogspot.com/2020/01/fishing-report.html"
+        },
+        {
+          "months": [
+            3
+          ],
+          "text": "Midge and caddis hatches come off on sunny March days.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2015-03-11",
+          "url": "https://southeasternfly.blogspot.com/2015/03/fly-fishing-middle-tennessee-tailwaters.html"
+        },
+        {
+          "months": [
+            6,
+            7,
+            8
+          ],
+          "text": "Summer: midges, nymphs and small dries at low flows around 240 cfs.",
+          "source": "southeasternfly.blogspot.com",
+          "date": "2014-07-31",
+          "url": "https://southeasternfly.blogspot.com/2014/07/elk-river-fishing-report.html"
+        },
+        {
+          "months": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "text": "Fall into early winter: a guide's 2009 logs counted the most fish on Kenny and Trout Candy soft hackles and chartreuse Woolly Buggers, with San Juan Worms close behind.",
+          "source": "flyfishingtheelk.blogspot.com",
+          "date": "2009-11-12",
+          "url": "https://flyfishingtheelk.blogspot.com/2009/11/fly-fishing-on-elk-river-around-bend.html"
+        }
+      ]
+    },
+    "magalloway": {
+      "name": "Magalloway River",
+      "label": "Magalloway River (ME)",
+      "region": "northeast",
+      "water_type": "tailwater",
+      "place": "Magalloway River (Aziscohos Dam tailwater), ME",
+      "lat": 44.949,
+      "lon": -70.996,
+      "hatch_notes": [
+        {
+          "months": [
+            4,
+            5
+          ],
+          "text": "Smelt run after ice-out: landlocked salmon chase spawning smelt, so Black and Grey Ghost streamers fish well into May.",
+          "source": "rangeleyflyshop.com",
+          "date": "2021-04-22",
+          "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2021/rangeley-region-fishing-report-april-22-2021"
+        },
+        {
+          "months": [
+            5
+          ],
+          "text": "May water is still cold: fish nymphs slow and deep, such as Pat's Rubber Legs, pink worms and Pheasant Tails.",
+          "source": "Orvis (Rangeley Region Sports Shop)",
+          "date": "2022-05-19",
+          "url": "https://fishingreports.orvis.com/northeast/maine/magalloway-river"
+        },
+        {
+          "months": [
+            5,
+            6
+          ],
+          "text": "Suckers spawn in May, and the fishing slows for a while after the spawn ends.",
+          "source": "rangeleyflyshop.com",
+          "date": "2022-06-02",
+          "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2022/rangeley-region-fishing-report-june-2-2022"
+        },
+        {
+          "months": [
+            6,
+            7
+          ],
+          "text": "Late June hatches in the Rangeley region: caddis, golden stones, sulfurs, Baetis, yellow sallies, brown and green drakes, and Hex.",
+          "source": "allpointsflyfishing.com",
+          "date": "2026-06-30",
+          "url": "https://allpointsflyfishing.com/pages/fishing-report"
+        },
+        {
+          "months": [
+            9,
+            10
+          ],
+          "text": "Fall run: salmon and brook trout move up from the lake as the water cools in September, and the salmon come well to nymphs.",
+          "source": "rangeleyflyshop.com",
+          "date": "2019-09-12",
+          "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2019-rangeley-maine-fly-shop/fishing-report-september-12-2019"
+        }
+      ]
+    },
+    "androscoggin": {
+      "name": "Androscoggin River",
+      "label": "Androscoggin River (ME)",
+      "region": "northeast",
+      "water_type": "freestone",
+      "place": "Androscoggin River (Gilead to Bethel), ME",
+      "lat": 44.403,
+      "lon": -70.897,
+      "hatch_notes": [
+        {
+          "months": [
+            5,
+            6
+          ],
+          "text": "Western Maine's spring mayflies: March browns, Hendricksons and green drakes, with small BWOs.",
+          "source": "allpointsflyfishing.com",
+          "date": "2024-05-24",
+          "url": "https://allpointsflyfishing.com/pages/fishing-report"
+        },
+        {
+          "months": [
+            7,
+            8
+          ],
+          "text": "Upriver in New Hampshire (Errol to Pontook), summer brings midges, black stoneflies and caddis, with dry flies at dusk.",
+          "source": "Orvis (North Country Angler)",
+          "date": "2026-07-29",
+          "url": "https://fishingreports.orvis.com/northeast/new-hampshire/androscoggin-river"
+        },
+        {
+          "months": [
+            9,
+            10
+          ],
+          "text": "Streamer season has started on the Androscoggin.",
+          "source": "a local fly shop, in person",
+          "date": "2026-09-26",
+          "url": null
+        }
+      ]
+    }
+  }
+}

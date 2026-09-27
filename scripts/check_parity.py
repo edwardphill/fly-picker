@@ -28,6 +28,11 @@ process.stdout.write(JSON.stringify(out));
 """
 
 
+# Checks the JS port of learned river adjustments even when no preset carries any.
+SAMPLE_ADJUST = {"name": "Sample River", "foods": {"leech": 2.0, "midge": 0.7, "sculpin": 1.4},
+                 "flies": {"woolly_bugger": 1.6, "zebra_midge": 0.8}}
+
+
 def cases(cat):
     for region, water, month, fly_type, sky, windy, flow, temp in itertools.product(
         cat.regions, cat.water_types, range(1, 13), ["any", "dry", "nymph", "streamer"],
@@ -35,6 +40,13 @@ def cases(cat):
     ):
         yield dict(region=region, water_type=water, month=month, fly_type=fly_type,
                    sky=sky, windy=windy, flow=flow, water_temp_f=temp)
+    # Home rivers, with their learned adjustments (or the sample set).
+    for river, month, fly_type, sky, flow in itertools.product(
+        cat.rivers.values(), range(1, 13), ["any", "dry", "nymph", "streamer"],
+        ["partly", "overcast", "rain"], ["low", "normal", "high"],
+    ):
+        yield dict(region=river["region"], water_type=river["water_type"], month=month, fly_type=fly_type,
+                   sky=sky, windy=False, flow=flow, water_temp_f=None, adjust=river.get("adjust") or SAMPLE_ADJUST)
 
 
 def main() -> int:

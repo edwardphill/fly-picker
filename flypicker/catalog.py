@@ -1,4 +1,4 @@
-"""Loads the fly catalog, food hatch chart, and water data, expanding water groups."""
+"""Loads the fly catalog, food hatch chart, water data and river presets, expanding water groups."""
 
 import json
 from dataclasses import dataclass
@@ -32,6 +32,7 @@ class Catalog:
     typical_temp: dict
     foods: dict  # id -> food, with "water" expanded to concrete water types
     flies: dict  # id -> fly, with "water" expanded to a set of water types
+    rivers: dict  # id -> home-river preset (region, water type, location, learned adjustments)
 
 
 def _groups(water_types: dict) -> dict:
@@ -66,19 +67,33 @@ def load() -> Catalog:
     waters = json.loads((DATA_DIR / "waters.json").read_text())
     foods_raw = json.loads((DATA_DIR / "foods.json").read_text())["foods"]
     flies_raw = json.loads((DATA_DIR / "flies.json").read_text())["flies"]
+    rivers = json.loads((DATA_DIR / "rivers.json").read_text())["rivers"]
+    entomology = json.loads((DATA_DIR / "entomology.json").read_text())["foods"]
     groups = _groups(waters["water_types"])
     flies_raw += my_flies.load(MY_FLIES, foods_raw, set(groups) | set(waters["water_types"]),
                                {f["id"] for f in flies_raw}, FLY_TYPES)
 
     foods = {}
     for f in foods_raw:
-        foods[f["id"]] = {**f, "water": _expand_weights(f["water"], groups)}
+        if f["id"] not in entomology:
+            raise ValueError(f"Food {f['id']} has no entry in entomology.json")
+        foods[f["id"]] = {**f, **entomology[f["id"]], "water": _expand_weights(f["water"], groups)}
+    if set(entomology) - set(foods):
+        raise ValueError(f"entomology.json names unknown foods: {sorted(set(entomology) - set(foods))}")
     flies = {}
     for f in flies_raw:
         for food_id, _ in f["imitates"]:
             if food_id not in foods:
                 raise ValueError(f"Fly {f['id']} imitates unknown food {food_id}")
         flies[f["id"]] = {**f, "water": _expand_list(f["water"], groups)}
+    for rid, r in rivers.items():
+        adj = r.get("adjust", {})
+        unknown = [k for k in adj.get("foods", {}) if k not in foods] + [k for k in adj.get("flies", {}) if k not in flies]
+        if r["region"] not in waters["regions"] or r["water_type"] not in waters["water_types"] or unknown:
+            raise ValueError(f"River {rid} has an unknown region, water type, food or fly: {unknown}")
+        for note in r.get("hatch_notes", []):
+            if not note["text"] or not note["months"] or not set(note["months"]) <= set(range(1, 13)):
+                raise ValueError(f"River {rid} has a hatch note without text or with bad months: {note}")
 
     return Catalog(
         regions=waters["regions"],
@@ -86,6 +101,7 @@ def load() -> Catalog:
         typical_temp=waters["typical_temp_f"],
         foods=foods,
         flies=flies,
+        rivers=rivers,
     )
 
 

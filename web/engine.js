@@ -3,6 +3,7 @@
 // with water groups already expanded.
 const FP = (() => {
   const PEAK = 1.0, ON = 0.55, OFF = 0.04, TEMP_FALLOFF_F = 12.0, TEMP_FLOOR = 0.08;
+  const FOOD_REPEAT = 0.3, TYPE_REPEAT = 0.8, MIXED_PLACES = 10;
   const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December"];
 
@@ -14,11 +15,12 @@ const FP = (() => {
 
   function seasonSpec(food, region) {
     const s = food.season;
-    if (s[region]) return s[region];
+    if (region in s) return s[region];
     if (region === "south" && s.east && !s.all) {
       const shift = ms => (ms || []).map(m => ((m - 2 + 12) % 12) + 1);
       return { peak: shift(s.east.peak), on: shift(s.east.on) };
     }
+    if (region === "northeast" && s.east) return s.east;
     return s.all || null;
   }
 
@@ -61,7 +63,9 @@ const FP = (() => {
     if (food.stage === "surface") flow *= ({ high: 0.6, low: 1.1 })[cond.flow] || 1.0;
     if (flow > 1 && cond.flow === "high") notes.push("high water helps");
 
-    return [level * water * tf * sky * flow, notes];
+    const boosts = (cond.adjust && cond.adjust.foods) || {};
+    const boost = boosts[food.id] !== undefined ? boosts[food.id] : 1.0;
+    return [level * water * tf * sky * flow * boost, notes];
   }
 
   function activeFoods(cond) {
@@ -109,6 +113,12 @@ const FP = (() => {
       const [sizes, overlap] = recommendedSizes(fly, food);
       if (!overlap) score *= 0.8;
       score *= 0.75 + 0.25 * fly.proven;
+      let reason = `Imitates ${food.name.toLowerCase()}: ` + foods[bestFood][1].join("; ");
+      const adjust = cond.adjust || {};
+      const flyBoosts = adjust.flies || {}, foodBoosts = adjust.foods || {};
+      const boost = flyBoosts[fly.id] !== undefined ? flyBoosts[fly.id] : 1.0;
+      score *= boost;
+      if (boost * (foodBoosts[bestFood] !== undefined ? foodBoosts[bestFood] : 1.0) >= 1.25) reason += `; favored in ${adjust.name || "local"} reports`;
       results.push({
         _raw: score,
         id: fly.id, name: fly.name, family: fly.family,
@@ -116,12 +126,30 @@ const FP = (() => {
         strength: strengthLabel(score),
         sizes: sizeRangeLabel(sizes),
         food: bestFood, food_name: food.name,
-        reason: `Imitates ${food.name.toLowerCase()}: ` + foods[bestFood][1].join("; "),
+        reason,
       });
     }
     results.sort((a, b) => b._raw - a._raw || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-    for (const r of results) delete r._raw;
-    return results;
+    const mixed = mix(results, MIXED_PLACES, r => r._raw);
+    for (const r of mixed) delete r._raw;
+    return mixed;
+  }
+
+  // Spreads the top places across foods and fly types, as rules.mix does.
+  function mix(ranked, places, score) {
+    const left = ranked.slice(), out = [], foodCut = {}, typeCut = {};
+    while (left.length && out.length < places) {
+      let bestI = 0, bestV = -1.0;
+      left.forEach((r, i) => {
+        const v = score(r) * (foodCut[r.food] !== undefined ? foodCut[r.food] : 1.0) * (typeCut[r.family] !== undefined ? typeCut[r.family] : 1.0);
+        if (v > bestV) { bestI = i; bestV = v; }
+      });
+      const [r] = left.splice(bestI, 1);
+      out.push(r);
+      foodCut[r.food] = (foodCut[r.food] !== undefined ? foodCut[r.food] : 1.0) * FOOD_REPEAT;
+      typeCut[r.family] = (typeCut[r.family] !== undefined ? typeCut[r.family] : 1.0) * TYPE_REPEAT;
+    }
+    return out.concat(left);
   }
 
   function foodShares(foods, top = 5) {
@@ -131,16 +159,79 @@ const FP = (() => {
       .map(([fid, [a]]) => ({ id: fid, name: DATA.foods[fid].name, share: Math.round(a / total * 1000) / 1000 }));
   }
 
-  function recommend(req) {
+  // The Hatching now section: foods the hatch chart has on this water this month, strongest first,
+  // split into insects and everything else, plus the ones whose season starts next month.
+  const INSECT_KINDS = ["midge", "mayfly", "caddis", "stonefly", "other insect", "terrestrial"];
+  const KIND_ORDER = [...INSECT_KINDS, "crustacean", "baitfish", "other"];
+  const byKindThen = key => (a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind) || key(a, b);
+  const byName = (a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+
+  // peak, starting (next month peaks), winding_down (last month peaked) or hatching for a month the food is on;
+  // next_month when it is off now and on next month; otherwise null.
+  function hatchStatus(spec, month) {
+    const peak = spec.peak || [], on = spec.on || [];
+    const next = month % 12 + 1, prev = (month + 10) % 12 + 1;
+    if (peak.includes(month)) return "peak";
+    if (on.includes(month)) return peak.includes(next) ? "starting" : peak.includes(prev) ? "winding_down" : "hatching";
+    return peak.includes(next) || on.includes(next) ? "next_month" : null;
+  }
+
+  function hatching(cond, foods) {
+    const temp = resolvedTemp(cond);
+    const total = Object.values(foods).reduce((s, [a]) => s + a, 0) || 1;
+    const now = [], next = [];
+    for (const food of Object.values(DATA.foods)) {
+      const spec = seasonSpec(food, cond.region);
+      if (!spec || !(food.water[cond.water_type] > 0)) continue;
+      const status = hatchStatus(spec, cond.month);
+      if (!status) continue;
+      const [lo, hi] = food.temp;
+      const row = {
+        id: food.id, name: food.name, latin: food.latin, kind: food.kind, insect: INSECT_KINDS.includes(food.kind),
+        status, year_round: new Set([...(spec.peak || []), ...(spec.on || [])]).size === 12,
+        sizes: sizeRangeLabel(food.sizes), stages: food.stages, time_of_day: food.time_of_day, tip: food.tip,
+        temp_note: tempFit(food, temp) < 1 ? `water's ${temp < lo ? "cold" : "warm"} for them (${lo} to ${hi}°F)` : null,
+      };
+      if (status === "next_month") next.push(row);
+      else if (foods[food.id]) now.push({ ...row, activity: foods[food.id][0], share: foods[food.id][0] / total });
+    }
+    now.sort((a, b) => b.activity - a.activity || byName(a, b));
+    next.sort(byKindThen(byName));
+    return { insects: now.filter(r => r.insect), others: now.filter(r => !r.insect), next };
+  }
+
+  // A year of the hatch chart for one region and water: "peak", "on" or null for each month.
+  function hatchChart(region, waterType) {
+    const rows = [];
+    for (const food of Object.values(DATA.foods)) {
+      const spec = seasonSpec(food, region);
+      if (!spec || !(food.water[waterType] > 0)) continue;
+      const months = MONTHS.map((_, i) => (spec.peak || []).includes(i + 1) ? "peak" : (spec.on || []).includes(i + 1) ? "on" : null);
+      const first = months.findIndex(Boolean);
+      if (first >= 0) rows.push({ id: food.id, name: food.name, kind: food.kind, months, first });
+    }
+    return rows.sort(byKindThen((a, b) => a.first - b.first || byName(a, b)));
+  }
+
+  function conditions(req) {
     const d = req.date ? new Date(req.date + "T12:00:00") : new Date();
     const temp = req.water_temp_f === "" || req.water_temp_f === null || req.water_temp_f === undefined ? null : Number(req.water_temp_f);
-    const cond = {
-      region: req.region, water_type: req.water_type, month: d.getMonth() + 1,
+    const river = req.river ? DATA.rivers[req.river] : null;  // a home-river preset fixes region and water
+    return {
+      region: river ? river.region : req.region, water_type: river ? river.water_type : req.water_type,
+      month: d.getMonth() + 1,
       fly_type: req.fly_type || "any", water_temp_f: temp,
       temp_source: temp === null ? "typical" : "angler",
       sky: req.sky || "partly", windy: !!req.windy, flow: req.flow || "normal",
+      adjust: river && river.adjust ? river.adjust : null,
     };
+  }
+
+  function recommend(req) {
+    const river = req.river ? DATA.rivers[req.river] : null;
+    const cond = conditions(req);
     const foods = activeFoods(cond);
+    const ranked = scoreFlies(cond, foods);
     const wt = DATA.water_types[cond.water_type];
     return {
       engine: "rules",
@@ -149,13 +240,15 @@ const FP = (() => {
         date: req.date, fly_type: DATA.fly_types[cond.fly_type],
         water_temp_f: Math.round(resolvedTemp(cond)), temp_source: cond.temp_source,
         sky: cond.sky, windy: cond.windy, flow: cond.flow, gauge: null,
+        river: river ? { name: river.name, reports: river.trained_on ? river.trained_on.reports : 0 } : null,
       },
       eating: foodShares(foods),
-      flies: scoreFlies(cond, foods).slice(0, 10),
+      flies: ranked.slice(0, 10),
+      all: ranked,  // every fly that fits, for filtering the list by a hatch
       notes: Object.keys(foods).length ? [] : ["The starter hatch chart doesn't cover this water in this region yet."],
     };
   }
 
-  return { recommend, scoreFlies, activeFoods, foodShares, resolvedTemp };
+  return { recommend, conditions, scoreFlies, activeFoods, foodShares, resolvedTemp, hatching, hatchChart, MONTHS };
 })();
 if (typeof module !== "undefined") module.exports = FP;

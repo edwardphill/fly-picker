@@ -69,3 +69,62 @@ def test_south_borrows_east_months_one_earlier():
     cat = catalog.load()
     level, _ = rules.season_level(cat.foods["hendrickson"], "south", 3)
     assert level == rules.PEAK
+
+
+def test_northeast_hatches_run_later_and_borrow_the_east_chart():
+    cat = catalog.load()
+    hendrickson = cat.foods["hendrickson"]
+    assert rules.season_level(hendrickson, "east", 4)[0] == rules.PEAK
+    assert rules.season_level(hendrickson, "northeast", 4)[0] == rules.OFF
+    assert rules.season_level(hendrickson, "northeast", 6)[0] == rules.PEAK
+    # Foods with no northern entry use the East's months.
+    assert rules.season_level(cat.foods["squid"], "northeast", 5) == rules.season_level(cat.foods["squid"], "east", 5)
+    # Maine water is near 40F at ice-out, so April on the Magalloway is midges and streamers, not mayfly dries.
+    april = top(Conditions("northeast", "tailwater", 4))
+    assert "zebra_midge" in april and not {"hendrickson_dry", "bwo_parachute"} & set(april)
+    # September's spawning runs are streamer season.
+    assert cat.flies[top(Conditions("northeast", "freestone", 9), 1)[0]]["family"] == "streamer"
+
+
+def test_null_region_rules_a_food_out():
+    # Smelt have an East chart, but none live in the South, so the South mustn't borrow it.
+    cat = catalog.load()
+    assert rules.season_level(cat.foods["smelt"], "south", 4) == (0.0, "not found in this region")
+    assert not {"grey_ghost", "joes_smelt"} & set(top(Conditions("south", "tailwater", 4), 10))
+
+
+def test_river_adjustments_change_the_ranking():
+    cat = catalog.load()
+    assert "woolly_bugger" not in top(Conditions("south", "tailwater", 9))
+    tuned = Conditions("south", "tailwater", 9,
+                       adjust={"name": "Elk River", "foods": {"leech": 3.0}, "flies": {"woolly_bugger": 2.0}})
+    best = rules.score_flies(cat, tuned)[0]
+    assert best["id"] == "woolly_bugger" and best["reason"].endswith("; favored in Elk River reports")
+
+
+def test_home_river_presets():
+    cat = catalog.load()
+    expected = {"caney_fork": ("south", "tailwater"), "elk": ("south", "tailwater"),
+                "magalloway": ("northeast", "tailwater"), "androscoggin": ("northeast", "freestone")}
+    assert set(expected) <= set(cat.rivers)
+    for rid, (region, water_type) in expected.items():
+        assert (cat.rivers[rid]["region"], cat.rivers[rid]["water_type"]) == (region, water_type)
+    for river in cat.rivers.values():
+        # Learned adjustments are optional, and always come with a record of what they were fit on.
+        assert ("adjust" in river) == ("trained_on" in river)
+
+
+def test_mixed_list_spreads_foods_and_types():
+    cat = catalog.load()
+    cond = Conditions("south", "tailwater", 2)
+    plain, mixed = rules.score_flies(cat, cond, mixed=False), rules.score_flies(cat, cond)
+    assert [f["food"] for f in plain[:5]].count("midge") >= 3
+    assert len({f["food"] for f in mixed[:5]}) >= 4 and len({f["family"] for f in mixed[:5]}) >= 3
+    assert mixed[0] == plain[0]
+    assert sorted(mixed, key=lambda f: f["id"]) == sorted(plain, key=lambda f: f["id"])  # same flies and scores
+    assert rules.mix(plain, food_repeat=1.0, type_repeat=1.0) == plain
+
+
+def test_no_smelt_in_the_south():
+    for month in (4, 9):
+        assert not any("smelt" in f for f in top(Conditions("south", "tailwater", month), 10))
