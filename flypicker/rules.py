@@ -59,6 +59,9 @@ def _season_spec(food: dict, region: str) -> dict | None:
         shift = lambda ms: [((m - 2) % 12) + 1 for m in ms]
         east = season["east"]
         return {"peak": shift(east.get("peak", [])), "on": shift(east.get("on", []))}
+    if region == "northeast" and "east" in season:
+        # Foods without a northern chart of their own keep the East's months.
+        return season["east"]
     return season.get("all")
 
 

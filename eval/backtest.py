@@ -2,6 +2,7 @@
 
     python -m eval.backtest eval/reports_tn.csv            # hatch-chart rules, by river and report kind
     python -m eval.backtest eval/reports_tn.csv --rivers   # also with the trained river adjustments
+    python -m eval.backtest eval/reports_me.csv --region east   # score every report with another region's chart
     TYPESAFE_API_KEY=... python -m eval.backtest eval/reports_tn.csv --jev   # rules vs Jev
 
 Each CSV row is one fishing report (see reports_tn.csv, or reports_template.csv for the minimum
@@ -150,9 +151,14 @@ def main() -> None:
     ap.add_argument("csv")
     ap.add_argument("--rivers", action="store_true", help="also score with the trained river adjustments")
     ap.add_argument("--jev", action="store_true", help="also score with Jev (needs TYPESAFE_API_KEY)")
+    ap.add_argument("--region", help="score every report as this region instead of its own (to compare hatch charts)")
     args = ap.parse_args()
     cat, aliases = catalog.load(), load_aliases()
     rows = load_rows(args.csv)
+    if args.region:
+        if args.region not in cat.regions:
+            ap.error(f"--region must be one of: {', '.join(cat.regions)}")
+        rows = [{**row, "region": args.region} for row in rows]
     pairs = scorable(rows, cat, aliases)
 
     gaps = Counter(g for row in rows for g in wanted(row["flies"], cat, aliases)[1])
@@ -161,6 +167,9 @@ def main() -> None:
         print("Flies the catalog doesn't have (reports naming them):", ", ".join(f"{g} ({n})" for g, n in gaps.most_common()))
     report(pairs, hits(pairs, cat, mixed=False), "Hatch-chart rules in score order")
     report(pairs, hits(pairs, cat), "Hatch-chart rules, mixed list (as the app shows it)")
+    first = places(pairs, cat)
+    print(f"  a named fly first in the list: {rate([p == 1 for p in first]).strip()}, "
+          f"in the top 3: {rate([p is not None and p <= 3 for p in first]).strip()}")
     if args.rivers:
         report(pairs, hits(pairs, cat, rivers_adjust), "Mixed list + river adjustments")
         sources = {r.get("trained_on", {}).get("source") for r in cat.rivers.values()}

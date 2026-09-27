@@ -71,6 +71,21 @@ def test_south_borrows_east_months_one_earlier():
     assert level == rules.PEAK
 
 
+def test_northeast_hatches_run_later_and_borrow_the_east_chart():
+    cat = catalog.load()
+    hendrickson = cat.foods["hendrickson"]
+    assert rules.season_level(hendrickson, "east", 4)[0] == rules.PEAK
+    assert rules.season_level(hendrickson, "northeast", 4)[0] == rules.OFF
+    assert rules.season_level(hendrickson, "northeast", 6)[0] == rules.PEAK
+    # Foods with no northern entry use the East's months.
+    assert rules.season_level(cat.foods["squid"], "northeast", 5) == rules.season_level(cat.foods["squid"], "east", 5)
+    # Maine water is near 40F at ice-out, so April on the Magalloway is midges and streamers, not mayfly dries.
+    april = top(Conditions("northeast", "tailwater", 4))
+    assert "zebra_midge" in april and not {"hendrickson_dry", "bwo_parachute"} & set(april)
+    # September's spawning runs are streamer season.
+    assert cat.flies[top(Conditions("northeast", "freestone", 9), 1)[0]]["family"] == "streamer"
+
+
 def test_null_region_rules_a_food_out():
     # Smelt have an East chart, but none live in the South, so the South mustn't borrow it.
     cat = catalog.load()
@@ -89,9 +104,12 @@ def test_river_adjustments_change_the_ranking():
 
 def test_home_river_presets():
     cat = catalog.load()
-    assert {"caney_fork", "elk"} <= set(cat.rivers)
+    expected = {"caney_fork": ("south", "tailwater"), "elk": ("south", "tailwater"),
+                "magalloway": ("northeast", "tailwater"), "androscoggin": ("northeast", "freestone")}
+    assert set(expected) <= set(cat.rivers)
+    for rid, (region, water_type) in expected.items():
+        assert (cat.rivers[rid]["region"], cat.rivers[rid]["water_type"]) == (region, water_type)
     for river in cat.rivers.values():
-        assert river["region"] == "south" and river["water_type"] == "tailwater"
         # Learned adjustments are optional, and always come with a record of what they were fit on.
         assert ("adjust" in river) == ("trained_on" in river)
 

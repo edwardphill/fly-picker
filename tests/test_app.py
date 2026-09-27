@@ -44,3 +44,11 @@ def test_search_a_home_river(client):
     same = rules.Conditions("south", "tailwater", 1, adjust=cat.rivers["elk"].get("adjust"))
     assert body["notes"] == [] and body["flies"][0]["id"] == rules.score_flies(cat, same)[0]["id"]
     assert client.post("/api/recommend", json={"river": "nile"}).status_code == 400
+
+
+def test_search_a_river_with_no_reports(client):
+    from flypicker import catalog
+    body = client.post("/api/recommend", json={"river": "magalloway", "date": "2026-06-10"}).json()
+    assert body["conditions"]["river"] == {"name": "Magalloway River", "reports": 0}
+    assert body["conditions"]["region"] == catalog.load().regions["northeast"]
+    assert body["notes"] == [] and len(body["flies"]) == 10
