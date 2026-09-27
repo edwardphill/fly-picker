@@ -31,7 +31,6 @@
     "parachute adams": ["parachute_adams"],
     "elk hair caddis": ["elk_hair_caddis"],
     "black beetle": ["food:beetle"],
-    "flying ant": ["food:ant"],
     "klod hopper": ["food:hopper"],
     "mouse": ["food:mouse"],
     "pb&j shad streamer": ["food:baitfish_fw"],
@@ -56,7 +55,7 @@
     "scud": ["food:scud"],
     "sowbug": ["food:sowbug"],
     "egg": ["food:egg"],
-    "y2k": ["food:egg"],
+    "y2k": ["y2k_bug"],
     "glo bug": ["glo_bug"],
     "bhpt": ["pheasant_tail"],
     "hare's ear": ["hares_ear"],
@@ -69,7 +68,6 @@
     "green eyed demon": "local pattern",
     "dan-o-magic": "guide's own pattern",
     "green bug": "unnamed local pattern",
-    "haystack": "Smoky Mountain dry fly",
     "bust-a-brown": "streamer, not in the catalog"
   }
 }

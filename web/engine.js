@@ -15,7 +15,7 @@ const FP = (() => {
 
   function seasonSpec(food, region) {
     const s = food.season;
-    if (s[region]) return s[region];
+    if (region in s) return s[region];
     if (region === "south" && s.east && !s.all) {
       const shift = ms => (ms || []).map(m => ((m - 2 + 12) % 12) + 1);
       return { peak: shift(s.east.peak), on: shift(s.east.on) };
