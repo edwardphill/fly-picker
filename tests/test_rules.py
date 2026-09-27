@@ -86,6 +86,13 @@ def test_northeast_hatches_run_later_and_borrow_the_east_chart():
     assert cat.flies[top(Conditions("northeast", "freestone", 9), 1)[0]]["family"] == "streamer"
 
 
+def test_null_region_rules_a_food_out():
+    # Smelt have an East chart, but none live in the South, so the South mustn't borrow it.
+    cat = catalog.load()
+    assert rules.season_level(cat.foods["smelt"], "south", 4) == (0.0, "not found in this region")
+    assert not {"grey_ghost", "joes_smelt"} & set(top(Conditions("south", "tailwater", 4), 10))
+
+
 def test_river_adjustments_change_the_ranking():
     cat = catalog.load()
     assert "woolly_bugger" not in top(Conditions("south", "tailwater", 9))

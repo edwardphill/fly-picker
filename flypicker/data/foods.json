@@ -1,5 +1,5 @@
 {
-  "_about": "Food items fish eat, with when and where each is active. Hand-built starter hatch chart; months are 1-12. 'peak' = main hatch or feeding window, 'on' = present but not peak. Season keys are regions or 'all': an empty entry keeps a food out of season all year there, a food with no northeast entry uses its east one, and one with no south entry uses the east's shifted a month earlier when it has no 'all' (rules._season_spec). Water keys may be a water type or a group (RIVER, LAKE, WARM, SALT). Sizes are hook numbers [largest, smallest]; 0 = 1/0, -1 = 2/0, -2 = 3/0.",
+  "_about": "Food items fish eat, with when and where each is active. Hand-built starter hatch chart; months are 1-12. 'peak' = main hatch or feeding window, 'on' = present but not peak. Season keys are regions or 'all': an empty entry keeps a food out of season all year there, null means the region has none of it, a food with no northeast entry uses its east one, and one with no south entry uses the east's shifted a month earlier when it has no 'all' (rules._season_spec). Water keys may be a water type or a group (RIVER, LAKE, WARM, SALT). Sizes are hook numbers [largest, smallest]; 0 = 1/0, -1 = 2/0, -2 = 3/0.",
   "foods": [
     {"id": "midge", "name": "Midges", "desc": "Tiny midge larvae, pupae and adults; the year-round staple, key in winter and on tailwaters",
      "stage": "film", "sizes": [18, 26], "water": {"RIVER": 1, "tailwater": 1.4, "LAKE": 0.6},
@@ -135,6 +135,6 @@
      "season": {"east": {"peak": [6, 9], "on": [7, 8, 10]}, "northeast": {"peak": [7], "on": [6, 8, 9]}, "south": {"peak": [5, 9], "on": [6, 7, 8, 10]}}, "temp": [55, 70]},
     {"id": "smelt", "name": "Smelt", "desc": "Rainbow smelt, the main food of landlocked salmon and big brook trout in northern New England lakes and the rivers that drain them; they run upstream to spawn after ice-out and school again in fall",
      "stage": "subsurface", "sizes": [2, 8], "water": {"LAKE": 1.2, "tailwater": 1.1, "freestone": 0.6},
-     "season": {"east": {"peak": [4, 5, 10], "on": [6, 9, 11]}, "northeast": {"peak": [5, 10], "on": [4, 6, 9, 11]}}, "temp": [38, 62], "flow": {"high": 1.3}, "sky": {"overcast": 1.2}}
+     "season": {"east": {"peak": [4, 5, 10], "on": [6, 9, 11]}, "northeast": {"peak": [5, 10], "on": [4, 6, 9, 11]}, "south": null}, "temp": [38, 62], "flow": {"high": 1.3}, "sky": {"overcast": 1.2}}
   ]
 }
