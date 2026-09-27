@@ -7,14 +7,32 @@ This is step 1 of the plan: it works on day one with no training data.
 ## How it ranks
 
 1. **Conditions.** Region, water type and month, plus water temp, sky, wind and flow. If you give coordinates for today's date, it reads the nearest USGS stream gauge (water temp and flow compared with normal for the day) and Open-Meteo weather. Without them it uses typical water temps for the month.
-2. **Hatch chart** (`flypicker/data/foods.json`). 41 food items (mayflies, caddis, stoneflies, midges, terrestrials, sculpins, crayfish, shrimp, crabs, sand eels and more), each with its season by region (West, Northeast, East and South), preferred water temp, and how sky and flow change it.
-3. **Catalog** (`flypicker/data/flies.json`). 90 widely fished patterns, each tagged with the foods it imitates, its hook sizes and the waters it's fished in.
+2. **Hatch chart** (`flypicker/data/foods.json`). 43 food items (mayflies including Isonychia, caddis, stoneflies, midges, smelt, terrestrials, sculpins, crayfish, shrimp, crabs, sand eels and more), each with its season by region (West, Northeast, East and South), preferred water temp, and how sky and flow change it.
+3. **Catalog** (`flypicker/data/flies.json`). 149 patterns, including Tennessee tailwater staples (Kenny, Trout Candy, sowbugs, midges) and Maine smelt streamers (Grey Ghost, Joe's Smelt, Nine-Three), each tagged with the foods it imitates, its hook sizes and the waters it's fished in.
 4. **Scoring.**
    - **Jev** (when `TYPESAFE_API_KEY` is set): the best 40 candidates from the rules go to Jev in one parallel call. A `Choice` asks what the fish are eating, and a `Noul` per fly asks whether that fly would catch fish today. Rank = 60% the fly's Noul probability plus 40% how likely its food is.
    - **Hatch-chart rules** (no key, or if Jev fails): how active each food is × how well the fly imitates it × a small "proven pattern" prior.
 5. **List order.** The top 10 is spread across foods and fly types, so one hatch can't fill it. Each place goes to the best remaining fly after a cut for the flies already listed: 30% of its score for each one with the same food, 80% for each one of the same type. The scores shown don't change. Fishing reports mostly name fly types ("midges", "streamers", "nymphs"), and a mixed list covers far more of them.
 6. **Home rivers** (`flypicker/data/rivers.json`). Picking the Caney Fork or the Elk River (Tennessee tailwaters), or the Magalloway (below Aziscohos Dam) or the Androscoggin (Gilead to Bethel) in Maine, sets the region, water type and gauge location. A river can also carry multipliers learned from its fishing reports, for foods and flies its reports favor more or less than the hatch chart does. See "Test on real fishing reports" below. The Maine rivers use the Northeast hatch chart (see "Maine and North Country reports" below) and have no adjustments of their own.
 7. **Catch log.** Every search and every "Caught fish" / "No luck" tap goes into SQLite (`flypicker.db`). That becomes the training data for a later ranker, including the misses that reports never record.
+
+## Add your own flies
+
+Add a line to `flypicker/data/my_flies.csv` (it opens in Excel, Numbers, Google Sheets, or GitHub's web editor). Only `name`, `type` and `imitates` are required:
+
+```csv
+name,type,imitates,sizes,water,proven,notes
+Olive Kenny,wet,caddis:0.6; sowbug:0.5,12-16,tailwater,0.8,Tim's Flies and Lies
+Green Eyed Demon,nymph,caddis,,,,
+```
+
+- `type`: dry, emerger, nymph, wet, streamer, topwater or flats.
+- `imitates`: foods separated by `;`, each with an optional 0-1 match after `:` (0.8 if left off). Use a food id or name from `flypicker/data/foods.json`, such as midge, bwo, sulfur, caddis, isonychia, scud, sowbug, worm, egg, leech, sculpin, smelt or baitfish_fw.
+- `sizes`: like `12-16`, `14` or `2/0-4`. Blank uses the first food's sizes.
+- `water`: water types or groups separated by `;` (tailwater, freestone, RIVER, LAKE, WARM, SALT and so on). Blank means wherever its foods live.
+- `proven`: 0-1, how much you trust it. Blank is 0.7.
+
+Rows starting with `#` are skipped. A bad row stops the app with a message naming the row and what's wrong, and `python -m pytest` catches it too.
 
 ## Run it
 
@@ -84,7 +102,7 @@ The Northeast months were set while reading these same reports, so this shows th
 
 ## Known gaps
 
-- The catalog is a hand-tagged starter set. It still needs matching to the ~2,087 patterns on flysandguides.com, whose site couldn't be reached from the build environment.
+- The catalog is hand-tagged from general knowledge. Kenny and Trout Candy are tagged as soft-hackle wets from how Elk River reports describe them, not from a recipe. It still needs matching to the ~2,087 patterns on flysandguides.com, whose site couldn't be reached from the build environment.
 - Hatch timing is broad-brush for four US regions. Per-river charts, the Pacific coast in saltwater, and time of day aren't covered yet.
 - The live USGS and weather lookups were tested against canned responses only, because the build environment couldn't reach those services. USGS is moving to a new Water Data API, and `flypicker/conditions.py` notes where to switch.
 - The Jev integration was tested against a fake API, not the real service, because no key was available. The SDK doesn't document a limit on questions per call, so candidates go out in chunks of 24 (`FLYPICKER_JEV_CHUNK`).

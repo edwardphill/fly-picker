@@ -5,7 +5,10 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 
+from . import my_flies
+
 DATA_DIR = Path(__file__).parent / "data"
+MY_FLIES = DATA_DIR / "my_flies.csv"  # your own patterns, added on top of flies.json
 
 FLY_TYPES = {
     "any": "Any fly",
@@ -66,6 +69,8 @@ def load() -> Catalog:
     flies_raw = json.loads((DATA_DIR / "flies.json").read_text())["flies"]
     rivers = json.loads((DATA_DIR / "rivers.json").read_text())["rivers"]
     groups = _groups(waters["water_types"])
+    flies_raw += my_flies.load(MY_FLIES, foods_raw, set(groups) | set(waters["water_types"]),
+                               {f["id"] for f in flies_raw}, FLY_TYPES)
 
     foods = {}
     for f in foods_raw:

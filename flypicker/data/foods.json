@@ -129,6 +129,12 @@
      "season": {"east": {"peak": [5], "on": [4, 6]}}, "temp": [48, 64]},
     {"id": "worm_hatch", "name": "Cinder worm hatch", "desc": "Spawning worms swarming estuaries on warm late-spring evenings",
      "stage": "surface", "sizes": [2, 6], "water": {"estuary": 1.3},
-     "season": {"east": {"peak": [5, 6]}}, "temp": [56, 68]}
+     "season": {"east": {"peak": [5, 6]}}, "temp": [56, 68]},
+    {"id": "isonychia", "name": "Isonychia (slate drakes)", "desc": "Big dark swimming mayflies of eastern and southern freestones; nymphs crawl out on rocks, duns and spinners come off in the evening in early summer and again in fall",
+     "stage": "surface", "sizes": [10, 14], "water": {"freestone": 1.2, "small_stream": 0.8, "tailwater": 0.7},
+     "season": {"east": {"peak": [6, 9], "on": [7, 8, 10]}, "northeast": {"peak": [7, 9], "on": [6, 8]}, "south": {"peak": [5, 9], "on": [6, 7, 8, 10]}}, "temp": [55, 70]},
+    {"id": "smelt", "name": "Smelt", "desc": "Rainbow smelt, the main food of landlocked salmon and big brook trout in northern New England lakes and the rivers that drain them; they run upstream to spawn after ice-out and school again in fall",
+     "stage": "subsurface", "sizes": [2, 8], "water": {"LAKE": 1.2, "tailwater": 1.1, "freestone": 0.6},
+     "season": {"east": {"peak": [4, 5, 10], "on": [6, 9, 11]}, "northeast": {"peak": [5, 10], "on": [4, 6, 9, 11]}}, "temp": [38, 62], "flow": {"high": 1.3}, "sky": {"overcast": 1.2}}
   ]
 }
