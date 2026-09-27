@@ -25,6 +25,7 @@ def page_data() -> dict:
         "fly_types": catalog.FLY_TYPES,
         "foods": cat.foods,
         "flies": {k: {**v, "water": sorted(v["water"])} for k, v in cat.flies.items()},
+        "rivers": cat.rivers,
     }
 
 

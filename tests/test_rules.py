@@ -69,3 +69,26 @@ def test_south_borrows_east_months_one_earlier():
     cat = catalog.load()
     level, _ = rules.season_level(cat.foods["hendrickson"], "south", 3)
     assert level == rules.PEAK
+
+
+def test_null_region_rules_a_food_out():
+    # Smelt have an East chart, but none live in the South, so the South mustn't borrow it.
+    cat = catalog.load()
+    assert rules.season_level(cat.foods["smelt"], "south", 4) == (0.0, "not found in this region")
+    assert not {"grey_ghost", "joes_smelt"} & set(top(Conditions("south", "tailwater", 4), 10))
+
+
+def test_river_adjustments_change_the_ranking():
+    cat = catalog.load()
+    assert "woolly_bugger" not in top(Conditions("south", "tailwater", 9))
+    tuned = Conditions("south", "tailwater", 9,
+                       adjust={"name": "Elk River", "foods": {"leech": 3.0}, "flies": {"woolly_bugger": 2.0}})
+    best = rules.score_flies(cat, tuned)[0]
+    assert best["id"] == "woolly_bugger" and best["reason"].endswith("; favored in Elk River reports")
+
+
+def test_home_river_presets_are_tuned():
+    cat = catalog.load()
+    assert {"caney_fork", "elk"} <= set(cat.rivers)
+    for river in cat.rivers.values():
+        assert river["adjust"]["foods"] and river["trained_on"]["reports"] > 20

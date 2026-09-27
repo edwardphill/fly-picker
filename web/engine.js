@@ -14,7 +14,7 @@ const FP = (() => {
 
   function seasonSpec(food, region) {
     const s = food.season;
-    if (s[region]) return s[region];
+    if (region in s) return s[region];
     if (region === "south" && s.east && !s.all) {
       const shift = ms => (ms || []).map(m => ((m - 2 + 12) % 12) + 1);
       return { peak: shift(s.east.peak), on: shift(s.east.on) };
@@ -61,7 +61,9 @@ const FP = (() => {
     if (food.stage === "surface") flow *= ({ high: 0.6, low: 1.1 })[cond.flow] || 1.0;
     if (flow > 1 && cond.flow === "high") notes.push("high water helps");
 
-    return [level * water * tf * sky * flow, notes];
+    const boosts = (cond.adjust && cond.adjust.foods) || {};
+    const boost = boosts[food.id] !== undefined ? boosts[food.id] : 1.0;
+    return [level * water * tf * sky * flow * boost, notes];
   }
 
   function activeFoods(cond) {
@@ -109,6 +111,12 @@ const FP = (() => {
       const [sizes, overlap] = recommendedSizes(fly, food);
       if (!overlap) score *= 0.8;
       score *= 0.75 + 0.25 * fly.proven;
+      let reason = `Imitates ${food.name.toLowerCase()}: ` + foods[bestFood][1].join("; ");
+      const adjust = cond.adjust || {};
+      const flyBoosts = adjust.flies || {}, foodBoosts = adjust.foods || {};
+      const boost = flyBoosts[fly.id] !== undefined ? flyBoosts[fly.id] : 1.0;
+      score *= boost;
+      if (boost * (foodBoosts[bestFood] !== undefined ? foodBoosts[bestFood] : 1.0) >= 1.25) reason += `; favored in ${adjust.name || "local"} reports`;
       results.push({
         _raw: score,
         id: fly.id, name: fly.name, family: fly.family,
@@ -116,7 +124,7 @@ const FP = (() => {
         strength: strengthLabel(score),
         sizes: sizeRangeLabel(sizes),
         food: bestFood, food_name: food.name,
-        reason: `Imitates ${food.name.toLowerCase()}: ` + foods[bestFood][1].join("; "),
+        reason,
       });
     }
     results.sort((a, b) => b._raw - a._raw || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
@@ -134,11 +142,14 @@ const FP = (() => {
   function recommend(req) {
     const d = req.date ? new Date(req.date + "T12:00:00") : new Date();
     const temp = req.water_temp_f === "" || req.water_temp_f === null || req.water_temp_f === undefined ? null : Number(req.water_temp_f);
+    const river = req.river ? DATA.rivers[req.river] : null;  // a home-river preset fixes region and water
     const cond = {
-      region: req.region, water_type: req.water_type, month: d.getMonth() + 1,
+      region: river ? river.region : req.region, water_type: river ? river.water_type : req.water_type,
+      month: d.getMonth() + 1,
       fly_type: req.fly_type || "any", water_temp_f: temp,
       temp_source: temp === null ? "typical" : "angler",
       sky: req.sky || "partly", windy: !!req.windy, flow: req.flow || "normal",
+      adjust: river && river.adjust ? river.adjust : null,
     };
     const foods = activeFoods(cond);
     const wt = DATA.water_types[cond.water_type];
@@ -149,6 +160,7 @@ const FP = (() => {
         date: req.date, fly_type: DATA.fly_types[cond.fly_type],
         water_temp_f: Math.round(resolvedTemp(cond)), temp_source: cond.temp_source,
         sky: cond.sky, windy: cond.windy, flow: cond.flow, gauge: null,
+        river: river ? { name: river.name, reports: river.trained_on ? river.trained_on.reports : 0 } : null,
       },
       eating: foodShares(foods),
       flies: scoreFlies(cond, foods).slice(0, 10),
