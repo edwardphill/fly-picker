@@ -58,11 +58,11 @@ A hit means at least one fly the report says worked is in the top 5. On the newe
 
 | Top 5 from | Caney Fork (18 reports) | Elk River (14 reports) |
 |---|---|---|
-| Hatch-chart rules | 72% | 64% |
-| Rules + learned river adjustments | 83% | 86% |
-| The same 5 flies every time: the ones the older reports name most | 100% | 100% |
+| Hatch-chart rules | 67% | 57% |
+| Rules + learned river adjustments | 72% | 93% |
+| The same 5 flies every time: the ones the older reports name most | 56% | 50% |
 
-Read these with care. The samples are small, and dates are often post dates. Most rows are weekly shop or guide reports that name fly types ("midges", "streamers on high water", "nymphs") rather than patterns, so a fixed list with one midge, a few streamers and a nymph or two covers nearly all of them, while the rules' top 5 is often five flies for the same food. The Elk's staple flies, the Kenny and Trout Candy from the Lynchburg fly shop, aren't in the catalog. Other reports can go in a CSV shaped like `eval/reports_template.csv`.
+Read these with care. The samples are small, and dates are often post dates. Most rows are weekly shop or guide reports that name fly types ("midges", "streamers on high water", "nymphs") rather than patterns, while the rules' top 5 is often five flies for the same food. Other reports can go in a CSV shaped like `eval/reports_template.csv`.
 
 ## Other scripts
 
