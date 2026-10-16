@@ -80,6 +80,13 @@ ol.flies{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .rnotes{list-style:none;margin:0;padding:2px 0 2px 12px;border-left:3px solid var(--on);display:grid;gap:8px;font-size:.88rem}
 .src{color:var(--muted);font-size:.78rem}
 .src a{color:var(--accent)}
+.cite-block{display:grid;gap:5px;padding:2px 0 2px 12px;border-left:3px solid var(--on)}
+.cites{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:.85rem}
+.cites q{font-style:italic}
+.cites-more summary{font-size:.8rem;font-weight:500}
+.cites-more{border-top:0;padding-top:0}
+.cites-more[open] .cites{margin-top:4px}
+.cites-none{font-size:.8rem;color:var(--muted);margin:0}
 ul.hrows{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .hrow{width:100%;text-align:left;font:inherit;color:inherit;background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:5px;cursor:pointer}
 @media (hover:hover){.hrow:hover{border-color:var(--on)}}
@@ -352,6 +359,10 @@ const SERVER = /*__SERVER__*/false;
     $("foot").textContent = SERVER
       ? "Tap Caught fish or No luck after you fish a fly. Every tap goes into the catch log that will train a better ranker later."
       : `This demo runs the hatch-chart rules in your browser: ${nFlies} flies and ${nFoods} foods, with hatch timing by month and river notes from local fishing reports. Caught fish and No luck taps stay on this device.`;
+    const nReports = DATA.sources.sources.length;
+    $("foot").textContent += res.cited_region
+      ? ` Report links come from ${nReports} dated fishing reports and trip write-ups, each quoted in its own words.`
+      : ` Report links cover Tennessee tailwaters and Maine so far, so this water has none yet.`;
   }
 
   // What the hatch chart has on the water for these inputs, strongest first, from the same numbers as the fly list.
@@ -443,12 +454,38 @@ const SERVER = /*__SERVER__*/false;
             <span class="pill ${f.strength === "long shot" ? "long" : f.strength}">${esc(f.strength)}</span>
           </div>
           <p class="why">${esc(f.reason)}</p>
+          ${citeBlock(f)}
           <div class="acts" data-fly="${esc(f.id)}">
             <button type="button" data-outcome="caught" aria-pressed="false">Caught fish</button>
             <button type="button" data-outcome="no_luck" aria-pressed="false">No luck</button>
           </div>
         </div>
       </li>`;
+  }
+
+  // Links to the fishing reports behind a fly: the ones that named it first, then the ones that only
+  // called for its kind of fly ("scuds", "streamers"), folded away.
+  function citeBlock(f) {
+    const c = f.sources || (lastRes.cited_region ? (() => {
+      const cond = FP.conditions(resolvedReq(lastRes));
+      return FP.citations(DATA.flies[f.id], cond.region, cond.month, lastReq.river);
+    })() : null);
+    if (!c || !c.total) return lastRes.cited_region ? `<p class="cites-none">No report we link to has called for this fly here yet.</p>` : "";
+    const item = x => {
+      const [y, m] = x.date.split("-").map(Number);
+      return `<li><q>${esc(x.said)}</q> <span class="src"><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.site)}</a>, ${esc(x.place)}${x.kind === "trip" ? " trip" : ""}, ${MONTHS[m - 1].slice(0, 3)} ${y}</span></li>`;
+    };
+    const list = xs => `<ul class="cites">${xs.map(item).join("")}</ul>`;
+    const fold = (label, xs, extra) => xs.length ? `<details class="cites-more"><summary>${esc(label)}</summary>${list(xs)}${extra ? `<p class="src">Plus ${extra} more.</p>` : ""}</details>` : "";
+    const named = c.items.filter(x => x.named), kind = c.items.filter(x => !x.named);
+    const nKind = c.total - c.named, kindLabel = `${nKind} report${nKind > 1 ? "s" : ""} called for this kind of fly`;
+    if (named.length) {
+      const more = named.slice(2), extraNamed = c.named - named.length;
+      return `<div class="cite-block"><p class="group-label">Named in ${c.named} report${c.named > 1 ? "s" : ""}</p>${list(named.slice(0, 2))}
+        ${fold(`${more.length + extraNamed} more`, more, extraNamed)}${kind.length ? fold(kindLabel, kind, nKind - kind.length) : nKind ? `<p class="src">Plus ${esc(kindLabel)}.</p>` : ""}</div>`;
+    }
+    return `<div class="cite-block"><p class="group-label">${esc(cap(kindLabel))}</p>${list(kind.slice(0, 1))}
+      ${fold(`${nKind - 1} more`, kind.slice(1), nKind - kind.length)}</div>`;
   }
 
   // The fly list, or with a hatch picked, the flies that imitate it best under the same conditions.

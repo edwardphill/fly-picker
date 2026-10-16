@@ -227,11 +227,45 @@ const FP = (() => {
     };
   }
 
+  // The fishing reports behind a pick (flypicker/sources.py): reports from this region that named
+  // the fly, or called for its kind, best first. Named before kind, within a month of the date,
+  // this river's own, then newest.
+  function sourceMatches(token, fly) {
+    for (const raw of token.split(" ")) {
+      const neg = raw.startsWith("!"), term = raw.replace(/^!+/, "");
+      const [kind, name] = term.includes(":") ? [term.slice(0, term.indexOf(":")), term.slice(term.indexOf(":") + 1)] : [term, ""];
+      const hit = kind === "food" ? fly.imitates.some(([food, w]) => food === name && w >= 0.5)
+        : kind === "family" ? fly.family === name : fly.id === term;
+      if (hit === neg) return false;
+    }
+    return true;
+  }
+
+  function citations(fly, region, month, river) {
+    const S = DATA.sources, found = [];
+    for (const s of S.sources) {
+      if (s.region !== region) continue;
+      const ordered = s.picks.filter(p => p.named).concat(s.picks.filter(p => !p.named));
+      const pick = ordered.find(p => p.match.some(t => sourceMatches(t, fly)));
+      if (!pick) continue;
+      const d = Math.abs(Number(s.date.slice(5, 7)) - month) % 12;
+      const key = [pick.named, Math.min(d, 12 - d) <= 1, s.place === (river || null), s.date];
+      found.push({ key, item: { site: s.site, url: s.url, date: s.date, kind: s.kind,
+        place: S.places[s.place], said: pick.said, named: pick.named } });
+    }
+    const cmp = (a, b) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] < b[i] ? 1 : -1; return 0; };
+    found.sort((a, b) => cmp(a.key, b.key));
+    return { total: found.length, named: found.filter(f => f.item.named).length, items: found.slice(0, 12).map(f => f.item) };
+  }
+
+  function regionHasSources(region) { return DATA.sources.sources.some(s => s.region === region); }
+
   function recommend(req) {
     const river = req.river ? DATA.rivers[req.river] : null;
     const cond = conditions(req);
     const foods = activeFoods(cond);
     const ranked = scoreFlies(cond, foods);
+    for (const f of ranked) f.sources = citations(DATA.flies[f.id], cond.region, cond.month, req.river);
     const wt = DATA.water_types[cond.water_type];
     return {
       engine: "rules",
@@ -244,11 +278,12 @@ const FP = (() => {
       },
       eating: foodShares(foods),
       flies: ranked.slice(0, 10),
+      cited_region: regionHasSources(cond.region),
       all: ranked,  // every fly that fits, for filtering the list by a hatch
       notes: Object.keys(foods).length ? [] : ["The starter hatch chart doesn't cover this water in this region yet."],
     };
   }
 
-  return { recommend, conditions, scoreFlies, activeFoods, foodShares, resolvedTemp, hatching, hatchChart, MONTHS };
+  return { recommend, citations, conditions, scoreFlies, activeFoods, foodShares, resolvedTemp, hatching, hatchChart, MONTHS };
 })();
 if (typeof module !== "undefined") module.exports = FP;

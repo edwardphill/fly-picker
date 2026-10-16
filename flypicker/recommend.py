@@ -3,7 +3,7 @@
 import logging
 from datetime import date
 
-from . import catalog, conditions, jev, rules
+from . import catalog, conditions, jev, rules, sources
 
 log = logging.getLogger(__name__)
 TOP_N = 10
@@ -98,6 +98,10 @@ def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
     if not foods:
         notes.append("The starter hatch chart doesn't cover this water in this region yet.")
 
+    top = ranked[:TOP_N]
+    for f in top:
+        f["sources"] = sources.cite(cat.flies[f["id"]], cond.region, cond.month, req.get("river"))
+
     return {
         "engine": used,
         "conditions": {
@@ -113,6 +117,7 @@ def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
             "river": river and {"name": river["name"], "reports": river.get("trained_on", {}).get("reports", 0)},
         },
         "eating": shares,
-        "flies": ranked[:TOP_N],
+        "flies": top,
+        "cited_region": sources.region_has_sources(cond.region),
         "notes": notes,
     }

@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from flypicker import catalog, rules  # noqa: E402
+from flypicker import catalog, rules, sources  # noqa: E402
 from scripts.build_page import page_data  # noqa: E402
 
 NODE = """
@@ -25,6 +25,14 @@ const out = cases.map(c => {
   return FP.scoreFlies(c, foods).map(f => [f.id, f.score, f.sizes, f.reason]);
 });
 process.stdout.write(JSON.stringify(out));
+"""
+
+NODE_SOURCES = """
+const fs = require("fs");
+global.DATA = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+const FP = require(process.argv[2]);
+const cases = JSON.parse(fs.readFileSync(0, "utf8"));
+process.stdout.write(JSON.stringify(cases.map(([fid, region, month, river]) => FP.citations(DATA.flies[fid], region, month, river))));
 """
 
 
@@ -49,19 +57,46 @@ def cases(cat):
                    sky=sky, windy=False, flow=flow, water_temp_f=None, adjust=river.get("adjust") or SAMPLE_ADJUST)
 
 
-def main() -> int:
-    cat = catalog.load()
-    all_cases = list(cases(cat))
+def source_cases(cat):
+    """Every fly, every month, in each region with reports, with and without each of its rivers."""
+    regions = {s["region"] for s in sources.load()["sources"]}
+    for region in sorted(regions):
+        for river in [None] + [k for k, r in cat.rivers.items() if r["region"] == region]:
+            for month in range(1, 13):
+                for fid in cat.flies:
+                    yield [fid, region, month, river]
+
+
+def run_node(script: str, cases: list) -> list:
     data_path = ROOT / "dist" / "parity-data.json"
     data_path.parent.mkdir(exist_ok=True)
     data_path.write_text(json.dumps(page_data()))
     try:
-        js = json.loads(subprocess.run(
-            ["node", "-e", NODE, str(data_path), str(ROOT / "web" / "engine.js")],
-            input=json.dumps(all_cases), capture_output=True, text=True, check=True,
+        return json.loads(subprocess.run(
+            ["node", "-e", script, str(data_path), str(ROOT / "web" / "engine.js")],
+            input=json.dumps(cases), capture_output=True, text=True, check=True,
         ).stdout)
     finally:
         data_path.unlink()
+
+
+def check_sources(cat) -> int:
+    all_cases = list(source_cases(cat))
+    js = run_node(NODE_SOURCES, all_cases)
+    mismatches = 0
+    for (fid, region, month, river), js_cites in zip(all_cases, js):
+        if sources.cite(cat.flies[fid], region, month, river) != js_cites:
+            mismatches += 1
+            if mismatches <= 3:
+                print("SOURCES MISMATCH", fid, region, month, river)
+    print(f"{len(all_cases)} fly citation lists compared, {mismatches} mismatches")
+    return mismatches
+
+
+def main() -> int:
+    cat = catalog.load()
+    all_cases = list(cases(cat))
+    js = run_node(NODE, all_cases)
 
     mismatches = 0
     for case, js_rows in zip(all_cases, js):
@@ -76,6 +111,7 @@ def main() -> int:
                 i = next((k for k, (p, j) in enumerate(zip(py_rows, js_rows)) if p != j and not (p[0] == j[0] and abs(p[1] - j[1]) < 2e-4 and p[2:] == j[2:])), min(len(py_rows), len(js_rows)))
                 print("MISMATCH", case, "\n  py:", py_rows[i:i + 2], "\n  js:", js_rows[i:i + 2])
     print(f"{len(all_cases)} condition sets compared, {mismatches} mismatches")
+    mismatches += check_sources(cat)
     return 1 if mismatches else 0
 
 

@@ -1,0 +1,3913 @@
+{
+ "_about": "Built by `python -m eval.sources` from eval/reports_*.csv and eval/aliases.json; don't edit by hand. Each source is a fishing report or trip write-up and the flies it said to use. 'said' is the report's own words; 'match' is the catalog flies it stands for (a fly id, food:<id> for flies imitating that food at 0.5 or more, family:<type>; terms joined by spaces must all match, ! excludes). 'named' means the report named the pattern itself rather than a kind of fly.",
+ "places": {
+  "androscoggin_nh": "Androscoggin (NH)",
+  "caney_fork": "Caney Fork",
+  "elk": "Elk River",
+  "magalloway": "Magalloway River",
+  "maine_statewide": "Maine",
+  "rangeley_region": "Rangeley region",
+  "rangeley_river": "Rangeley River",
+  "rapid": "Rapid River",
+  "saco": "Saco River",
+  "upper_connecticut": "Upper Connecticut"
+ },
+ "sources": [
+  {
+   "place": "upper_connecticut",
+   "region": "northeast",
+   "date": "2026-09-07",
+   "kind": "report",
+   "site": "Orvis (Points North Outfitters)",
+   "url": "https://fishingreports.orvis.com/northeast/new-hampshire/upper-connecticut-river",
+   "picks": [
+    {
+     "said": "foam park hopper",
+     "match": [
+      "food:hopper"
+     ],
+     "named": false
+    },
+    {
+     "said": "nbk caddis dry",
+     "match": [
+      "family:dry food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "holy grail",
+     "match": [
+      "holy_grail"
+     ],
+     "named": true
+    },
+    {
+     "said": "soft hackle caddis pupa",
+     "match": [
+      "family:wet food:caddis",
+      "family:emerger food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "blue wing olive parachute",
+     "match": [
+      "bwo_parachute"
+     ],
+     "named": true
+    },
+    {
+     "said": "vernille san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "duracell jig",
+     "match": [
+      "duracell_jig"
+     ],
+     "named": true
+    },
+    {
+     "said": "soft hackle streamer",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "kreelex",
+     "match": [
+      "kreelex"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "saco",
+   "region": "northeast",
+   "date": "2026-07-29",
+   "kind": "report",
+   "site": "Orvis (North Country Angler)",
+   "url": "https://fishingreports.orvis.com/northeast/new-hampshire/saco-river",
+   "picks": [
+    {
+     "said": "bead head prince",
+     "match": [
+      "prince_nymph"
+     ],
+     "named": true
+    },
+    {
+     "said": "gold bead hare's ear",
+     "match": [
+      "hares_ear"
+     ],
+     "named": true
+    },
+    {
+     "said": "cj nymph",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "elk wing caddis",
+     "match": [
+      "elk_hair_caddis"
+     ],
+     "named": true
+    },
+    {
+     "said": "saco spinner",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    },
+    {
+     "said": "mop fly",
+     "match": [
+      "mop_fly"
+     ],
+     "named": true
+    },
+    {
+     "said": "yellow sally",
+     "match": [
+      "yellow_sally_dry"
+     ],
+     "named": true
+    },
+    {
+     "said": "dun variant",
+     "match": [
+      "dun_variant"
+     ],
+     "named": true
+    },
+    {
+     "said": "duo dry fly",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "androscoggin_nh",
+   "region": "northeast",
+   "date": "2026-07-29",
+   "kind": "report",
+   "site": "Orvis (North Country Angler)",
+   "url": "https://fishingreports.orvis.com/northeast/new-hampshire/androscoggin-river",
+   "picks": [
+    {
+     "said": "bead head woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "bead head zug bug",
+     "match": [
+      "zug_bug"
+     ],
+     "named": true
+    },
+    {
+     "said": "spotlight caddis emerger",
+     "match": [
+      "family:emerger food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "duracell jig",
+     "match": [
+      "duracell_jig"
+     ],
+     "named": true
+    },
+    {
+     "said": "wire caddis larva",
+     "match": [
+      "family:nymph food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "mop fly",
+     "match": [
+      "mop_fly"
+     ],
+     "named": true
+    },
+    {
+     "said": "flashback hare's ear",
+     "match": [
+      "flashback_hare_s_ear"
+     ],
+     "named": true
+    },
+    {
+     "said": "elk wing caddis",
+     "match": [
+      "elk_hair_caddis"
+     ],
+     "named": true
+    },
+    {
+     "said": "klinkhammer duo",
+     "match": [
+      "klinkhamer"
+     ],
+     "named": true
+    },
+    {
+     "said": "black caddis",
+     "match": [
+      "black_caddis"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "rangeley_region",
+   "region": "northeast",
+   "date": "2026-06-30",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "caddis larva/pupa",
+     "match": [
+      "family:nymph food:caddis",
+      "family:emerger food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "stonefly nymphs",
+     "match": [
+      "food:stonefly_nymph"
+     ],
+     "named": false
+    },
+    {
+     "said": "san juan worm variations",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "midge larva",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "gray ghosts",
+     "match": [
+      "grey_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "black ghosts",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "zonkers",
+     "match": [
+      "zonker"
+     ],
+     "named": true
+    },
+    {
+     "said": "articulated streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "rangeley_region",
+   "region": "northeast",
+   "date": "2026-05-03",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "egg patterns",
+     "match": [
+      "food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "caddis larva",
+     "match": [
+      "family:nymph food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "pheasant tails",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "stonefly nymphs",
+     "match": [
+      "food:stonefly_nymph"
+     ],
+     "named": false
+    },
+    {
+     "said": "prince nymphs",
+     "match": [
+      "prince_nymph"
+     ],
+     "named": true
+    },
+    {
+     "said": "worm patterns",
+     "match": [
+      "food:worm"
+     ],
+     "named": false
+    },
+    {
+     "said": "grey ghosts",
+     "match": [
+      "grey_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "black ghosts",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "black nose dace",
+     "match": [
+      "black_nosed_dace"
+     ],
+     "named": true
+    },
+    {
+     "said": "woolly buggers",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "articulated streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2026-02-02",
+   "kind": "report",
+   "site": "cfoutdoors.com",
+   "url": "https://cfoutdoors.com/blogs/news-feed/caney-fork-river-fishing-report-week-of-february-2-2026",
+   "picks": [
+    {
+     "said": "sparkle minnow",
+     "match": [
+      "sparkle_minnow"
+     ],
+     "named": true
+    },
+    {
+     "said": "pearl zonker",
+     "match": [
+      "zonker"
+     ],
+     "named": true
+    },
+    {
+     "said": "white woolly bugger",
+     "match": [
+      "white_woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "foam shad",
+     "match": [
+      "food:baitfish_fw"
+     ],
+     "named": false
+    },
+    {
+     "said": "zebra midge",
+     "match": [
+      "zebra_midge"
+     ],
+     "named": true
+    },
+    {
+     "said": "egg",
+     "match": [
+      "food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "y2k",
+     "match": [
+      "y2k_bug"
+     ],
+     "named": true
+    },
+    {
+     "said": "glo bug",
+     "match": [
+      "glo_bug"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2026-01-26",
+   "kind": "report",
+   "site": "cfoutdoors.com",
+   "url": "https://cfoutdoors.com/blogs/news-feed/caney-fork-river-fishing-report-week-of-january-26-2026",
+   "picks": [
+    {
+     "said": "white zonker",
+     "match": [
+      "zonker"
+     ],
+     "named": true
+    },
+    {
+     "said": "clouser minnow",
+     "match": [
+      "clouser_minnow"
+     ],
+     "named": true
+    },
+    {
+     "said": "sparkle minnow",
+     "match": [
+      "sparkle_minnow"
+     ],
+     "named": true
+    },
+    {
+     "said": "zebra midge",
+     "match": [
+      "zebra_midge"
+     ],
+     "named": true
+    },
+    {
+     "said": "scud",
+     "match": [
+      "food:scud"
+     ],
+     "named": false
+    },
+    {
+     "said": "egg",
+     "match": [
+      "food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2026-01-12",
+   "kind": "report",
+   "site": "cfoutdoors.com",
+   "url": "https://cfoutdoors.com/blogs/news-feed/caney-fork-river-fishing-report-mid-winter-shad-kills-lure-guide",
+   "picks": [
+    {
+     "said": "white zonker",
+     "match": [
+      "zonker"
+     ],
+     "named": true
+    },
+    {
+     "said": "shad pattern",
+     "match": [
+      "food:baitfish_fw"
+     ],
+     "named": false
+    },
+    {
+     "said": "zebra midge",
+     "match": [
+      "zebra_midge"
+     ],
+     "named": true
+    },
+    {
+     "said": "red midge larva",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2026-01-05",
+   "kind": "report",
+   "site": "cfoutdoors.com",
+   "url": "https://cfoutdoors.com/blogs/news-feed/caney-fork-river-fishing-report-week-of-january-5-2026",
+   "picks": [
+    {
+     "said": "zebra midge",
+     "match": [
+      "zebra_midge"
+     ],
+     "named": true
+    },
+    {
+     "said": "scud",
+     "match": [
+      "food:scud"
+     ],
+     "named": false
+    },
+    {
+     "said": "sowbug",
+     "match": [
+      "food:sowbug"
+     ],
+     "named": false
+    },
+    {
+     "said": "white zonker",
+     "match": [
+      "zonker"
+     ],
+     "named": true
+    },
+    {
+     "said": "shad pattern",
+     "match": [
+      "food:baitfish_fw"
+     ],
+     "named": false
+    },
+    {
+     "said": "woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "rangeley_region",
+   "region": "northeast",
+   "date": "2025-05-09",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2025/rangeley-region-fishing-report-may-9-2025",
+   "picks": [
+    {
+     "said": "smelt pattern streamers",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "rangeley_region",
+   "region": "northeast",
+   "date": "2025-05-06",
+   "kind": "report",
+   "site": "sunjournal.com",
+   "url": "https://www.sunjournal.com/2025/05/06/rangeley-lakes-region-may-fishing-report/",
+   "picks": [
+    {
+     "said": "smelt patterns",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "rangeley_region",
+   "region": "northeast",
+   "date": "2025-04-28",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2025/rangeley-region-fishing-report-april-28-2031",
+   "picks": [
+    {
+     "said": "pink sparkle worm",
+     "match": [
+      "food:worm"
+     ],
+     "named": false
+    },
+    {
+     "said": "zebra midge",
+     "match": [
+      "zebra_midge"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "rapid",
+   "region": "northeast",
+   "date": "2024-06-10",
+   "kind": "trip",
+   "site": "thecurrentangler.com",
+   "url": "https://thecurrentangler.com/2024/06/24/work-play-at-lakewood-camps/",
+   "picks": [
+    {
+     "said": "articulated streamer",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "deep nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "heavy stonefly",
+     "match": [
+      "food:stonefly_nymph"
+     ],
+     "named": false
+    },
+    {
+     "said": "walt's worm",
+     "match": [
+      "walts_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "chubby chernobyl",
+     "match": [
+      "chubby_chernobyl"
+     ],
+     "named": true
+    },
+    {
+     "said": "higa's sos",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "swung wet flies",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    },
+    {
+     "said": "parachute adams",
+     "match": [
+      "parachute_adams"
+     ],
+     "named": true
+    },
+    {
+     "said": "spf 40 streamer",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2024-05-24",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "skiddish smolt",
+     "match": [
+      "food:baitfish_fw"
+     ],
+     "named": false
+    },
+    {
+     "said": "floating smelt",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    },
+    {
+     "said": "krystal buggers",
+     "match": [
+      "krystal_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "golden retrievers",
+     "match": [
+      "golden_retriever"
+     ],
+     "named": true
+    },
+    {
+     "said": "black ghosts",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "grey ghosts",
+     "match": [
+      "grey_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "montreal whores",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "pheasant tails",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "copper johns",
+     "match": [
+      "copper_john"
+     ],
+     "named": true
+    },
+    {
+     "said": "hare's ears",
+     "match": [
+      "hares_ear"
+     ],
+     "named": true
+    },
+    {
+     "said": "para wulffs in the bwo color",
+     "match": [
+      "parawulff"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "rapid",
+   "region": "northeast",
+   "date": "2024-05-17",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2024/rangeley-region-fishing-report-may-17-2024",
+   "picks": [
+    {
+     "said": "mayfly nymphs",
+     "match": [
+      "family:nymph food:bwo",
+      "family:nymph food:hendrickson",
+      "family:nymph food:march_brown",
+      "family:nymph food:sulfur"
+     ],
+     "named": false
+    },
+    {
+     "said": "big white streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "pheasant tail",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "pat's rubberleg",
+     "match": [
+      "pats_rubber_legs"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2024-04-22",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "smelt patterns",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    },
+    {
+     "said": "pt's",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "hare's ears",
+     "match": [
+      "hares_ear"
+     ],
+     "named": true
+    },
+    {
+     "said": "woolly buggers",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "golden retrievers",
+     "match": [
+      "golden_retriever"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2023-08-29",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "montreal floozies",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "black ghosts",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "gartside soft hackles",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "stimulators",
+     "match": [
+      "stimulator"
+     ],
+     "named": true
+    },
+    {
+     "said": "foam run caddis",
+     "match": [
+      "family:dry food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "parawulffs",
+     "match": [
+      "parawulff"
+     ],
+     "named": true
+    },
+    {
+     "said": "pheasant tails",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "copper johns",
+     "match": [
+      "copper_john"
+     ],
+     "named": true
+    },
+    {
+     "said": "hare's ears",
+     "match": [
+      "hares_ear"
+     ],
+     "named": true
+    },
+    {
+     "said": "partridge and orange soft hackle",
+     "match": [
+      "partridge_orange"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2023-07-08",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "elk hair caddis",
+     "match": [
+      "elk_hair_caddis"
+     ],
+     "named": true
+    },
+    {
+     "said": "stimulator",
+     "match": [
+      "stimulator"
+     ],
+     "named": true
+    },
+    {
+     "said": "foam run caddis",
+     "match": [
+      "family:dry food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2023-05-28",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "pheasant tail",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "dry flies",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2023-04-24",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "smelt patterns",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2022-09-29",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "black ghost",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "mickey finn",
+     "match": [
+      "mickey_finn"
+     ],
+     "named": true
+    },
+    {
+     "said": "golden retriever",
+     "match": [
+      "golden_retriever"
+     ],
+     "named": true
+    },
+    {
+     "said": "white retriever",
+     "match": [
+      "golden_retriever"
+     ],
+     "named": true
+    },
+    {
+     "said": "woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "muddler minnow",
+     "match": [
+      "muddler_minnow"
+     ],
+     "named": true
+    },
+    {
+     "said": "kiwi muddler",
+     "match": [
+      "food:sculpin"
+     ],
+     "named": false
+    },
+    {
+     "said": "bunny leech",
+     "match": [
+      "bunny_leech"
+     ],
+     "named": true
+    },
+    {
+     "said": "stimulator",
+     "match": [
+      "stimulator"
+     ],
+     "named": true
+    },
+    {
+     "said": "elk hair caddis",
+     "match": [
+      "elk_hair_caddis"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "rangeley_region",
+   "region": "northeast",
+   "date": "2022-09-22",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2022/rangeley-region-fishing-report-sept-22-2022",
+   "picks": [
+    {
+     "said": "prince",
+     "match": [
+      "prince_nymph"
+     ],
+     "named": true
+    },
+    {
+     "said": "brassie",
+     "match": [
+      "brassie"
+     ],
+     "named": true
+    },
+    {
+     "said": "olive soft hackle",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    },
+    {
+     "said": "partridge and orange",
+     "match": [
+      "partridge_orange"
+     ],
+     "named": true
+    },
+    {
+     "said": "hornbergs",
+     "match": [
+      "hornberg"
+     ],
+     "named": true
+    },
+    {
+     "said": "golden retriever",
+     "match": [
+      "golden_retriever"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2022-09-01",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "dry flies",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2022-07-22",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "paradrake",
+     "match": [
+      "green_drake_paradrake"
+     ],
+     "named": true
+    },
+    {
+     "said": "stimulator",
+     "match": [
+      "stimulator"
+     ],
+     "named": true
+    },
+    {
+     "said": "rubberleg stimulator",
+     "match": [
+      "stimulator"
+     ],
+     "named": true
+    },
+    {
+     "said": "hairwing drake",
+     "match": [
+      "food:green_drake"
+     ],
+     "named": false
+    },
+    {
+     "said": "elk hair caddis",
+     "match": [
+      "elk_hair_caddis"
+     ],
+     "named": true
+    },
+    {
+     "said": "parachute adams",
+     "match": [
+      "parachute_adams"
+     ],
+     "named": true
+    },
+    {
+     "said": "hare's ear",
+     "match": [
+      "hares_ear"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "rangeley_region",
+   "region": "northeast",
+   "date": "2022-06-09",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2022/rangeley-region-fishing-report-june-9-2022",
+   "picks": [
+    {
+     "said": "dry flies",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2022-05-29",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "caddis imitations",
+     "match": [
+      "food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "smelt patterns",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    },
+    {
+     "said": "muddler minnow",
+     "match": [
+      "muddler_minnow"
+     ],
+     "named": true
+    },
+    {
+     "said": "black ghost",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "saco",
+   "region": "northeast",
+   "date": "2022-05-25",
+   "kind": "report",
+   "site": "northcountryangler.com",
+   "url": "https://northcountryangler.com/steve-angers-blog-archive/",
+   "picks": [
+    {
+     "said": "saco spinners",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    },
+    {
+     "said": "saco caddis",
+     "match": [
+      "family:dry food:caddis"
+     ],
+     "named": false
+    },
+    {
+     "said": "yellow stimulators",
+     "match": [
+      "stimulator"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "magalloway",
+   "region": "northeast",
+   "date": "2022-05-19",
+   "kind": "report",
+   "site": "Orvis (Rangeley Region Sports Shop)",
+   "url": "https://fishingreports.orvis.com/northeast/maine/magalloway-river",
+   "picks": [
+    {
+     "said": "pink sparkle worm",
+     "match": [
+      "food:worm"
+     ],
+     "named": false
+    },
+    {
+     "said": "bead head pheasant tail",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "pat's rubberleg",
+     "match": [
+      "pats_rubber_legs"
+     ],
+     "named": true
+    },
+    {
+     "said": "green rock worm",
+     "match": [
+      "green_rockworm"
+     ],
+     "named": true
+    },
+    {
+     "said": "smelt pattern streamers",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "rangeley_river",
+   "region": "northeast",
+   "date": "2022-05-12",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2022/rangeley-region-fishing-report-may-12-2022",
+   "picks": [
+    {
+     "said": "klinkhamers",
+     "match": [
+      "klinkhamer"
+     ],
+     "named": true
+    },
+    {
+     "said": "parachute adams",
+     "match": [
+      "parachute_adams"
+     ],
+     "named": true
+    },
+    {
+     "said": "parachute bwo",
+     "match": [
+      "bwo_parachute"
+     ],
+     "named": true
+    },
+    {
+     "said": "mr. rapidan",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    },
+    {
+     "said": "smelt streamer",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2022-05-05",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "beadhead woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "black ghost",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "smelt patterns",
+     "match": [
+      "food:smelt"
+     ],
+     "named": false
+    },
+    {
+     "said": "pheasant tail",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "hare's ear",
+     "match": [
+      "hares_ear"
+     ],
+     "named": true
+    },
+    {
+     "said": "parachute adams",
+     "match": [
+      "parachute_adams"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "maine_statewide",
+   "region": "northeast",
+   "date": "2021-09-28",
+   "kind": "report",
+   "site": "allpointsflyfishing.com",
+   "url": "https://allpointsflyfishing.com/pages/fishing-report",
+   "picks": [
+    {
+     "said": "mickey finn",
+     "match": [
+      "mickey_finn"
+     ],
+     "named": true
+    },
+    {
+     "said": "montreal whore",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "grey ghosts",
+     "match": [
+      "grey_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "black ghosts",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "golden retrievers",
+     "match": [
+      "golden_retriever"
+     ],
+     "named": true
+    },
+    {
+     "said": "copper johns",
+     "match": [
+      "copper_john"
+     ],
+     "named": true
+    },
+    {
+     "said": "tiny dry flies",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    },
+    {
+     "said": "emergers",
+     "match": [
+      "family:emerger"
+     ],
+     "named": false
+    },
+    {
+     "said": "large stimulator",
+     "match": [
+      "stimulator"
+     ],
+     "named": true
+    },
+    {
+     "said": "muddler",
+     "match": [
+      "muddler_minnow"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "saco",
+   "region": "northeast",
+   "date": "2021-09-06",
+   "kind": "report",
+   "site": "northcountryangler.com",
+   "url": "https://northcountryangler.com/steve-angers-blog-archive/",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2021-08-07",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2021/08/elk-river-and-caney-fork-fishing-report.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2021-08-07",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2021/08/elk-river-and-caney-fork-fishing-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2021-08-01",
+   "kind": "report",
+   "site": "troutzoneanglers.com",
+   "url": "https://troutzoneanglers.com/2021/08/01/fishing-report-for-august-1-2021/",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2021-07-19",
+   "kind": "report",
+   "site": "troutzoneanglers.com",
+   "url": "https://troutzoneanglers.com/2021/07/19/excellent-summer-fishing-continues-report-for-july-19-2021/",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "soft hackles",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2021-07-12",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2021/07/fly-fishing-nashville.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2021-07-12",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2021/07/fly-fishing-nashville.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2021-04-26",
+   "kind": "report",
+   "site": "troutzoneanglers.com",
+   "url": "https://troutzoneanglers.com/2021/04/26/fishing-report-for-april-26-2021/",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "magalloway",
+   "region": "northeast",
+   "date": "2021-04-22",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2021/rangeley-region-fishing-report-april-22-2021",
+   "picks": [
+    {
+     "said": "black ghost",
+     "match": [
+      "black_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "gray ghost",
+     "match": [
+      "grey_ghost"
+     ],
+     "named": true
+    },
+    {
+     "said": "pink san juan worm",
+     "match": [
+      "pink_san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "small pheasant tails",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "zebra midge",
+     "match": [
+      "zebra_midge"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2020-10-05",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2020/10/middle-tennessee-fly-fishing.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2020-01-05",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2020/01/fishing-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "magalloway",
+   "region": "northeast",
+   "date": "2019-09-12",
+   "kind": "report",
+   "site": "rangeleyflyshop.com",
+   "url": "https://rangeleyflyshop.com/blogs/fishing-reports-2019-rangeley-maine-fly-shop/fishing-report-september-12-2019",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "saco",
+   "region": "northeast",
+   "date": "2019-06-11",
+   "kind": "report",
+   "site": "northcountryangler.com",
+   "url": "https://northcountryangler.com/steve-angers-blog-archive/",
+   "picks": [
+    {
+     "said": "emergers",
+     "match": [
+      "family:emerger"
+     ],
+     "named": false
+    },
+    {
+     "said": "soft hackles",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2018-05-14",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2018/05/nashville-fly-fishing.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2018-04-16",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2018/04/caney-fork-river-report.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-07-27",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2017/07/under-cover-of-darkness-hunting-big-nocturnal-brown-trout.html",
+   "picks": [
+    {
+     "said": "mouse",
+     "match": [
+      "food:mouse"
+     ],
+     "named": false
+    },
+    {
+     "said": "flying ant",
+     "match": [
+      "flying_ant"
+     ],
+     "named": true
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-06-04",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2017/06/fly-fishing-nashville-tn.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-06-04",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2017/06/fly-fishing-nashville-tn.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-03-12",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2017/03/guides-guiding-guides.html",
+   "picks": [
+    {
+     "said": "pb&j shad streamer",
+     "match": [
+      "food:baitfish_fw"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-02-26",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2017/02/caney-fork-fishing-report.html",
+   "picks": [
+    {
+     "said": "white streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-02-26",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2017/02/caney-fork-fishing-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-02-19",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2017/02/nashville-fly-fishing.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2017-02-19",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2017/02/nashville-fly-fishing.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2017-01-16",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2017/01/winter-fly-fishing-middle-tn.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-12-10",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/12/caney-fork-river-fishing-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-10-12",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2016/10/dont-touch-fly-rod.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-10-02",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/10/fly-fishing-near-huntsville.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2016-10-02",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/10/fly-fishing-near-huntsville.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-09-29",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2016/10/a-perfect-day-in-solitude.html",
+   "picks": [
+    {
+     "said": "zebra midge",
+     "match": [
+      "zebra_midge"
+     ],
+     "named": true
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-09-05",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2016/09/introducing-mr-and-mrs-alexander.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-08-22",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/08/fly-fishing-middle-tennessee.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "terrestrials",
+     "match": [
+      "food:hopper",
+      "food:ant",
+      "food:beetle"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-07-25",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2016/07/smelling-beetles.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "black beetle",
+     "match": [
+      "food:beetle"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-07-13",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/07/fly-fishing-near-chattanooga.html",
+   "picks": [
+    {
+     "said": "terrestrials",
+     "match": [
+      "food:hopper",
+      "food:ant",
+      "food:beetle"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2016-07-13",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/07/fly-fishing-near-chattanooga.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-06-20",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2016/06/summer-solstice-bachelor-party.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-05-24",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/05/fly-fish-nashville.html",
+   "picks": [
+    {
+     "said": "parachute adams",
+     "match": [
+      "parachute_adams"
+     ],
+     "named": true
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "soft hackles",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2016-05-24",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/05/fly-fish-nashville.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-03-30",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/03/caney-fork-river-fishing-report.html",
+   "picks": [
+    {
+     "said": "white streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2016-02-08",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2016/02/fly-fish-caney-fork-on-high-water.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-11-23",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/11/middle-tennessee-fly-fishing.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-08-25",
+   "kind": "trip",
+   "site": "thetroutzone.com",
+   "url": "https://www.thetroutzone.com/2015/09/first-time-streamer-fishing-Caney-Fork-River-brown-trout.html",
+   "picks": [
+    {
+     "said": "pb&j streamer",
+     "match": [
+      "food:baitfish_fw"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-08-19",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/08/caney-fork-and-elk-river-report.html",
+   "picks": [
+    {
+     "said": "terrestrials",
+     "match": [
+      "food:hopper",
+      "food:ant",
+      "food:beetle"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-08-19",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/08/caney-fork-and-elk-river-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2015-08-19",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/08/caney-fork-and-elk-river-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "terrestrials",
+     "match": [
+      "food:hopper",
+      "food:ant",
+      "food:beetle"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-06-21",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/06/fly-fishing-near-nashville.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-05-09",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/05/music-city-fly-fishing.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "wet flies",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-04-30",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/04/trout-fishing-tennessee.html",
+   "picks": [
+    {
+     "said": "soft hackles",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-04-21",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/04/stones-river-fishing-report.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-04-05",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/04/fly-fishing-lynchburg-tennessee.html",
+   "picks": [
+    {
+     "said": "white streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2015-04-05",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/04/fly-fishing-lynchburg-tennessee.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "soft hackles",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    },
+    {
+     "said": "caddis dries",
+     "match": [
+      "family:dry food:caddis"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2015-03-11",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/03/fly-fishing-middle-tennessee-tailwaters.html",
+   "picks": [
+    {
+     "said": "midge hatch",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "caddis hatch",
+     "match": [
+      "food:caddis"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-03-01",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/03/middle-tennessee-trout.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-02-11",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/02/sunny-days-on-riverfoul-weather-on-way.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-02-11",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/02/sunny-days-on-riverfoul-weather-on-way.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-02-01",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/02/high-and-low-water-fishing.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-02-01",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/02/high-and-low-water-fishing.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2015-01-26",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2015/01/middle-tennessee-fly-fishing.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2014-09-30",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2014/09/alan-on-river.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2014-08-17",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2014/08/caney-fork-river-fishing-report.html",
+   "picks": [
+    {
+     "said": "terrestrials",
+     "match": [
+      "food:hopper",
+      "food:ant",
+      "food:beetle"
+     ],
+     "named": false
+    },
+    {
+     "said": "small parachutes",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2014-07-31",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2014/07/elk-river-fishing-report.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "terrestrials",
+     "match": [
+      "food:hopper",
+      "food:ant",
+      "food:beetle"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2014-07-31",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2014/07/elk-river-fishing-report.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "small dries",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2013-03-09",
+   "kind": "trip",
+   "site": "tennesseeflyfishing.blogspot.com",
+   "url": "https://tennesseeflyfishing.blogspot.com/2013/03/winter-fishing-on-elk-river-tn.html",
+   "picks": [
+    {
+     "said": "dry dropper",
+     "match": [
+      "family:dry",
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2012-11-28",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2012/11/nashville-area-fly-fishing.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2012-06-11",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2012/06/different-caney-fork-fishing-report-and.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2012-01-15",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2012/01/elk-river-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "woolly buggers",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2011-03-20",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2011/03/elk-river-fly-fishing-report.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2010-09-18",
+   "kind": "trip",
+   "site": "tennesseeflyfishing.blogspot.com",
+   "url": "https://tennesseeflyfishing.blogspot.com/2010/09/elk-river-trip-lynchburg-tn.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-12-03",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/12/fly-fishing-on-elk-around-bend-again.html",
+   "picks": [
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "olive sparkle woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "new woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "zug bug",
+     "match": [
+      "zug_bug"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-11-22",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/11/elk-river-tn-fishing-report.html",
+   "picks": [
+    {
+     "said": "san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "elk hair caddis",
+     "match": [
+      "elk_hair_caddis"
+     ],
+     "named": true
+    },
+    {
+     "said": "haystack",
+     "match": [
+      "haystack"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-11-12",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/11/fly-fishing-on-elk-river-around-bend.html",
+   "picks": [
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "chartreuse woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-11-08",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/11/floating-from-dam-to-farris-creek-11809.html",
+   "picks": [
+    {
+     "said": "chartreuse woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "trout candy",
+     "match": [
+      "trout_candy"
+     ],
+     "named": true
+    },
+    {
+     "said": "san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-11-02",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/11/fishing-at-dam.html",
+   "picks": [
+    {
+     "said": "san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "chartreuse woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-11-01",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/11/finally-back-on-water-nov-1.html",
+   "picks": [
+    {
+     "said": "san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "chartreuse woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-10-06",
+   "kind": "report",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/10/caney-fork-elk-and-obey-river-report.html",
+   "picks": [
+    {
+     "said": "streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "dry flies",
+     "match": [
+      "family:dry"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-27",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/fishing-elk-below-dam-92709.html",
+   "picks": [
+    {
+     "said": "black kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "chartreuse woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "gold kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-25",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/guide-trip-today.html",
+   "picks": [
+    {
+     "said": "chartreuse woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-23",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/fishing-with-warren-on-elk-92309.html",
+   "picks": [
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "red san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "chartreuse woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-22",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/fly-fishing-elk-below-dam-92209.html",
+   "picks": [
+    {
+     "said": "chartreuse woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "soft candy wet fly",
+     "match": [
+      "trout_candy"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-11",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/fishing-elk-below-dam.html",
+   "picks": [
+    {
+     "said": "chartreuse woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "trout candy",
+     "match": [
+      "trout_candy"
+     ],
+     "named": true
+    },
+    {
+     "said": "parachute adams",
+     "match": [
+      "parachute_adams"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-09",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/guide-trip-on-elk-9909-beatles-day.html",
+   "picks": [
+    {
+     "said": "chartreuse woolly",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "trout candy",
+     "match": [
+      "trout_candy"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-07",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/fishing-elk-on-9709.html",
+   "picks": [
+    {
+     "said": "olive woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-09-02",
+   "kind": "trip",
+   "site": "flyfishingtheelk.blogspot.com",
+   "url": "https://flyfishingtheelk.blogspot.com/2009/09/fly-fishing-elk-below-dam.html",
+   "picks": [
+    {
+     "said": "kenny",
+     "match": [
+      "kenny"
+     ],
+     "named": true
+    },
+    {
+     "said": "parachute adams",
+     "match": [
+      "parachute_adams"
+     ],
+     "named": true
+    },
+    {
+     "said": "klod hopper",
+     "match": [
+      "food:hopper"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-08-29",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/09/early-morning-fog-on-elk-river-this.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "caney_fork",
+   "region": "south",
+   "date": "2009-08-23",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/08/fishing-report-for-caney-fork.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "white streamer",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "soft hackles",
+     "match": [
+      "family:wet"
+     ],
+     "named": false
+    },
+    {
+     "said": "emergers",
+     "match": [
+      "family:emerger"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-07-31",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/08/catching-fishing-elk-river-tn.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-06-28",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/06/elk-river-tn-fly-fishing.html",
+   "picks": [
+    {
+     "said": "nymphs",
+     "match": [
+      "family:nymph !food:midge !food:worm !food:egg"
+     ],
+     "named": false
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-05-24",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/05/fly-fishing-elk-river-tennessee.html",
+   "picks": [
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    },
+    {
+     "said": "bhpt",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "yellow bucktail and marabou streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-04-18",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/04/fly-fishing-elk-river-with-bob-david.html",
+   "picks": [
+    {
+     "said": "bhpt",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "midges",
+     "match": [
+      "food:midge"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-04-04",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/04/fly-fishing-elk-river-442009.html",
+   "picks": [
+    {
+     "said": "bhpt",
+     "match": [
+      "pheasant_tail"
+     ],
+     "named": true
+    },
+    {
+     "said": "muppet flies",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-03-28",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/03/elk-river-fly-fishing-report.html",
+   "picks": [
+    {
+     "said": "green/white streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    },
+    {
+     "said": "purple/black streamers",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-03-21",
+   "kind": "trip",
+   "site": "southeasternfly.blogspot.com",
+   "url": "https://southeasternfly.blogspot.com/2009/03/fly-fishing-elk-river-32009.html",
+   "picks": [
+    {
+     "said": "big uglies",
+     "match": [
+      "family:streamer"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2009-02-21",
+   "kind": "report",
+   "site": "tennesseeflyfishing.blogspot.com",
+   "url": "https://tennesseeflyfishing.blogspot.com/2009/02/finally-made-it-to-elk-river.html",
+   "picks": [
+    {
+     "said": "hare's ear",
+     "match": [
+      "hares_ear"
+     ],
+     "named": true
+    },
+    {
+     "said": "san juan worm",
+     "match": [
+      "san_juan_worm"
+     ],
+     "named": true
+    },
+    {
+     "said": "trout candy",
+     "match": [
+      "trout_candy"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "elk",
+   "region": "south",
+   "date": "2007-07-17",
+   "kind": "trip",
+   "site": "brentwood.thefuntimesguide.com",
+   "url": "https://brentwood.thefuntimesguide.com/fishing_elk_river_tims_ford/",
+   "picks": [
+    {
+     "said": "bead head olive woolly bugger",
+     "match": [
+      "woolly_bugger"
+     ],
+     "named": true
+    },
+    {
+     "said": "scud",
+     "match": [
+      "food:scud"
+     ],
+     "named": false
+    }
+   ]
+  },
+  {
+   "place": "upper_connecticut",
+   "region": "northeast",
+   "date": "2007-05-10",
+   "kind": "report",
+   "site": "nhfishandwildlife.com",
+   "url": "https://www.nhfishandwildlife.com/weekly-fish.php",
+   "picks": [
+    {
+     "said": "royal wulffs",
+     "match": [
+      "royal_wulff"
+     ],
+     "named": true
+    },
+    {
+     "said": "humpys",
+     "match": [
+      "humpy"
+     ],
+     "named": true
+    }
+   ]
+  },
+  {
+   "place": "upper_connecticut",
+   "region": "northeast",
+   "date": "2006-08-17",
+   "kind": "report",
+   "site": "nhfishandwildlife.com",
+   "url": "https://www.nhfishandwildlife.com/weekly-fish.php",
+   "picks": [
+    {
+     "said": "elk-hair caddis",
+     "match": [
+      "elk_hair_caddis"
+     ],
+     "named": true
+    }
+   ]
+  }
+ ]
+}
