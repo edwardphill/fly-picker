@@ -16,6 +16,14 @@ This is step 1 of the plan: it works on day one with no training data.
 6. **Home rivers** (`flypicker/data/rivers.json`). Picking the Caney Fork or the Elk River (Tennessee tailwaters), or the Magalloway (below Aziscohos Dam) or the Androscoggin (Gilead to Bethel) in Maine, sets the region, water type and gauge location. A river can also carry multipliers learned from its fishing reports, for foods and flies its reports favor more or less than the hatch chart does. See "Test on real fishing reports" below. The Maine rivers use the Northeast hatch chart (see "Maine and North Country reports" below) and have no adjustments of their own. Each river also has dated notes from its fishing reports, with links, which show in Hatching now during the months they cover.
 7. **Catch log.** Every search and every "Caught fish" / "No luck" tap goes into SQLite (`flypicker.db`). That becomes the training data for a later ranker, including the misses that reports never record.
 
+## Where each pick comes from
+
+Every fly in the list links to the fishing reports and trip write-ups that recommended it, quoting each report's own words with the site, the river and the month. Reports that named the pattern ("pearl zonker", "pat's rubberleg") come first; reports that only called for its kind of fly ("streamers", "scuds") are folded away under their own count. Within those, reports from within a month of your date come first, then the river you picked, then the newest.
+
+The links come from the report CSVs in `eval/` (93 Tennessee and 59 Maine and North Country reports, 126 of which name flies), so they cover the South and the Northeast so far. `python -m eval.sources` rebuilds `flypicker/data/sources.json` from them; run it after adding reports or aliases, and `python -m pytest` fails until you do. To cite a new source, add a row to a `reports_*.csv` with its date, `source`, `url` and the flies it recommends.
+
+Some shop pages, such as All Points Fly Fishing's Maine report, are one page rewritten each week, so a link to an older report opens the current one.
+
 ## Add your own flies
 
 Add a line to `flypicker/data/my_flies.csv` (it opens in Excel, Numbers, Google Sheets, or GitHub's web editor). Only `name`, `type` and `imitates` are required:
@@ -100,7 +108,8 @@ The Northeast months were set while reading these same reports, so this shows th
 
 - `python -m pytest`: tests. Jev and the USGS and weather services are faked, so no key or network is needed.
 - `python -m scripts.build_page`: writes `dist/fly-picker-demo.html`, a standalone demo that runs the rules in the browser.
-- `python -m scripts.check_parity`: checks that the browser engine (`web/engine.js`) ranks exactly like `flypicker/rules.py`. It needs node.
+- `python -m scripts.check_parity`: checks that the browser engine (`web/engine.js`) ranks exactly like `flypicker/rules.py`, and cites the same reports as `flypicker/sources.py`. It needs node.
+- `python -m eval.sources`: rebuilds the report links in `flypicker/data/sources.json` from `eval/reports_*.csv`.
 
 ## Known gaps
 

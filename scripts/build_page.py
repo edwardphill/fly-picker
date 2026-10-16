@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from flypicker import catalog  # noqa: E402
+from flypicker import catalog, sources  # noqa: E402
 
 
 def page_data() -> dict:
@@ -26,6 +26,7 @@ def page_data() -> dict:
         "foods": cat.foods,
         "flies": {k: {**v, "water": sorted(v["water"])} for k, v in cat.flies.items()},
         "rivers": cat.rivers,
+        "sources": {k: v for k, v in sources.load().items() if k != "_about"},
     }
 
 
