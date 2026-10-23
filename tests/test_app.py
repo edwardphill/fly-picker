@@ -30,3 +30,13 @@ def test_search_then_log_a_catch(client):
 
 def test_bad_search_is_400(client):
     assert client.post("/api/recommend", json={"region": "mars", "water_type": "freestone"}).status_code == 400
+
+
+def test_catch_log_goes_to_tmp_on_vercel(monkeypatch):
+    import importlib
+    from flypicker import catchlog
+    monkeypatch.delenv("FLYPICKER_DB", raising=False)
+    monkeypatch.setenv("VERCEL", "1")
+    assert importlib.reload(catchlog).DB_PATH == "/tmp/flypicker.db"
+    monkeypatch.delenv("VERCEL")
+    assert importlib.reload(catchlog).DB_PATH == "flypicker.db"

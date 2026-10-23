@@ -6,7 +6,9 @@ import os
 import sqlite3
 from datetime import datetime, timezone
 
-DB_PATH = os.environ.get("FLYPICKER_DB", "flypicker.db")
+# Vercel's filesystem is read-only apart from /tmp, and /tmp is wiped whenever an instance
+# recycles, so the log there is short-lived until it moves to a real database.
+DB_PATH = os.environ.get("FLYPICKER_DB", "/tmp/flypicker.db" if os.environ.get("VERCEL") else "flypicker.db")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS searches (

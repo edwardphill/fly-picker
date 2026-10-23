@@ -35,12 +35,25 @@ Rows starting with `#` are skipped. A bad row stops the app with a message namin
 ## Run it
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # the app's packages plus pytest
 export TYPESAFE_API_KEY=...        # optional; without it the app uses the rules
 uvicorn app:app --reload           # open http://localhost:8000
 ```
 
 API: `POST /api/recommend` with `{"region": "west", "water_type": "freestone", "date": "2026-06-24", "fly_type": "dry", "lat": 45.35, "lon": -111.73}`, then `POST /api/catch` with `{"search_id": 1, "fly_id": "stimulator", "outcome": "caught"}`.
+
+## Deploy on Vercel
+
+The FastAPI app runs on Vercel as one Python function, with no build step: Vercel finds `app` in `app.py`, installs `requirements.txt` and serves the page and the API from the same URL.
+
+1. Go to https://vercel.com/new, sign in with GitHub and import `edwardphill/fly-picker`.
+2. Leave the framework preset as FastAPI (it is detected) and the root directory as `./`.
+3. Optional: under Environment Variables add `TYPESAFE_API_KEY` to use Jev. Without it the app uses the rules.
+4. Click Deploy. Every push to `main` then redeploys, and each pull request gets its own preview link.
+
+`vercel.json` lets a request run for 30 seconds, because a search for today waits on USGS, Open-Meteo and (with a key) Jev. `.vercelignore` leaves the tests, eval data and demo build out of the bundle.
+
+The catch log is not kept on Vercel yet. Vercel's disk is read-only apart from `/tmp`, so the app writes `flypicker.db` there, and it is lost whenever the function's instance recycles (often within minutes). A search and its "Caught fish" tap usually land on the same instance, but nothing is kept for training. Keeping it means a hosted database, such as Postgres from the Vercel Marketplace, which is what the PRD calls for. Set `FLYPICKER_DB` to point the log at another SQLite path.
 
 ## Test Jev before trusting it
 
