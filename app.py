@@ -1,5 +1,6 @@
 """Fly Picker web app.  Run:  uvicorn app:app --reload   then open http://localhost:8000"""
 
+from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
@@ -38,6 +39,7 @@ class CatchIn(BaseModel):
     notes: str | None = None
 
 
+@lru_cache(maxsize=1)
 def page() -> str:
     """The same page as the offline demo, but told to call this server."""
     from scripts.build_page import build

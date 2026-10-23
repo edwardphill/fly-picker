@@ -52,3 +52,13 @@ def test_search_a_river_with_no_reports(client):
     assert body["conditions"]["river"] == {"name": "Magalloway River", "reports": 0}
     assert body["conditions"]["region"] == catalog.load().regions["northeast"]
     assert body["notes"] == [] and len(body["flies"]) == 10
+
+
+def test_catch_log_goes_to_tmp_on_vercel(monkeypatch):
+    import importlib
+    from flypicker import catchlog
+    monkeypatch.delenv("FLYPICKER_DB", raising=False)
+    monkeypatch.setenv("VERCEL", "1")
+    assert importlib.reload(catchlog).DB_PATH == "/tmp/flypicker.db"
+    monkeypatch.delenv("VERCEL")
+    assert importlib.reload(catchlog).DB_PATH == "flypicker.db"

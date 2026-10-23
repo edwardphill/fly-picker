@@ -1,0 +1,5 @@
+tests/
+eval/
+dist/
+*.db
+__pycache__/
