@@ -116,6 +116,8 @@
     "spotlight caddis emerger": ["family:emerger food:caddis"],
     "foam run caddis": ["family:dry food:caddis"],
     "nbk caddis dry": ["family:dry food:caddis"],
+    "emerger patterns": ["family:emerger", "family:wet food:caddis"],
+    "dry flies on sunny days when caddis are active": ["family:dry food:caddis"],
     "saco caddis": ["family:dry food:caddis"],
     "para wulffs in the bwo color": ["parawulff"],
     "paradrake": ["green_drake_paradrake"],

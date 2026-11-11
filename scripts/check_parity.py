@@ -1,4 +1,5 @@
-"""Checks that web/engine.js ranks flies the same as flypicker/rules.py.
+"""Checks that web/engine.js gives the same answers as the Python code: the ranking (flypicker/rules.py),
+the fishing-report citations (flypicker/sources.py) and the What to fish card (flypicker/advise.py).
 
     python -m scripts.check_parity      # needs node on PATH
 """
@@ -12,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from flypicker import catalog, rules, sources  # noqa: E402
+from flypicker import advise, catalog, rules, sources  # noqa: E402
 from scripts.build_page import page_data  # noqa: E402
 
 NODE = """
@@ -33,6 +34,14 @@ global.DATA = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
 const FP = require(process.argv[2]);
 const cases = JSON.parse(fs.readFileSync(0, "utf8"));
 process.stdout.write(JSON.stringify(cases.map(([fid, region, month, river]) => FP.citations(DATA.flies[fid], region, month, river))));
+"""
+
+NODE_ADVISE = """
+const fs = require("fs");
+global.DATA = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+const FP = require(process.argv[2]);
+const cases = JSON.parse(fs.readFileSync(0, "utf8"));
+process.stdout.write(JSON.stringify(cases.map(c => FP.advise(c))));
 """
 
 
@@ -67,6 +76,29 @@ def source_cases(cat):
                     yield [fid, region, month, river]
 
 
+def advise_cases(cat):
+    """What to fish for every water and river, month and fly type, with and without a water temperature."""
+    for region, water, month, fly_type, temp in itertools.product(
+        cat.regions, cat.water_types, range(1, 13), ["any", "dry", "nymph", "streamer", "topwater"], [None, 61],
+    ):
+        yield dict(region=region, water_type=water, date=f"2026-{month:02d}-15", fly_type=fly_type,
+                   sky="partly", windy=False, flow="normal", water_temp_f=temp)
+    for (rid, river), month, fly_type, temp, sky in itertools.product(
+        cat.rivers.items(), range(1, 13), ["any", "dry", "nymph", "streamer"], [None, 38, 61], ["partly", "rain"],
+    ):
+        yield dict(river=rid, region=river["region"], water_type=river["water_type"], date=f"2026-{month:02d}-15",
+                   fly_type=fly_type, sky=sky, windy=False, flow="normal", water_temp_f=temp)
+
+
+def py_advice(cat, c: dict) -> dict:
+    river = cat.rivers.get(c.get("river") or "")
+    cond = rules.Conditions(
+        region=c["region"], water_type=c["water_type"], month=int(c["date"][5:7]), fly_type=c["fly_type"],
+        water_temp_f=c["water_temp_f"], sky=c["sky"], windy=c["windy"], flow=c["flow"],
+        adjust=river.get("adjust") if river else None)
+    return advise.advise(cat, cond, rules.score_flies(cat, cond), c.get("river"))
+
+
 def run_node(script: str, cases: list) -> list:
     data_path = ROOT / "dist" / "parity-data.json"
     data_path.parent.mkdir(exist_ok=True)
@@ -93,6 +125,21 @@ def check_sources(cat) -> int:
     return mismatches
 
 
+def check_advise(cat) -> int:
+    all_cases = list(advise_cases(cat))
+    js = run_node(NODE_ADVISE, all_cases)
+    mismatches = 0
+    for case, js_advice in zip(all_cases, js):
+        py = json.loads(json.dumps(py_advice(cat, case)))
+        if py != js_advice:
+            mismatches += 1
+            if mismatches <= 3:
+                print("ADVISE MISMATCH", case, "\n  py:", json.dumps(py)[:400], "\n  js:", json.dumps(js_advice)[:400])
+    plans = sum(a["kind"] == "plan" for a in js)
+    print(f"{len(all_cases)} What to fish answers compared ({plans} from river plans), {mismatches} mismatches")
+    return mismatches
+
+
 def main() -> int:
     cat = catalog.load()
     all_cases = list(cases(cat))
@@ -112,6 +159,7 @@ def main() -> int:
                 print("MISMATCH", case, "\n  py:", py_rows[i:i + 2], "\n  js:", js_rows[i:i + 2])
     print(f"{len(all_cases)} condition sets compared, {mismatches} mismatches")
     mismatches += check_sources(cat)
+    mismatches += check_advise(cat)
     return 1 if mismatches else 0
 
 

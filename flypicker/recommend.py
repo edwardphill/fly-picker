@@ -3,7 +3,7 @@
 import logging
 from datetime import date
 
-from . import catalog, conditions, jev, rules, sources
+from . import advise, catalog, conditions, jev, rules, sources
 
 log = logging.getLogger(__name__)
 TOP_N = 10
@@ -118,6 +118,7 @@ def recommend(req: dict, mode: str = "auto", jev_client=None) -> dict:
         },
         "eating": shares,
         "flies": top,
+        "advice": advise.advise(cat, cond, ranked, req.get("river")),
         "cited_region": sources.region_has_sources(cond.region),
         "notes": notes,
     }

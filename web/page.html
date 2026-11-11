@@ -137,6 +137,20 @@ dialog::backdrop{background:rgba(27,39,36,.35)}
 .msg.err{color:var(--bad)}
 .msg.ok{color:var(--strong)}
 @media (prefers-reduced-motion:no-preference){.bar i{transition:width .35s ease}}
+/* What to fish: 2 or 3 flies and a dries call, above the long list */
+.pick{gap:12px}
+.pick-head{display:grid;gap:4px}
+.verdict{margin:0;padding:10px 12px;border-left:4px solid var(--weak);background:var(--weak-soft);font-size:.92rem;display:grid;gap:4px}
+.verdict b{font-family:var(--display);font-size:1.02rem}
+.verdict.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 9%,var(--panel))}
+.verdict.hatch-only{border-color:var(--fair);background:var(--fair-soft)}
+.verdict.yes{border-color:var(--strong);background:var(--strong-soft)}
+.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pick .src{font-size:.8rem;color:var(--muted);margin:0}
+.more-flies{padding:0 18px}
+.more-flies>summary{padding:12px 0;font-weight:600;cursor:pointer}
+.more-flies[open]>summary{margin-bottom:4px}
+.more-flies .flies{margin-bottom:12px}
 </style>
 
 <main>
@@ -194,14 +208,17 @@ dialog::backdrop{background:rgba(27,39,36,.35)}
     <section class="results" aria-live="polite">
       <div class="summary" id="summary"></div>
       <div id="notes"></div>
+      <section class="card pick" id="pick" aria-labelledby="pick-title"></section>
       <section class="card hatch" id="hatch" aria-labelledby="hatch-title"></section>
       <div class="card" id="eat-card" hidden>
         <h2>What they're probably eating</h2>
         <div class="eat" id="eat"></div>
       </div>
+      <details class="card more-flies" id="more-flies"><summary id="more-summary">The longer list</summary>
       <div class="filterbar" id="filterbar" hidden></div>
       <p class="order" id="order">Spread across foods and fly types, so one hatch can't fill the list.</p>
       <ol class="flies" id="flies"></ol>
+      </details>
       <p class="foot" id="foot"></p>
     </section>
   </div>
@@ -344,6 +361,7 @@ const SERVER = /*__SERVER__*/false;
     ].join("");
     $("notes").innerHTML = res.notes.map(n => `<p class="note">${esc(n)}</p>`).join("");
 
+    renderPick(res);
     renderHatch(res);
     // Jev reports its own guess at what the fish are eating; the rules' version is the hatch section above.
     $("eat-card").hidden = res.engine !== "jev";
@@ -397,10 +415,35 @@ const SERVER = /*__SERVER__*/false;
     if (chart) chart.addEventListener("toggle", () => { chartOpen = chart.open; });
   }
 
+  const VERDICT_HEAD = { no: "Leave the dries home", "hatch-only": "Dries only if fish are rising", yes: "Dries are worth fishing" };
+  function pickItem(f, i) {
+    const cites = f.sources ? citeBlock(f) : "";
+    return '<li class="fly"><span class="rank">' + (i + 1) + '</span><div class="fly-body">' +
+      '<div class="fly-head"><span class="fly-name">' + esc(f.name) + '</span><span class="size">' + esc(f.sizes) + '</span><span class="chip">' + esc(f.family) + '</span></div>' +
+      '<p class="why">' + esc(f.why) + '</p>' + cites +
+      '<div class="acts" data-fly="' + esc(f.id) + '"><button type="button" data-outcome="caught" aria-pressed="false">Caught fish</button>' +
+      '<button type="button" data-outcome="no_luck" aria-pressed="false">No luck</button></div></div></li>';
+  }
+  function renderPick(res) {
+    // The app sends its answer with the list; the offline demo works it out here (same code, see check_parity).
+    const a = res.advice || FP.advise(resolvedReq(res), res);
+    const link = s => '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.site) + '</a>';
+    const sub = a.kind === "plan"
+      ? a.where + ' in ' + a.month + ' · from local reports and shop hatch calendars'
+      : (a.where ? a.where + ' in ' + a.month + ' · ' : a.month + ' · ') + 'from the hatch-chart model';
+    $("pick").innerHTML =
+      '<div class="pick-head"><h2 id="pick-title">What to fish</h2><p class="sub">' + esc(sub) + '</p></div>' +
+      (a.dries ? '<p class="verdict ' + esc(a.dries.verdict) + '"><b>' + esc(VERDICT_HEAD[a.dries.verdict]) + '</b><span>' + esc(a.dries.text) + '</span></p>' : '') +
+      (a.picks.length ? '<ol class="picks">' + a.picks.map(pickItem).join('') + '</ol>' : '<p class="empty">Nothing fits this water and fly type strongly enough to recommend.</p>') +
+      (a.src.length ? '<p class="src">Sources: ' + a.src.map(link).join(', ') + '. Our reading of them, not a quote.</p>' : '') +
+      (a.kind === "plan" ? '<p class="src">Water temperature, sky and flow below change the longer list, not this card.</p>' : '');
+  }
+
   function noteItem(n) {
-    const [y, m] = n.date.split("-").map(Number);
+    // A note from a guide or a shop page has no date.
+    const [y, m] = n.date ? n.date.split("-").map(Number) : [0, 0];
     const src = n.url ? `<a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.source)}</a>` : esc(n.source);
-    return `<li>${esc(n.text)} <span class="src">${src}, ${MONTHS[m - 1].slice(0, 3)} ${y}</span></li>`;
+    return `<li>${esc(n.text)} <span class="src">${src}${m ? `, ${MONTHS[m - 1].slice(0, 3)} ${y}` : ""}</span></li>`;
   }
 
   // Phones show three rows of each group; wider screens show five insects and every one-line row.
@@ -507,10 +550,12 @@ const SERVER = /*__SERVER__*/false;
       : lastReq.fly_type !== "any" ? `Nothing of this fly type imitates ${esc(food.name.toLowerCase())} closely. Try "Any fly".`
       : `Nothing in the catalog imitates ${esc(food.name.toLowerCase())} closely yet.`;
     $("flies").innerHTML = flies.length ? flies.map(flyItem).join("") : `<li class="empty">${empty}</li>`;
+    $("more-summary").textContent = food ? `Flies for ${food.name.toLowerCase()}` : `The longer list: ${flies.length} flies that fit`;
   }
 
   function setFilter(id) {
     foodFilter = id;
+    if (id) $("more-flies").open = true;  // the filtered list lives under the card
     $("hatch").querySelectorAll("button[data-food]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.food === id)));
     renderFlies();
   }
@@ -528,7 +573,8 @@ const SERVER = /*__SERVER__*/false;
   });
   $("filterbar").addEventListener("click", e => { if (e.target.closest("[data-clear]")) setFilter(null); });
 
-  $("flies").addEventListener("click", async e => {
+  // Caught fish / No luck, in the card and in the longer list.
+  const onOutcome = async e => {
     const btn = e.target.closest("button[data-outcome]");
     if (!btn) return;
     const group = btn.parentElement;
@@ -543,7 +589,9 @@ const SERVER = /*__SERVER__*/false;
         localStorage.setItem("flypicker-log", JSON.stringify(log));
       } catch (_) { /* storage blocked: the pressed state still shows */ }
     }
-  });
+  };
+  $("flies").addEventListener("click", onOutcome);
+  $("pick").addEventListener("click", onOutcome);
 
   // River requests: no account system yet, so the form writes a message to copy and send.
   const req = $("req"), reqForm = $("req-form"), field = name => reqForm.elements.namedItem(name);

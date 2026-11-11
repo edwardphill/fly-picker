@@ -284,6 +284,78 @@ const FP = (() => {
     };
   }
 
-  return { recommend, citations, conditions, scoreFlies, activeFoods, foodShares, resolvedTemp, hatching, hatchChart, MONTHS };
+  // ---- What to fish (flypicker/advise.py) ----
+  // advise() narrows the answer to 2 or 3 flies and says whether dries are worth tying on. A river with a
+  // plan in rivers.json uses it for every month when the fly type is Any fly; any other water gets the
+  // same kind of answer from the ranking, with dries ruled out unless something is on the surface.
+  const DRY_YES = 0.9, DRY_MAYBE = 0.5;
+  const NOT_FOR_DRIES = ["mouse", "frog", "topwater_bug", "worm_hatch"];
+  const NARROW_WINDOW = ["bwo", "trico"];   // tiny mayflies: a dry works for an hour or two, not all month
+  const SURFACE_FAMILIES = ["dry", "topwater"];
+
+  function surfaceFoods(foods) {
+    return Object.entries(foods)
+      .filter(([fid]) => DATA.foods[fid].stage === "surface" && !NOT_FOR_DRIES.includes(fid))
+      .map(([fid, [a]]) => ({ id: fid, name: DATA.foods[fid].name, a }))
+      .sort((x, y) => y.a - x.a);
+  }
+
+  // "yes" needs a hatch or terrestrial that lasts (at full strength this month, at a good water temperature).
+  // Olives and tricos alone only ever earn "hatch-only", and anything faint is "no".
+  function driesCall(cond, foods) {
+    if (DATA.water_types[cond.water_type].fish !== "trout") return null;
+    const top = surfaceFoods(foods), month = MONTHS[cond.month - 1];
+    const solid = top.filter(f => !NARROW_WINDOW.includes(f.id)), narrow = top.filter(f => NARROW_WINDOW.includes(f.id));
+    const s = solid.length ? solid[0].a : 0, n = narrow.length ? narrow[0].a : 0, best = Math.max(s, n);
+    const names = top.slice(0, 2).map(f => f.name.toLowerCase()).join(" and ");
+    if (s >= DRY_YES) return { verdict: "yes", text: names.charAt(0).toUpperCase() + names.slice(1) + " are on the surface in " + month + ".", a: s };
+    if (best >= DRY_MAYBE) return { verdict: "hatch-only", text: "Surface food is only partly on in " + month + " (" + names + "). Tie on a dry only when you see fish rising; otherwise fish under the surface.", a: best };
+    return { verdict: "no", text: "Nothing on the hatch chart is reliably on the surface in " + month + " at this water temperature. Fish under the surface and leave the dries in the box.", a: best };
+  }
+
+  function planFor(river, month) {
+    return river && river.plan ? river.plan.find(p => p.months.includes(month)) || null : null;
+  }
+
+  function advise(req, res) {
+    const cond = conditions(req), river = req.river ? DATA.rivers[req.river] : null;
+    const full = res && res.all ? res : recommend(req);
+    const month = MONTHS[cond.month - 1];
+    const entry = cond.fly_type === "any" ? planFor(river, cond.month) : null;
+    if (entry) {
+      return {
+        kind: "plan", where: river.name, month,
+        dries: { verdict: entry.dries, text: entry.dries_text },
+        picks: entry.picks.map(p => ({ id: p.fly, name: DATA.flies[p.fly].name, family: DATA.flies[p.fly].family, sizes: p.size, why: p.why })),
+        src: entry.src || [], facts: river.facts || [],
+      };
+    }
+    const foods = activeFoods(cond), call = driesCall(cond, foods);
+    const wantDry = cond.fly_type === "dry" || cond.fly_type === "topwater";
+    const picks = [], seenFood = {}, seenFam = {};
+    for (const f of full.all || full.flies) {
+      if (picks.length >= 3) break;
+      if (f.strength === "long shot") continue;
+      const surface = SURFACE_FAMILIES.includes(f.family);
+      if (surface && call && call.verdict === "no" && !wantDry) continue;
+      if (surface && picks.some(p => SURFACE_FAMILIES.includes(p.family)) && !(call && call.verdict === "yes")) continue;
+      if (seenFood[f.food] || (seenFam[f.family] || 0) >= 2) continue;
+      seenFood[f.food] = 1; seenFam[f.family] = (seenFam[f.family] || 0) + 1;
+      picks.push({ id: f.id, name: f.name, family: f.family, sizes: f.sizes, why: f.reason, sources: f.sources || null });
+    }
+    // When dries are worth fishing, one of the flies should be a dry.
+    if (call && call.verdict === "yes" && !picks.some(p => SURFACE_FAMILIES.includes(p.family))) {
+      const dry = (full.all || full.flies).find(f => SURFACE_FAMILIES.includes(f.family) && f.strength !== "long shot");
+      if (dry) {
+        const p = { id: dry.id, name: dry.name, family: dry.family, sizes: dry.sizes, why: dry.reason, sources: dry.sources || null };
+        if (picks.length >= 3) picks[2] = p; else picks.push(p);
+      }
+    }
+    let dries = call ? { verdict: call.verdict, text: call.text } : null;
+    if (dries && wantDry && dries.verdict === "no") dries.text += " You asked for dry flies, so these are the best of them, but expect little.";
+    return { kind: "model", where: river ? river.name : null, month, dries, picks, src: [], facts: river && river.facts ? river.facts : [] };
+  }
+
+  return { recommend, citations, conditions, scoreFlies, activeFoods, foodShares, resolvedTemp, hatching, hatchChart, advise, driesCall, MONTHS };
 })();
 if (typeof module !== "undefined") module.exports = FP;

@@ -54,6 +54,16 @@ def test_search_a_river_with_no_reports(client):
     assert body["notes"] == [] and len(body["flies"]) == 10
 
 
+def test_search_carries_the_what_to_fish_answer(client):
+    plan = client.post("/api/recommend", json={"river": "tellico", "date": "2026-01-10"}).json()["advice"]
+    assert plan["kind"] == "plan" and plan["where"] == "Tellico River" and plan["dries"]["verdict"] == "no"
+    assert 2 <= len(plan["picks"]) <= 3 and plan["src"]
+    model = client.post("/api/recommend", json={"region": "west", "water_type": "freestone", "date": "2026-06-20"}).json()["advice"]
+    assert model["kind"] == "model" and model["where"] is None and 1 <= len(model["picks"]) <= 3
+    typed = client.post("/api/recommend", json={"river": "tellico", "date": "2026-01-10", "fly_type": "nymph"}).json()["advice"]
+    assert typed["kind"] == "model"  # a chosen fly type skips the river's plan
+
+
 def test_catch_log_goes_to_tmp_on_vercel(monkeypatch):
     import importlib
     from flypicker import catchlog

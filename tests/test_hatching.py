@@ -32,7 +32,9 @@ def test_every_food_has_entomology():
 def test_river_notes_name_their_source():
     for rid, river in catalog.load().rivers.items():
         for note in river.get("hatch_notes", []):
-            assert note["source"] and note["date"], rid
+            assert note["source"], rid
+            # A note read off a guide or a shop page has no date; a dated one is a report's date.
+            assert "date" not in note or len(note["date"]) == 10, rid
             assert note["url"] is None or note["url"].startswith("https://"), rid
 
 

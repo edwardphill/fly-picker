@@ -32,7 +32,7 @@ class Catalog:
     typical_temp: dict
     foods: dict  # id -> food, with "water" expanded to concrete water types
     flies: dict  # id -> fly, with "water" expanded to a set of water types
-    rivers: dict  # id -> home-river preset (region, water type, location, learned adjustments)
+    rivers: dict  # id -> home-river preset (region, water type, location, learned adjustments, notes, plan)
 
 
 def _groups(water_types: dict) -> dict:
@@ -60,6 +60,50 @@ def _expand_list(items: list, groups: dict) -> frozenset:
     for key in items:
         out.update(groups.get(key, [key]))
     return frozenset(out)
+
+
+PLAN_DRIES = ("no", "hatch-only", "yes")
+PLAN_PICKS = (2, 3)  # a plan names two or three flies, never a box of them
+
+
+def _check_facts(rid: str, facts: list) -> None:
+    for fact in facts:
+        if not (fact.get("text") and fact.get("source") and fact.get("url")):
+            raise ValueError(f"River {rid} has a fact without text, source or url: {fact}")
+
+
+def _check_plan(rid: str, plan: list, flies: dict) -> None:
+    """A river's plan: entries that cover every month exactly once, each with 2-3 catalog flies."""
+    seen: dict[int, int] = {}
+    for i, entry in enumerate(plan):
+        where = f"River {rid} plan[{i}]"
+        months = entry.get("months")
+        if not months or not set(months) <= set(range(1, 13)):
+            raise ValueError(f"{where} has no months or bad months: {months}")
+        if entry.get("dries") not in PLAN_DRIES:
+            raise ValueError(f"{where} dries must be one of {PLAN_DRIES}, not {entry.get('dries')!r}")
+        if not entry.get("dries_text"):
+            raise ValueError(f"{where} needs dries_text, the reason for its dries verdict")
+        picks = entry.get("picks", [])
+        if len(picks) not in PLAN_PICKS:
+            raise ValueError(f"{where} names {len(picks)} flies; a plan names 2 or 3")
+        for pick in picks:
+            if pick.get("fly") not in flies:
+                raise ValueError(f"{where} names unknown fly {pick.get('fly')!r}")
+            if not (pick.get("size") and pick.get("why")):
+                raise ValueError(f"{where} pick {pick['fly']} needs a size and a why")
+        if len({p["fly"] for p in picks}) != len(picks):
+            raise ValueError(f"{where} names a fly twice")
+        for src in entry.get("src", []):
+            if not (src.get("site") and src.get("url")):
+                raise ValueError(f"{where} has a source without site or url: {src}")
+        for m in months:
+            if m in seen:
+                raise ValueError(f"River {rid} plan has month {m} in plan[{seen[m]}] and plan[{i}]")
+            seen[m] = i
+    missing = sorted(set(range(1, 13)) - set(seen))
+    if missing:
+        raise ValueError(f"River {rid} plan has no entry for months {missing}")
 
 
 @lru_cache(maxsize=1)
@@ -94,6 +138,9 @@ def load() -> Catalog:
         for note in r.get("hatch_notes", []):
             if not note["text"] or not note["months"] or not set(note["months"]) <= set(range(1, 13)):
                 raise ValueError(f"River {rid} has a hatch note without text or with bad months: {note}")
+        _check_facts(rid, r.get("facts", []))
+        if "plan" in r:
+            _check_plan(rid, r["plan"], flies)
 
     return Catalog(
         regions=waters["regions"],
